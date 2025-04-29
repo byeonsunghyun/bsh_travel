@@ -6,6 +6,35 @@
     <title>BSH's Travel</title>
     <link rel="icon" href="./image/favicon.png" type="image/png">
     <style>
+	.dday-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+
+            background-color: #ff6b6b;
+            color: white;
+            padding: 6px 10px;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 8px;
+            z-index: 10;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+
+            display: inline-block;
+            text-align: center;
+            line-height: 19px;  /* height와 일치하도록 맞춰줌 */
+            min-width: 60px;
+            height: 30px;
+        }
+
+
+        .dday-badge.completed {
+            background-color: #2196F3; /* 완료된 여행 초록색 */
+        }
+
+        .dday-badge.completed span {
+            display: block;
+        }
         .travel-container {
             display: flex;
             flex-direction: column;
@@ -488,6 +517,7 @@ a {
       display: flex;
       flex-direction: column;
       gap: 20px;
+      position: relative;
     }
 
     .travel-detail h1, 
@@ -598,6 +628,7 @@ a {
     <div class="main-wrapper">
         <div class="main-container">
             <div class="travel-detail">
+	 	<div class="dday-badge completed" id="dday-china">완료</div>
                 <div class="travel-container">
                     <div class="travel-header">
                         <h1 style="line-height: 1;">🐼 중국 여행</h1>
