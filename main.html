@@ -408,9 +408,6 @@ a {
         <div class="tag-section">
           <div class="tag-title">🏷️ 태그</div>
           <div class="tags">
-            <div th:each="tagName : ${uniqueTagNames}">
-              <a th:href="@{/?tag={name}(name=${tagName})}" class="tag" th:text="${tagName}"></a>
-            </div>
           </div>
         </div>
 
