@@ -262,6 +262,7 @@ html, body {
   .main-container {
     grid-template-columns: 1fr;
   }
+
   .sidebar {
     position: fixed;
     top: 0;
@@ -272,7 +273,6 @@ html, body {
     z-index: 20;
     transform: translateX(100%);
     padding-top: 80px;
-    
   }
 
   .sidebar.active {
@@ -286,68 +286,16 @@ html, body {
     right: 20px;
     z-index: 30;
     color: white;
-    background: none;
     border: none;
     padding: 10px 15px;
     font-size: 1rem;
     border-radius: 5px;
     cursor: pointer;
-  }
-  .header-content h1 {
-    font-size: 1.7rem;
-  }
-
-  .logo {
-    width: 32px;
-    height: 32px;
-  }
-
-  /* 여행 이름, 날짜, 구분선 등 크기 조절 */
-  .travel-name {
-    font-size: 1.4rem;
-  }
-
-  .travel-date {
-    font-size: 0.9rem;
-    margin-left: 5px;
-  }
-
-  .travel-divider {
-    font-size: 1.5rem;
-  }
-
-  .tags-container {
-    gap: 6px;
-  }
-
-  .travel-tags {
-    font-size: 0.75rem;
-    padding: 4px 8px;
-  }
-
-  .tag {
-    font-size: 0.75rem;
-    padding: 4px 8px;
-  }
-
-  .tag2 {
-    font-size: 0.75rem;
-    padding: 4px 8px;
-  }
-
-  .search-container input {
-    font-size: 0.85rem;
-    padding: 8px;
-  }
-
-  .tag-title,
-  .tag-title2 {
-    font-size: 0.85rem;
+    background: none;
   }
 
   /* 이미지 슬라이더 */
   .outer-slider-container {
-    flex-direction: column;
     gap: 6px;
   }
 
@@ -358,6 +306,7 @@ html, body {
 
   .image-slide {
     max-height: 250px;
+    position: relative; /* 부모 요소를 기준으로 절대 위치 조정 */
   }
 
   .image-modal img {
@@ -366,9 +315,11 @@ html, body {
   }
 
   .close-btn {
+    position: absolute; /* 이미지를 기준으로 절대 위치 */
     top: 10px;
     right: 20px;
     font-size: 30px;
+    z-index: 100; /* 이미지 위에 버튼을 올리기 위해 높은 z-index */
   }
 
   /* 여행 상세 내용 폰트 조절 */
