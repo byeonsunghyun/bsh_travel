@@ -106,6 +106,9 @@ html, body {
   .main-container {
     column-count: 1;
   }
+	.header-content h1 {
+    font-size: 1.7rem;
+  }
 }
 
 .sidebar {
