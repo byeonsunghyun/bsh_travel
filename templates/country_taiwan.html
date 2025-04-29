@@ -1148,67 +1148,86 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-        const modal = document.getElementById("image-modal");
-        const modalImg = document.getElementById("modal-img");
-        const caption = document.getElementById("caption");
-        const closeBtn = document.querySelector(".close-btn");
+    const modal = document.getElementById("image-modal");
+    const modalImg = document.getElementById("modal-img");
+    const caption = document.getElementById("caption");
+    const closeBtn = document.querySelector(".close-btn");
 
-        // 모든 슬라이더 묶음을 처리
-        document.querySelectorAll('.outer-slider-container').forEach(container => {
-            const slides = container.querySelectorAll(".image-slide");
-            const leftBtn = container.querySelector(".left-btn");
-            const rightBtn = container.querySelector(".right-btn");
+    let currentSlides = [];
+    let currentIndex = 0;
 
-            let currentIndex = 0;
+    // 슬라이드 보여주는 함수
+    function showSlide(index) {
+        if (index >= 0 && index < currentSlides.length) {
+            modalImg.src = currentSlides[index].src;
+            caption.textContent = currentSlides[index].alt || "";
+        }
+    }
 
-            function showSlide(index) {
-                slides.forEach((slide, i) => {
-                    slide.classList.toggle("active", i === index);
+    // 모든 슬라이더 처리
+    document.querySelectorAll('.outer-slider-container').forEach(container => {
+        const slides = container.querySelectorAll(".image-slide");
+        const leftBtn = container.querySelector(".left-btn");
+        const rightBtn = container.querySelector(".right-btn");
+
+        // 페이지 슬라이더 좌우 버튼
+        if (slides.length > 1) {
+            let index = 0;
+            function showPageSlide(i) {
+                slides.forEach((slide, idx) => {
+                    slide.classList.toggle("active", idx === i);
                 });
             }
 
-            // 이미지가 한 장 이하면 버튼 숨김
-            if (slides.length <= 1) {
-                if (leftBtn) leftBtn.style.display = "none";
-                if (rightBtn) rightBtn.style.display = "none";
-            }
-
-            // 이미지 클릭 시 모달 띄우기
-            slides.forEach(slide => {
-                slide.addEventListener("click", () => {
-                    modal.style.display = "flex";
-                    modalImg.src = slide.src;
-                    caption.innerHTML = slide.alt || "";
-                });
+            leftBtn?.addEventListener("click", () => {
+                index = (index - 1 + slides.length) % slides.length;
+                showPageSlide(index);
             });
 
-            // 좌우 버튼
-            if (slides.length > 1) {
-                leftBtn.addEventListener("click", () => {
-                    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-                    showSlide(currentIndex);
-                });
+            rightBtn?.addEventListener("click", () => {
+                index = (index + 1) % slides.length;
+                showPageSlide(index);
+            });
 
-                rightBtn.addEventListener("click", () => {
-                    currentIndex = (currentIndex + 1) % slides.length;
-                    showSlide(currentIndex);
-                });
-            }
+            showPageSlide(index);
+        } else {
+            // 슬라이드가 하나면 버튼 숨김
+            leftBtn?.style.setProperty("display", "none");
+            rightBtn?.style.setProperty("display", "none");
+        }
 
-            showSlide(currentIndex);
-        });
-
-        // 모달 닫기
-        closeBtn.addEventListener("click", () => {
-            modal.style.display = "none";
-        });
-
-        window.addEventListener("click", (event) => {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
+        // 이미지 클릭 시 모달 열기
+        slides.forEach((slide, idx) => {
+            slide.addEventListener("click", () => {
+                modal.style.display = "flex";
+                currentSlides = Array.from(slides);
+                currentIndex = idx;
+                showSlide(currentIndex);
+            });
         });
     });
+
+    // 모달 이미지 클릭 시 다음 슬라이드
+    modalImg.addEventListener("click", () => {
+        if (currentSlides.length > 0) {
+            currentIndex = (currentIndex + 1) % currentSlides.length;
+            showSlide(currentIndex);
+        }
+    });
+
+    // 모달 닫기
+    closeBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    window.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+});
+
+    
     const travelStart = new Date("2025-05-09");
     const today = new Date();
     travelStart.setHours(0, 0, 0, 0);
