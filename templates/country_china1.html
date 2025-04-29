@@ -815,15 +815,15 @@
                             <div class="outer-slider-container">
                                 <button class="slider-btn outside-btn left-btn">&#10094;</button>
 
-                                <div style="margin-top: 30px" class="slider-container>
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
                                         <img src="../image/image_country24/food1-1.jpg" class="image-slide active" data-index="0">
                                         <img src="../image/image_country24/food1-2.jpg" class="image-slide" data-index="1">
-                                        <img src="../image/image_country24/food1-3.jpg" class="image-slide" data-index="2">
-                                        <img src="../image/image_country24/food1-4.jpg" class="image-slide" data-index="3">
+                                        <img src="../image/image_country24/food1-3.jpg" class="image-slide active" data-index="2">
+                                        <img src="../image/image_country24/food1-4.jpg" class="image-slide active" data-index="3">
                                         <img src="../image/image_country24/food1-5.jpg" class="image-slide" data-index="4">
                                     </div>
                                 </div>
-
 
                                 <button class="slider-btn outside-btn right-btn">&#10095;</button>
                             </div>
@@ -1151,6 +1151,9 @@
     function toggleSidebar() {
         document.getElementById('sidebar').classList.toggle('active');
     }
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('active');
+    }
 
     // 각 섹션으로 스크롤하는 함수
     function scrollToSection(sectionId) {
@@ -1182,6 +1185,14 @@
     function scrollToTop() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+    const slides = document.querySelectorAll(".image-slide");
+    let currentIndex = 0;
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.toggle("active", i === index);
+        });
+    }
 
     document.addEventListener("DOMContentLoaded", function () {
         const modal = document.getElementById("image-modal");
@@ -1189,9 +1200,7 @@
         const caption = document.getElementById("caption");
         const closeBtn = document.querySelector(".close-btn");
 
-        let modalImages = [];
-        let currentModalIndex = 0;
-
+        // 모든 슬라이더 묶음을 처리
         document.querySelectorAll('.outer-slider-container').forEach(container => {
             const slides = container.querySelectorAll(".image-slide");
             const leftBtn = container.querySelector(".left-btn");
@@ -1205,23 +1214,22 @@
                 });
             }
 
+            // 이미지가 한 장 이하면 버튼 숨김
             if (slides.length <= 1) {
                 if (leftBtn) leftBtn.style.display = "none";
                 if (rightBtn) rightBtn.style.display = "none";
             }
 
             // 이미지 클릭 시 모달 띄우기
-            slides.forEach((slide, i) => {
+            slides.forEach(slide => {
                 slide.addEventListener("click", () => {
                     modal.style.display = "flex";
                     modalImg.src = slide.src;
                     caption.innerHTML = slide.alt || "";
-
-                    modalImages = Array.from(slides);
-                    currentModalIndex = i;
                 });
             });
 
+            // 좌우 버튼
             if (slides.length > 1) {
                 leftBtn.addEventListener("click", () => {
                     currentIndex = (currentIndex - 1 + slides.length) % slides.length;
@@ -1237,30 +1245,6 @@
             showSlide(currentIndex);
         });
 
-        // 모달 터치 이벤트로 이미지 넘기기
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        modal.addEventListener("touchstart", (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        modal.addEventListener("touchend", (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            const deltaX = touchEndX - touchStartX;
-
-            if (Math.abs(deltaX) > 50 && modalImages.length > 1) {
-                if (deltaX < 0) {
-                    currentModalIndex = (currentModalIndex + 1) % modalImages.length;
-                } else {
-                    currentModalIndex = (currentModalIndex - 1 + modalImages.length) % modalImages.length;
-                }
-
-                modalImg.src = modalImages[currentModalIndex].src;
-                caption.innerHTML = modalImages[currentModalIndex].alt || "";
-            }
-        });
-
         // 모달 닫기
         closeBtn.addEventListener("click", () => {
             modal.style.display = "none";
@@ -1273,7 +1257,6 @@
         });
     });
 </script>
-
 
 
 <button id="scrollTopButton" onclick="scrollToTop()">맨 위로</button>
