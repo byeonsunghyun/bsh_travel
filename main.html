@@ -24,17 +24,18 @@
       <div class="main-container">
 
         <div class="country">
-		    <a href="/bsh_travel/templates/country_china1" class="country-link">
-		        <div class="travel-id-hover">#3</div>
-		        <p class="country-time">2025-05-09 ~ 2025-05-12</p>
-		        <p class="country-name">대만 여행 (예정)</p>
-		        <div class="country-tags">
-		            <div class="tag2">#타이베이</div>
-		            <div class="tag2">#지우펀</div>
-			    <div class="tag2">#친구와 여행</div>
-		        </div>
-		    </a>
-		</div>
+	  <div class="dday-badge" id="dday-taiwan"></div> <!-- ⭐ D-Day 위치 여기 추가 -->
+	  <a href="/bsh_travel/templates/country_taiwan" class="country-link">
+	    <div class="travel-id-hover">#3</div>
+	    <p class="country-time">2025-05-09 ~ 2025-05-12</p>
+	    <p class="country-name">대만 여행</p>
+	    <div class="country-tags">
+	      <div class="tag2">#타이베이</div>
+	      <div class="tag2">#지우펀</div>
+	      <div class="tag2">#친구와 여행</div>
+	    </div>
+	  </a>
+	</div>
 		<div class="country">
 		    <a href="/bsh_travel/templates/country_china1" class="country-link">
 		        <div class="travel-id-hover">#2</div>
@@ -99,6 +100,20 @@
     function scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    const travelStart = new Date("2025-05-09");
+  const today = new Date();
+  travelStart.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+
+  const diffTime = travelStart - today;
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  const ddayStr = diffDays > 0 ? `D-${diffDays}` :
+                  diffDays === 0 ? "D-Day!" :
+                  `D+${Math.abs(diffDays)}`;
+
+  document.getElementById("dday-taiwan").textContent = ddayStr;
   </script>
 
   <button onclick="scrollToTop()" id="scrollTopBtn" title="맨 위로">맨 위로</button>
