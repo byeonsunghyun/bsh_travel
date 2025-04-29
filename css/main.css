@@ -327,8 +327,8 @@ a {
 #scrollTopBtn {
   display: none; /* 기본적으로 숨김 */
   position: fixed;
-  bottom: 30px;
-  right: 30px;
+  bottom: 60px;
+  right: 40px;
   z-index: 99;
   font-size: 18px;
   border: none;
