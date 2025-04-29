@@ -4,8 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>BSH's Travel</title>
-    <link rel="icon" href="../image/favicon.png" type="image/png">
-    
+    <link rel="icon" href="./image/favicon.png" type="image/png">
     <style>
         .hotel-info {
             text-align: center;
@@ -57,10 +56,6 @@
 
 
         .dday-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-
             background-color: #ff6b6b;
             color: white;
             padding: 6px 10px;
@@ -73,8 +68,8 @@
             display: inline-block;
             text-align: center;
             line-height: 19px;  /* height와 일치하도록 맞춰줌 */
-            min-width: 60px;
             height: 30px;
+            width: 60px;
         }
 
 
@@ -438,6 +433,12 @@
             p.mobile-margin-fix {
                 margin-bottom: 50px !important;
             }
+            .dday-badge {
+                font-size: 11px;
+                padding: 4px 8px;
+                height: 26px;
+                width: 50px;
+            }
         }
 
 
@@ -513,7 +514,6 @@
             }
         }
         .travel-detail {
-            position: relative;
             background-color: #1e1e1e;
             padding: 30px;
             border-radius: 12px;
@@ -618,6 +618,11 @@
         #scrollTopButton:hover {
             background-color: #777;
         }
+        .travel-title {
+            display: flex;
+            gap: 20px; /* h1과 뱃지 사이 간격 */
+        }
+
     </style>
 </head>
 <body>
@@ -635,10 +640,16 @@
     <div class="main-wrapper">
         <div class="main-container">
             <div class="travel-detail">
-                <div class="dday-badge" id="dday-taiwan"></div>
+
                 <div class="travel-container">
                     <div class="travel-header">
-                        <h1 style="line-height: 1;">🏮 대만 여행</h1>
+                        <div class="travel-title">
+                            <h1 style="line-height: 1;">🏮 대만 여행</h1>
+                            <div class="dday-badge" id="dday-taiwan">D-3</div>
+                        </div>
+                    </div>
+
+                    <div class="travel-header">
                         <p style="font-size:0.9rem; color: #aaa;">(2025-05-09 ~ 2025-05-12)</p>
                     </div>
                     <div class="tags-container">
