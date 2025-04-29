@@ -259,46 +259,126 @@ html, body {
 }
 
 @media (max-width: 768px) {
-  .main-container {
-    grid-template-columns: 1fr;
+
+  /* 헤더 텍스트랑 로고 크기 줄이기 */
+  .header-content h1 {
+    font-size: 1.4rem;
   }
 
-.header-content h1 {
-    font-size: 1.7rem;
+  .logo {
+    width: 32px;
+    height: 32px;
   }
 
-  .sidebar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 100vh;
-    width: 70%;
-    max-width: 300px;
-    z-index: 20;
-    transform: translateX(100%);
-    padding-top: 80px;
-    
+  /* 여행 이름, 날짜, 구분선 등 크기 조절 */
+  .travel-name {
+    font-size: 1.4rem;
   }
 
-  .sidebar.active {
-    transform: translateX(0);
+  .travel-date {
+    font-size: 0.9rem;
+    margin-left: 5px;
   }
 
-  .sidebar-toggle-button {
-    display: block;
-    position: fixed;
-    top: 20px;
+  .travel-divider {
+    font-size: 1.5rem;
+  }
+
+  .tags-container {
+    gap: 6px;
+  }
+
+  .travel-tags {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+
+  .tag {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+
+  .tag2 {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+
+  .search-container input {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+
+  .tag-title,
+  .tag-title2 {
+    font-size: 0.85rem;
+  }
+
+  /* 이미지 슬라이더 */
+  .outer-slider-container {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .slider-btn.outside-btn {
+    font-size: 1.5em;
+    padding: 6px;
+  }
+
+  .image-slide {
+    max-height: 250px;
+  }
+
+  .image-modal img {
+    max-width: 90%;
+    max-height: 70%;
+  }
+
+  .close-btn {
+    top: 10px;
     right: 20px;
-    z-index: 30;
-    color: white;
-    background: none;
-    border: none;
-    padding: 10px 15px;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
+    font-size: 30px;
   }
+
+  /* 여행 상세 내용 폰트 조절 */
+  .travel-detail {
+    padding: 20px;
+    gap: 15px;
+  }
+
+  .travel-detail h1, 
+  .travel-detail h2 {
+    font-size: 1.2rem;
+  }
+
+  .travel-detail p,
+  .travel-detail ul li {
+    font-size: 0.9rem;
+  }
+
+  .scroll-buttons {
+    gap: 10px;
+  }
+
+  .scroll-buttons button {
+    font-size: 0.85rem;
+    padding: 10px 16px;
+  }
+
+  table th, table td {
+    padding: 6px;
+    font-size: 0.8rem;
+  }
+
+  /* 맨 위로 버튼 */
+  #scrollTopButton {
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+
 }
+
 
 @media (min-width: 769px) {
   .sidebar-toggle-button {
