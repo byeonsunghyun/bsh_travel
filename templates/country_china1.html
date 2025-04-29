@@ -9,15 +9,15 @@
             display: flex;
             flex-direction: column;
             gap: 5px;
-            padding-bottom: 20px; /* 경계선과 콘텐츠 간의 간격을 위한 여백 */
             border-bottom: 2px solid #ccc; /* 회색 경계선 추가 */
         }
 
         .travel-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+		    display: block;
+		    align-items: center;
+		    gap: 10px;
+		}
+
 
         .travel-divider {
             font-size: 2rem; /* | 기호 크기 */
@@ -286,8 +286,8 @@ html, body {
     top: 20px;
     right: 20px;
     z-index: 30;
-    background-color: #1e1e1e;
     color: white;
+    background: none;
     border: none;
     padding: 10px 15px;
     font-size: 1rem;
@@ -503,25 +503,16 @@ a {
 </head>
 <body>
 <div class="container">
-    <div th:fragment="header">
-      <header class="header">
-        <div class="header-content">
-          <a href="/bsh_travel/main" class="header-content button">
-            <h1>BSH's Travel</h1>
-            <img src="/image/airplane.png" alt="Logo" class="logo">
-          </a>
-        </div>
-      </header>
-    </div>
-    <button class="sidebar-toggle-button" onclick="toggleSidebar()">☰ 메뉴</button>
+    <div th:replace="fragments :: header"></div>
+    <button class="sidebar-toggle-button" onclick="toggleSidebar()">☰</button>
 
     <div class="main-wrapper">
         <div class="main-container">
             <div class="travel-detail">
                 <div class="travel-container">
                     <div class="travel-header">
-                        <h1>🐉 중국 여행</h1>
-                        <p>(2025-01-04  2025-01-09)</p>
+                        <h1 style="line-height: 1;">🐉 중국 여행</h1>
+                        <p style="font-size:0.9rem; color: #aaa;">(2025-01-04  2025-01-09)</p>
                     </div>
                     <div class="tags-container">
                         <p class="travel-tags"> #베이징 </p>
@@ -989,26 +980,11 @@ a {
 
         <div th:fragment="sidebar">
       
-      <aside class="sidebar" id="sidebar">
-        <!-- 검색 폼 -->
-        <form th:action="@{/}" method="get" class="search-container">
-          <div class="tag-title2">🔍 검색하기</div>
-          <input type="text" name="keyword" placeholder="나라 또는 도시 검색하기..." />
-        </form>
-
-        <div class="tag-section">
-          <div class="tag-title">🏷️ 태그</div>
-          <div class="tags">
-          </div>
-        </div>
-
-        <div class="sidebar-footer">
-          © 2025. Byeon Sung Hyun. All rights reserved.
-        </div>
-      </aside>
+      <div th:replace="fragments :: sidebar"></div>
     </div>
     </div>
 </div>
+
 <script>
 function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('active');
@@ -1118,15 +1094,9 @@ function toggleSidebar() {
             }
         });
     });
-
-
-
-
-
-
 </script>
 
 
-<button id="scrollTopButton" onclick="scrollToTop()">⬆ 맨 위로</button>
+<button id="scrollTopButton" onclick="scrollToTop()">맨 위로</button>
 </body>
 </html>
