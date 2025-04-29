@@ -328,23 +328,22 @@ html, body {
     gap: 15px;
   }
 
-  .travel-detail h1, 
+  .travel-detail h1 {
+  	font-size: 1.4rem;
+  } 
   .travel-detail h2 {
     font-size: 1.2rem;
+  }
+  .travel-detail h3 {
+    font-size: 1.0rem;
+  }
+  .travel-detail h4 {
+    font-size: 0.9rem;
   }
 
   .travel-detail p,
   .travel-detail ul li {
-    font-size: 0.9rem;
-  }
-
-  .scroll-buttons {
-    gap: 10px;
-  }
-
-  .scroll-buttons button {
-    font-size: 0.85rem;
-    padding: 10px 16px;
+    font-size: 0.8rem;
   }
 
   table th, table td {
@@ -359,7 +358,12 @@ html, body {
     padding: 10px 14px;
     font-size: 0.9rem;
   }
+  
+  .place-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* 최소 120px로 줄여서 두 개까지 가능하게 */
+  }
 }
+
 
 @media (min-width: 769px) {
   .sidebar-toggle-button {
@@ -513,7 +517,7 @@ a {
     .scroll-buttons button {
       background-color: #444;
       color: #fff;
-      padding: 12px 20px;
+      padding: 10px 16px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
