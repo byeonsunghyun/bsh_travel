@@ -6,6 +6,44 @@
     <title>BSH's Travel</title>
     <link rel="icon" href="./image/favicon.png" type="image/png">
     <style>
+        .slider-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .image-slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .image-slide {
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .left-btn {
+            left: 10px;
+        }
+
+        .right-btn {
+            right: 10px;
+        }
+
+
         .hotel-info {
             text-align: center;
             margin-top: 20px;
@@ -1358,6 +1396,37 @@
             }
         });
     });
+    document.addEventListener("DOMContentLoaded", function () {
+        const slides = document.querySelectorAll('.image-slide');
+        const leftBtn = document.querySelector('.left-btn');
+        const rightBtn = document.querySelector('.right-btn');
+        const slider = document.querySelector('.image-slider');
+
+        let currentIndex = 0;
+
+        function showSlide(index) {
+            // 슬라이드를 이동시켜서 현재 인덱스에 맞는 이미지를 보여줌
+            const totalSlides = slides.length;
+            const slideWidth = slides[0].clientWidth;
+            slider.style.transform = `translateX(-${index * slideWidth}px)`;
+        }
+
+        // 좌측 버튼 클릭 시
+        leftBtn.addEventListener('click', function() {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            showSlide(currentIndex);
+        });
+
+        // 우측 버튼 클릭 시
+        rightBtn.addEventListener('click', function() {
+            currentIndex = (currentIndex + 1) % slides.length;
+            showSlide(currentIndex);
+        });
+
+        // 첫 번째 슬라이드 표시
+        showSlide(currentIndex);
+    });
+
 
 </script>
 
