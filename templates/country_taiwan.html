@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>BSH's Travel</title>
+    <link rel="icon" href="./image/favicon.png" type="image/png">
+    <style>
+        .travel-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            border-bottom: 2px solid #ccc; /* 회색 경계선 추가 */
+        }
+
+        .travel-header {
+		    display: block;
+		    align-items: center;
+		    gap: 10px;
+		}
+
+
+        .travel-divider {
+            font-size: 2rem; /* | 기호 크기 */
+            color: #ccc; /* | 기호 색상 */
+        }
+
+        .travel-name {
+            font-size: 2rem; /* 여행 이름 크기 더 크게 */
+            color: #fff;
+        }
+
+        .travel-date {
+            font-size: 1rem;
+            color: #ccc;
+            margin-left: 10px;
+        }
+
+        .travel-date::before {
+            content: "(";
+            margin-right: 5px;
+        }
+
+        .travel-date::after {
+            content: ")";
+            margin-left: 5px;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .travel-tags {
+            background-color: #333;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+
+        .travel-tags:hover {
+            background-color: #555;
+        }
+
+        .section {
+            margin: 10px 0;
+        }
+
+
+        .place-link {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .place-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .place-grid .place-link {
+            background-color: #2a2a2a;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .place-grid .place-link:hover {
+            background-color: #444;
+        }
+        .travel-detail h2 {
+            margin-bottom: 3px; /* h2 아래 여백 줄이기 */
+        }
+        .outer-slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .slider-container {
+            width: 80%;
+            position: relative;
+        }
+
+        .image-slider {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .image-slide {
+            display: none;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .image-slide.active {
+            display: block;
+        }
+
+        .slider-btn.outside-btn {
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            font-size: 2em;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        /* 모달 창 스타일 */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-modal img {
+            max-width: 50%;
+            max-height: 80%;
+            margin: auto;
+            display: block;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.56);
+        }
+        * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  background-color: #121212;
+  color: #fff;
+  font-family: 'Arial', sans-serif;
+}
+
+.header {
+  background-color: #1e1e1e;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+  position: relative;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.button {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  opacity: 0.8;
+  transform: scale(1.02);
+}
+
+.logo {
+  width: 45px;
+  height: 45px;
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.main-wrapper {
+  display: flex;
+  flex: 1;
+  border-left: 2px solid #333;
+  position: relative; 
+}
+
+.main-container {
+  flex: 8;
+  padding: 20px;
+  width: 100%;
+}
+
+.sidebar {
+  flex: 2;
+  background-color: #1e1e1e;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  align-self: flex-start;
+  box-shadow: 4px 0 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+  width: 300px;
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 70%;
+    max-width: 300px;
+    z-index: 20;
+    transform: translateX(100%);
+    padding-top: 80px;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .sidebar-toggle-button {
+    display: block;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 30;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    background: none;
+  }
+
+   .header-content h1 {
+    font-size: 1.7rem;
+  }
+
+  /* 이미지 슬라이더 */
+  .outer-slider-container {
+    gap: 6px;
+  }
+
+  .slider-btn.outside-btn {
+    font-size: 1.5em;
+    padding: 6px;
+  }
+
+  .image-slide {
+    max-height: 250px;
+    position: relative; /* 부모 요소를 기준으로 절대 위치 조정 */
+  }
+
+  .image-modal img {
+    max-width: 90%;
+    max-height: 70%;
+  }
+
+  .close-btn {
+    position: absolute; /* 이미지를 기준으로 절대 위치 */
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    z-index: 100; /* 이미지 위에 버튼을 올리기 위해 높은 z-index */
+  }
+
+  /* 여행 상세 내용 폰트 조절 */
+  .travel-detail {
+    padding: 20px;
+    gap: 15px;
+  }
+
+  .travel-detail h1 {
+  	font-size: 1.5rem;
+  } 
+  .travel-detail h2 {
+    font-size: 1.2rem;
+  }
+  .travel-detail h3 {
+    font-size: 1.0rem;
+  }
+  .travel-detail h4 {
+    font-size: 0.9rem;
+  }
+
+  .travel-detail p,
+  .travel-detail ul li {
+    font-size: 0.8rem;
+  }
+
+  table th, table td {
+    padding: 6px;
+    font-size: 0.8rem;
+  }
+
+  /* 맨 위로 버튼 */
+  #scrollTopButton {
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+  
+  .place-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* 최소 120px로 줄여서 두 개까지 가능하게 */
+  }
+  
+  .place-grid .place-link {
+    font-size: 0.85rem;
+  }
+  
+  p.mobile-margin-fix {
+    margin-bottom: 50px !important;
+  }
+}
+
+
+@media (min-width: 769px) {
+  .sidebar-toggle-button {
+    display: none;
+  }
+}
+
+.tag2{
+  background-color: #444;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.country-tags .tag:hover {
+  background-color: #666;
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    border-top: 1px solid #444;
+    padding-top: 10px;
+  }
+}
+
+.search-container input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #333;
+  color: #fff;
+}
+
+.search-container input::placeholder {
+  color: #bbb;
+}
+
+.tag-section {
+  margin-top: 10px;
+}
+
+.tag-title {
+  font-size: 1.0rem;
+  margin-bottom: 10px;
+}
+
+.tag-title2 {
+  font-size: 1.0rem;
+  margin-top : 10px;
+  margin-bottom: 10px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag {
+  background-color: #333;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.tag:hover {
+  background-color: #555;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  font-size: 0.75rem;
+  color: #777;
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #333;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.travel-detail {
+      background-color: #1e1e1e;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      max-width: 100%;
+      margin: 0 auto;
+      animation: fadeIn 0.6s ease;
+      line-height: 1.7;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .travel-detail h1, 
+    .travel-detail h2 {
+      color: #f0f0f0;
+      margin-bottom: 15px;
+    }
+
+    .travel-detail p {
+      margin-bottom: 20px;
+      color: #ddd;
+    }
+
+    .travel-detail img {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .travel-detail ul {
+      margin-bottom: 20px;
+      padding-left: 20px;
+    }
+
+    .travel-detail ul li {
+      margin-bottom: 10px;
+      color: #ccc;
+    }
+
+    /* 버튼들을 가로로 배치하고 줄 바꿈 가능하게 설정 */
+    .scroll-buttons {
+      display: flex;
+      flex-wrap: wrap; /* 화면 크기에 따라 버튼을 다음 줄로 배치 */
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .scroll-buttons button {
+      background-color: #444;
+      color: #fff;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      white-space: nowrap; /* 텍스트가 한 줄로 유지되게 */
+    }
+
+    .scroll-buttons button:hover {
+      background-color: #777;
+    }
+
+    /* 섹션 스타일 */
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section h2 {
+      color: #fff;
+      margin-bottom: 15px;
+    }
+
+    .section ul {
+      padding-left: 20px;
+    }
+    
+    #scrollTopButton {
+	  position: fixed;
+	  bottom: 60px;
+	  right: 40px;
+	  z-index: 1000;
+	  background-color: #444;
+	  color: #fff;
+	  border: none;
+	  padding: 12px 16px;
+	  border-radius: 50px;
+	  cursor: pointer;
+	  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+	  transition: opacity 0.3s ease;
+	  opacity: 0;
+	  pointer-events: none;
+	}
+
+	#scrollTopButton.show {
+	  opacity: 1;
+	  pointer-events: auto;
+	}
+	
+	#scrollTopButton:hover {
+	  background-color: #777;
+	}
+    </style>
+</head>
+<body>
+<div class="container">
+    <header class="header">
+      <div class="header-content">
+        <a href="/bsh_travel/main" class="header-content button">
+          <h1>BSH's Travel</h1>
+          <img src="../image/airplane.png" alt="Logo" class="logo">
+        </a>
+      </div>
+    </header>
+    <button class="sidebar-toggle-button" onclick="toggleSidebar()">☰</button>
+
+    <div class="main-wrapper">
+        <div class="main-container">
+            <div class="travel-detail">
+                <div class="travel-container">
+                    <div class="travel-header">
+                        <h1 style="line-height: 1;">🏮 대만 여행</h1>
+                        <p style="font-size:0.9rem; color: #aaa;">(2025-05-09 ~ 2025-05-12)</p>
+                    </div>
+                    <div class="tags-container">
+                        <p class="travel-tags"> #타이베이 </p>
+                        <p class="travel-tags"> #지우펀 </p>
+                        <p class="travel-tags"> #친구랑 여행 </p>
+                    </div>
+                </div>
+                <div class="scroll-buttons">
+                    <button onclick="scrollToSection('places')">📍 방문한 주요 장소</button>
+                    <button onclick="scrollToSection('food')">🍜 음식 이야기</button>
+                    <button onclick="scrollToSection('transit')">📚 여행 수단 정리</button>
+                </div>
+
+                <div id="places" class="section">
+                    <h2>📍 방문한 주요 장소</h2>
+                    <div class="place-grid">
+                        <a href="javascript:void(0);" class="place-link" data-id="place1">🛕 천단공원</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="place2">🛍️ 왕푸징 거리</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="place3">🧱 만리장성</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="place4">🌿 이화원</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="place5">🏛️ 천안문</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="place6">🧱 만리장성</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="place7">🛕 천단공원</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="place8">🛍️ 왕푸징 거리</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="place9">🏘️ 전문대가</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="place10">🐼 베이징 동물원</a>
+                    </div>
+
+                    <hr id="place1" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">1. 天坛公园 - 천단공원</h3>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_country24/place1-2.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_country24/place1-1.jpg" class="image-slide active" data-index="1">
+                                        <img src="../image/image_country24/place1-3.jpg" class="image-slide" data-index="2">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <h4 style="text-align: center; color: grey;" >
+                                입장료 : 10RMB(비수기), 15RMB(성수기)<br>
+                                *내부 명소 입장료 별도 +20RMB
+                            </h4>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
+                                천단공원 명소는 공원 안에 있음<br>
+                                공원에 입장할 때 <span style='color: palevioletred'>명소티켓이랑 같이 구매하면 28CNY에 구매 가능</span><br><br>
+                                천단은 하늘에 제사를 지내던 제단이라고 한다.<br>
+                                산책하면서 약간 경주대릉원이랑 비슷하다는 느낌이 듬
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr id="place2" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">2. 王府井大街 - 왕푸징 거리</h3>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_country24/place2-1.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_country24/place2-2.jpg" class="image-slide active" data-index="1">
+                                        <img src="../image/image_country24/place2-3.jpg" class="image-slide" data-index="2">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
+                                내가 원했던 건 벌레튀김 같이 특이한 음식을 판매하는 걸<br>
+                                보길 원했는데 없어졌다고 한다...<br>
+                                거리가 깔끔하고, 상하이의 난징동루 작은버전 느낌
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr id="place3" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">3. 八达岭长城 - 팔달령장성</h3>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_country24/place3-1.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_country24/place3-2.jpg" class="image-slide active" data-index="1">
+                                        <img src="../image/image_country24/place3-5.jpg" class="image-slide" data-index="2">
+                                        <img src="../image/image_country24/place3-3.jpg" class="image-slide active" data-index="3">
+                                        <img src="../image/image_country24/place3-4.jpg" class="image-slide active" data-index="4">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <h4 style="text-align: center; color: grey;" >
+                                입장료 : 40RMB
+                            </h4>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
+                                만리장성 볼 수 있는 곳은 여러 곳이 있는데, 우리는 팔달령으로 정했다.<br>
+                                버스 요금은 12RMB? 저렴했던 것으로 기억함.<br>
+                                우육면 먹고 올라감(맛있지는 않음)<br>
+                                겨울에 갔는데 추워 죽는줄 알았음, <span style='color: palevioletred'>따뜻하게 입고 가야함!</span><br>
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr id="place4" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">4. 颐和园 - 이화원</h3>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_country24/place4-1.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_country24/place4-2.jpg" class="image-slide active" data-index="1">
+                                        <img src="../image/image_country24/place4-3.jpg" class="image-slide" data-index="2">
+                                        <img src="../image/image_country24/place4-4.jpg" class="image-slide active" data-index="3">
+                                        <img src="../image/image_country24/place4-5.jpg" class="image-slide active" data-index="4">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <h4 style="text-align: center; color: grey;" >
+                                입장료 : 20RMB
+                            </h4>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
+                                엄청 넓음
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr id="place5" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">5. 天安门 - 천안문</h3>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_country24/place5-1.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_country24/place5-2.jpg" class="image-slide active" data-index="1">
+                                        <img src="../image/image_country24/place5-3.jpg" class="image-slide" data-index="2">
+                                        <img src="../image/image_country24/place5-4.jpg" class="image-slide active" data-index="3">
+                                        <img src="../image/image_country24/place5-5.jpg" class="image-slide active" data-index="4">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <h4 style="text-align: center; color: grey;" >
+                                입장료 : 아마 무료였던걸로 기억함
+                            </h4>
+                            <p style="margin-top:20px; margin-bottom:20px; text-align: center">
+                                인상 깊었던 곳. 중국 주석의 권위가 느껴졌음.<br>
+                                사진 찍고 있는데, 공안 4~5명이 다가와 휴대폰 검사하면서 엄격하게 관리했음.<br>
+                                확인하고 이 정도는 괜찮다고 보내줬는데, 좀 쫄았다..<br>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr style="border: none; border-top: 2px solid #ccc;" id="food"/>
+                <div class="section">
+                    <h2>🍖 음식 이야기</h2>
+                    <div class="place-grid">
+                        <a href="javascript:void(0);" class="place-link" data-id="food1">🍜️ 중국식 짜장면</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="food2">🍡 아이스크림</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="food3">🍲 훠궈</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="food4">🥟 만두</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="food5">🛍️ 왕푸징 거리</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="food6">🏘️ 전문대가</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="food7">🐼 베이징 동물원</a>
+                    </div><br>
+
+                    <hr id="food1" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">1. 方砖厂69号炸酱面(王府世纪店) - 중국식 짜장면</h3>
+                            <h4 style="text-align: center; color: gray;">(자금성 앞 위치, 베이징)</h4>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_country24/food1-1.jpg" class="image-slide active" data-index="0">
+                                        <img src="../image/image_country24/food1-2.jpg" class="image-slide" data-index="1">
+                                        <img src="../image/image_country24/food1-3.jpg" class="image-slide active" data-index="2">
+                                        <img src="../image/image_country24/food1-4.jpg" class="image-slide active" data-index="3">
+                                        <img src="../image/image_country24/food1-5.jpg" class="image-slide" data-index="4">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
+                                웨이팅 약간 있음 10~20분 정도 기다림. 전체적으로 무난하게 맛있음.<br>
+                                친구가 하얀색 음료수 하나 시켜서 마셨는데, 취두부맛 남🤮
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr id="food2" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">2. 绿舌头 - 아이스크림</h3>
+                            <h4 style="text-align: center; color: gray;">(편의점)</h4>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_country24/food2-1.jpg" class="image-slide active" data-index="0">
+                                        <img src="../image/image_country24/food2-2.jpg" class="image-slide" data-index="1">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
+                                绿舌头(lǜ shétou)는 녹색 혀라는 뜻이다.<br>
+                                중국에서 살던 친구가 꼭 먹어보라해서 상하이, 광저우에서<br>
+                                못찾았는데 베이징에서 겨우 찾았다.<br>
+                                맛은 사과? 그냥 인공적인 맛인데 촉감이 신기함. 가면 한 번 더 먹을듯.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <hr id="food3" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                <div>
+                    <div>
+                        <h3 style="text-align: center; margin-top:60px;">3. 南城香 - 훠궈 ⭐</h3>
+                        <h4 style="text-align: center; color: gray;">(프랜차이즈, 베이징)</h4>
+
+                        <div class="outer-slider-container">
+                            <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                            <div style="margin-top: 30px" class="slider-container">
+                                <div class="image-slider">
+                                    <img src="../image/image_country24/food3-1.jpg" class="image-slide active" data-index="0">
+                                    <img src="../image/image_country24/food3-2.jpg" class="image-slide" data-index="1">
+                                    <img src="../image/image_country24/food3-3.jpg" class="image-slide active" data-index="2">
+                                    <img src="../image/image_country24/food3-4.jpg" class="image-slide" data-index="3">
+                                </div>
+                            </div>
+
+                            <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                        </div>
+                        <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
+                            친구가 KFC랑 비슷하다고 해서 흥미가 생겨 들어가봄<br>
+                            가격도 훠궈치고 나름 저렴했고, 혼밥하기 좋을 것 같음<br>
+                            맛은 무난했지만, 개인적으로 엄청 만족
+                        </p>
+                    </div>
+                </div>
+
+                <hr id="food4" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                <div>
+                    <div>
+                        <h3 style="text-align: center; margin-top:60px;">4. 庆丰包子铺 - 만두</h3>
+                        <h4 style="text-align: center; color: gray;">(프랜차이즈, 베이징)</h4>
+
+                        <div class="outer-slider-container">
+                            <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                            <div style="margin-top: 30px" class="slider-container">
+                                <div class="image-slider">
+                                    <img src="../image/image_country24/food4-1.jpg" class="image-slide active" data-index="0">
+                                    <img src="../image/image_country24/food4-2.jpg" class="image-slide" data-index="1">
+                                </div>
+                            </div>
+
+                            <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                        </div>
+                        <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
+                            무난하게 맛있음, 가격도 나쁘지 않아서 가볍게 먹기 좋음
+                        </p>
+                    </div>
+                </div>
+
+                <hr style="border: none; border-top: 2px solid #ccc;" id="transit"/>
+                <div class="section">
+                    <h2>📚 여행 수단 정리</h2>
+                    <div class="place-grid">
+                        <a href="javascript:void(0);" class="place-link" data-id="airplane">✈️ 항공권</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="hotel">🛌 호텔</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="etc">📙 기타 정보</a>
+                    </div>
+                    <hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="airplane"/>
+                    <div>
+                        <h2 style="margin-top: 10px; margin-bottom: 15px;">✈️ 항공권</h2>
+
+                        <h3 style="margin-bottom: 10px; text-align: center">입국 (하노이 -> 베이징)</h3>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>구분</th>
+                                <th>공항</th>
+                                <th>시간</th>
+                                <th>날짜</th>
+                                <th>항공사</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>출발</td>
+                                <td>노이바이 국제공항 T2</td>
+                                <td>14:20</td>
+                                <td>2025년 1월 4일</td>
+                                <td>중국동방항공 (MU6012)</td>
+                            </tr>
+                            <tr>
+                                <td>도착</td>
+                                <td>푸동 국제공항 T1</td>
+                                <td>18:20</td>
+                                <td>2025년 1월 4일</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>출발</td>
+                                <td>푸동 국제공항 T1</td>
+                                <td>19:55</td>
+                                <td>2025년 1월 4일</td>
+                                <td>중국동방항공 (MU5195)</td>
+                            </tr>
+                            <tr>
+                                <td>도착</td>
+                                <td>다싱 국제공항</td>
+                                <td>22:00</td>
+                                <td>2025년 1월 4일</td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <h3 style="margin-bottom: 10px; text-align: center">출국 (베이징 -> 광저우)
+                        </h3>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>구분</th>
+                                <th>공항</th>
+                                <th>시간</th>
+                                <th>날짜</th>
+                                <th>항공사</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>출발</td>
+                                <td>수도국제공항 T2</td>
+                                <td>16:30</td>
+                                <td>2025년 1월 9일</td>
+                                <td>하이난항공 (HU7811)</td>
+                            </tr>
+                            <tr>
+                                <td>도착</td>
+                                <td>바이윈국제공항 T1</td>
+                                <td>19:45</td>
+                                <td>2025년 1월 9일</td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="hotel"/>
+                    <div>
+                        <h2 style="margin-top: 20px; margin-bottom: 30px;">🛌 호텔</h2>
+                        <div>
+                            <h3 style="text-align: center; margin-top:10px;">1. 힐튼 가든 인 베이징 다싱 인터내셔널 에어포트 - 베이징 공항<br>(Hilton Garden Inn Beijing Daxing International Airport)</h3>
+                            <h4 style="text-align: center; color: gray;">(2025-01-04 ~ 2025-01-05, 1박)</h4>
+                            
+                            <div class="hotel-card" style="text-align: center">
+							  <a href="https://www.agoda.com/ko-kr/rory-loft/hotel/taoyuan-tw.html?ds=VxdgdQ4q4K90vp1V" target="_blank">
+							    <div class="hotel-info">
+							      <h3>타이베이 ABC 호텔</h3>
+							      <p>예약 링크 바로가기</p>
+							    </div>
+							  </a>
+							</div>
+                            
+                            
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:100px; text-align: center">
+                                밤늦게 공항에 도착해 공항 근처 호텔에서 1박을 했다. <br>
+                                시설은 매우 깔끔했고, 직원들도 친절했음. <br>
+                                다음 날, 호텔에서 무료로 셔틀버스를 태워준다고 하셔서 공항으로 이동한 후, 베이징 도심으로 갔다.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 style="text-align: center; margin-top:10px;">2. 하이 인 량핑베이징 동시 메트로 스테이션 호텔 - 베이징<br>(Hi lnn Liangpin Beijing Dongsi Metro Station)</h3>
+                            <h4 style="text-align: center; color: gray;">(2025-01-05 ~ 2025-01-09, 4박)</h4>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_country24/hotel2-1.jpg" class="image-slide active" data-index="0">
+                                        <img src="../image/image_country24/hotel2-2.jpg" class="image-slide" data-index="1">
+                                        <img src="../image/image_country24/hotel2-3.jpg" class="image-slide active" data-index="2">
+                                        <img src="../image/image_country24/hotel2-4.jpg" class="image-slide active" data-index="3">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:100px; text-align: center">
+                                자금성 근처의 숙소, 주변에 지하철역이 있어 이동이 편리하다.<br>
+                                호텔은 무난하면서 딱 깔끔. 만족함
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="etc"/>
+                    <div>
+                        <h2 style="margin-top: 20px; margin-bottom: 30px;">📙 기타 정보</h2>
+
+                        <h3 style="margin-bottom: 10px">1. 준비물</h3>
+                        <ul>
+                            <li>Alipay - 중국 결제어플. 현찰 쓸 일이 아예 없음. 모두 QR로 결제</li>
+                            <li>DiDi - 중국 택시어플. 택시비가 저렴해서 자주 타기 좋음</li>
+                            <li>고덕지도(高德地图) - 중국 지도어플. 다른 나라와 다르게 구글지도가 되지 않음. 중국 현지어플을 써야함.</li>
+                            <li>eSIM</li>
+                            <li>VPN - eSIM에 VPN이 포함되어 있지만, 현지 호텔 와이파이에서는 제대로 작동되지 않았음</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="image-modal" class="image-modal">
+            <span class="close-btn">&times;</span>
+            <img class="modal-content" id="modal-img" alt="Expanded Image">
+            <div id="caption"></div>
+        </div>
+      <aside class="sidebar" id="sidebar">
+        <!-- 검색 폼 -->
+        <form th:action="@{/}" method="get" class="search-container">
+          <div class="tag-title2">🔍 검색하기</div>
+          <input type="text" name="keyword" placeholder="나라 또는 도시 검색하기..." />
+        </form>
+
+        <!-- 태그 목록 -->
+        <div class="tag-section">
+          <div class="tag-title">🏷️ 태그</div>
+          <div class="tags">
+          </div>
+        </div>
+
+        <div class="sidebar-footer">
+          © 2025. Byeon Sung Hyun. All rights reserved.
+        </div>
+      </aside>
+    </div>
+    </div>
+</div>
+
+<script>
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('active');
+  }
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('active');
+    }
+
+    // 각 섹션으로 스크롤하는 함수
+    function scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    // 각 장소 링크 클릭 시 해당 섹션으로 스크롤
+    document.querySelectorAll('.place-link').forEach(link => {
+        link.addEventListener('click', function () {
+            const id = this.getAttribute('data-id');
+            scrollToSection(id);
+        });
+    });
+
+    // 스크롤 시 버튼 보이게
+    window.addEventListener('scroll', function () {
+        const button = document.getElementById('scrollTopButton');
+        if (window.scrollY > 100) {
+            button.classList.add('show');
+        } else {
+            button.classList.remove('show');
+        }
+    });
+
+    // 스크롤 맨 위로 이동
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    const slides = document.querySelectorAll(".image-slide");
+    let currentIndex = 0;
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.toggle("active", i === index);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("image-modal");
+        const modalImg = document.getElementById("modal-img");
+        const caption = document.getElementById("caption");
+        const closeBtn = document.querySelector(".close-btn");
+
+        // 모든 슬라이더 묶음을 처리
+        document.querySelectorAll('.outer-slider-container').forEach(container => {
+            const slides = container.querySelectorAll(".image-slide");
+            const leftBtn = container.querySelector(".left-btn");
+            const rightBtn = container.querySelector(".right-btn");
+
+            let currentIndex = 0;
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle("active", i === index);
+                });
+            }
+
+            // 이미지가 한 장 이하면 버튼 숨김
+            if (slides.length <= 1) {
+                if (leftBtn) leftBtn.style.display = "none";
+                if (rightBtn) rightBtn.style.display = "none";
+            }
+
+            // 이미지 클릭 시 모달 띄우기
+            slides.forEach(slide => {
+                slide.addEventListener("click", () => {
+                    modal.style.display = "flex";
+                    modalImg.src = slide.src;
+                    caption.innerHTML = slide.alt || "";
+                });
+            });
+
+            // 좌우 버튼
+            if (slides.length > 1) {
+                leftBtn.addEventListener("click", () => {
+                    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                    showSlide(currentIndex);
+                });
+
+                rightBtn.addEventListener("click", () => {
+                    currentIndex = (currentIndex + 1) % slides.length;
+                    showSlide(currentIndex);
+                });
+            }
+
+            showSlide(currentIndex);
+        });
+
+        // 모달 닫기
+        closeBtn.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+
+        window.addEventListener("click", (event) => {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    });
+</script>
+
+
+<button id="scrollTopButton" onclick="scrollToTop()">맨 위로</button>
+</body>
+</html>
