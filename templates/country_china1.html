@@ -7,10 +7,6 @@
     <link rel="icon" href="../image/favicon.png" type="image/png">
     <style>
         .dday-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-
             background-color: #ff6b6b;
             color: white;
             padding: 6px 10px;
@@ -23,8 +19,8 @@
             display: inline-block;
             text-align: center;
             line-height: 19px;  /* height와 일치하도록 맞춰줌 */
-            min-width: 60px;
             height: 30px;
+            width: 60px;
         }
 
 
@@ -46,33 +42,6 @@
             display: block;
             align-items: center;
             gap: 10px;
-        }
-
-
-        .travel-divider {
-            font-size: 2rem; /* | 기호 크기 */
-            color: #ccc; /* | 기호 색상 */
-        }
-
-        .travel-name {
-            font-size: 2rem; /* 여행 이름 크기 더 크게 */
-            color: #fff;
-        }
-
-        .travel-date {
-            font-size: 1rem;
-            color: #ccc;
-            margin-left: 10px;
-        }
-
-        .travel-date::before {
-            content: "(";
-            margin-right: 5px;
-        }
-
-        .travel-date::after {
-            content: ")";
-            margin-left: 5px;
         }
 
         .tags-container {
@@ -404,6 +373,12 @@
             p.mobile-margin-fix {
                 margin-bottom: 50px !important;
             }
+            .dday-badge {
+                font-size: 11px;
+                padding: 4px 8px;
+                height: 26px;
+                width: 50px;
+            }
         }
 
 
@@ -517,7 +492,6 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            position: relative;
         }
 
         .travel-detail h1,
@@ -611,6 +585,10 @@
         #scrollTopButton:hover {
             background-color: #777;
         }
+        .travel-title {
+            display: flex;
+            gap: 20px; /* h1과 뱃지 사이 간격 */
+        }
     </style>
 </head>
 <body>
@@ -628,10 +606,12 @@
     <div class="main-wrapper">
         <div class="main-container">
             <div class="travel-detail">
-                <div class="dday-badge completed" id="dday-china">완료</div>
                 <div class="travel-container">
-                    <div class="travel-header">
+                    <div class="travel-title">
                         <h1 style="line-height: 1;">🐼 중국 여행</h1>
+                        <div class="dday-badge completed" id="dday-china">완료</div>
+                    </div>
+                    <div class="travel-header">
                         <p style="font-size:0.9rem; color: #aaa;">(2025-01-04 ~ 2025-01-09)</p>
                     </div>
                     <div class="tags-container">
@@ -835,15 +815,15 @@
                             <div class="outer-slider-container">
                                 <button class="slider-btn outside-btn left-btn">&#10094;</button>
 
-                                <div style="margin-top: 30px" class="slider-container">
-                                    <div class="image-slider">
+                                <div style="margin-top: 30px" class="slider-container>
                                         <img src="../image/image_country24/food1-1.jpg" class="image-slide active" data-index="0">
                                         <img src="../image/image_country24/food1-2.jpg" class="image-slide" data-index="1">
-                                        <img src="../image/image_country24/food1-3.jpg" class="image-slide active" data-index="2">
-                                        <img src="../image/image_country24/food1-4.jpg" class="image-slide active" data-index="3">
+                                        <img src="../image/image_country24/food1-3.jpg" class="image-slide" data-index="2">
+                                        <img src="../image/image_country24/food1-4.jpg" class="image-slide" data-index="3">
                                         <img src="../image/image_country24/food1-5.jpg" class="image-slide" data-index="4">
                                     </div>
                                 </div>
+
 
                                 <button class="slider-btn outside-btn right-btn">&#10095;</button>
                             </div>
@@ -1171,9 +1151,6 @@
     function toggleSidebar() {
         document.getElementById('sidebar').classList.toggle('active');
     }
-    function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('active');
-    }
 
     // 각 섹션으로 스크롤하는 함수
     function scrollToSection(sectionId) {
@@ -1205,14 +1182,6 @@
     function scrollToTop() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    const slides = document.querySelectorAll(".image-slide");
-    let currentIndex = 0;
-
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.classList.toggle("active", i === index);
-        });
-    }
 
     document.addEventListener("DOMContentLoaded", function () {
         const modal = document.getElementById("image-modal");
@@ -1220,7 +1189,9 @@
         const caption = document.getElementById("caption");
         const closeBtn = document.querySelector(".close-btn");
 
-        // 모든 슬라이더 묶음을 처리
+        let modalImages = [];
+        let currentModalIndex = 0;
+
         document.querySelectorAll('.outer-slider-container').forEach(container => {
             const slides = container.querySelectorAll(".image-slide");
             const leftBtn = container.querySelector(".left-btn");
@@ -1234,22 +1205,23 @@
                 });
             }
 
-            // 이미지가 한 장 이하면 버튼 숨김
             if (slides.length <= 1) {
                 if (leftBtn) leftBtn.style.display = "none";
                 if (rightBtn) rightBtn.style.display = "none";
             }
 
             // 이미지 클릭 시 모달 띄우기
-            slides.forEach(slide => {
+            slides.forEach((slide, i) => {
                 slide.addEventListener("click", () => {
                     modal.style.display = "flex";
                     modalImg.src = slide.src;
                     caption.innerHTML = slide.alt || "";
+
+                    modalImages = Array.from(slides);
+                    currentModalIndex = i;
                 });
             });
 
-            // 좌우 버튼
             if (slides.length > 1) {
                 leftBtn.addEventListener("click", () => {
                     currentIndex = (currentIndex - 1 + slides.length) % slides.length;
@@ -1265,6 +1237,30 @@
             showSlide(currentIndex);
         });
 
+        // 모달 터치 이벤트로 이미지 넘기기
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        modal.addEventListener("touchstart", (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        modal.addEventListener("touchend", (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const deltaX = touchEndX - touchStartX;
+
+            if (Math.abs(deltaX) > 50 && modalImages.length > 1) {
+                if (deltaX < 0) {
+                    currentModalIndex = (currentModalIndex + 1) % modalImages.length;
+                } else {
+                    currentModalIndex = (currentModalIndex - 1 + modalImages.length) % modalImages.length;
+                }
+
+                modalImg.src = modalImages[currentModalIndex].src;
+                caption.innerHTML = modalImages[currentModalIndex].alt || "";
+            }
+        });
+
         // 모달 닫기
         closeBtn.addEventListener("click", () => {
             modal.style.display = "none";
@@ -1277,6 +1273,7 @@
         });
     });
 </script>
+
 
 
 <button id="scrollTopButton" onclick="scrollToTop()">맨 위로</button>
