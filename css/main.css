@@ -106,14 +106,27 @@ html, body {
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: #ff6b6b;
+  background-color: #ff6b6b; /* 기본 D-Day 색 */
   color: white;
   padding: 6px 10px;
   font-size: 13px;
   font-weight: bold;
   border-radius: 8px;
   z-index: 10;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;  /* 배지의 최소 너비 */
+  height: 30px;  /* 배지 높이 */
+}
+
+.dday-badge.completed {
+  background-color: #2196F3; /* 완료된 여행 초록색 */
+}
+
+.dday-badge.completed span {
+  display: block;
 }
 
 
