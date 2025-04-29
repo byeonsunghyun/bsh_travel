@@ -1197,64 +1197,41 @@
 </div>
 
 <script>
-    function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('active');
-    }
-    function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('active');
-    }
-
-    // 각 섹션으로 스크롤하는 함수
-    function scrollToSection(sectionId) {
-        const section = document.getElementById(sectionId);
-        if (section) {
-            section.scrollIntoView({ behavior: 'smooth' });
-        }
-    }
-
-    // 각 장소 링크 클릭 시 해당 섹션으로 스크롤
-    document.querySelectorAll('.place-link').forEach(link => {
-        link.addEventListener('click', function () {
-            const id = this.getAttribute('data-id');
-            scrollToSection(id);
-        });
+    document.addEventListener("DOMContentLoaded", function () {
+        setupSidebarToggle();
+        setupScrollButton();
+        setupSectionScroll();
+        setupImageSliders();
+        setupModalViewer();
+        setupDdayCounter();
     });
 
-    // 스크롤 시 버튼 보이게
-    window.addEventListener('scroll', function () {
+    function setupSidebarToggle() {
+        document.getElementById('sidebar').classList.toggle('active');
+    }
+
+    function setupScrollButton() {
         const button = document.getElementById('scrollTopButton');
-        if (window.scrollY > 100) {
-            button.classList.add('show');
-        } else {
-            button.classList.remove('show');
-        }
-    });
-
-    // 스크롤 맨 위로 이동
-    function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    const slides = document.querySelectorAll(".image-slide");
-    let currentIndex = 0;
-
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.classList.toggle("active", i === index);
+        window.addEventListener('scroll', () => {
+            button.classList.toggle('show', window.scrollY > 100);
         });
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const modal = document.getElementById("image-modal");
-        const modalImg = document.getElementById("modal-img");
-        const caption = document.getElementById("caption");
-        const closeBtn = document.querySelector(".close-btn");
+    function setupSectionScroll() {
+        document.querySelectorAll('.place-link').forEach(link => {
+            link.addEventListener('click', function () {
+                const id = this.getAttribute('data-id');
+                const section = document.getElementById(id);
+                if (section) section.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    }
 
-        // 모든 슬라이더 묶음을 처리
+    function setupImageSliders() {
         document.querySelectorAll('.outer-slider-container').forEach(container => {
             const slides = container.querySelectorAll(".image-slide");
             const leftBtn = container.querySelector(".left-btn");
             const rightBtn = container.querySelector(".right-btn");
-
             let currentIndex = 0;
 
             function showSlide(index) {
@@ -1263,23 +1240,12 @@
                 });
             }
 
-            // 이미지가 한 장 이하면 버튼 숨김
             if (slides.length <= 1) {
                 if (leftBtn) leftBtn.style.display = "none";
                 if (rightBtn) rightBtn.style.display = "none";
             }
 
-            // 이미지 클릭 시 모달 띄우기
-            slides.forEach(slide => {
-                slide.addEventListener("click", () => {
-                    modal.style.display = "flex";
-                    modalImg.src = slide.src;
-                    caption.innerHTML = slide.alt || "";
-                });
-            });
-
-            // 좌우 버튼
-            if (slides.length > 1) {
+            if (leftBtn && rightBtn && slides.length > 1) {
                 leftBtn.addEventListener("click", () => {
                     currentIndex = (currentIndex - 1 + slides.length) % slides.length;
                     showSlide(currentIndex);
@@ -1293,150 +1259,47 @@
 
             showSlide(currentIndex);
         });
+    }
 
-        // 모달 닫기
-        closeBtn.addEventListener("click", () => {
-            modal.style.display = "none";
-        });
-
-        window.addEventListener("click", (event) => {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        });
-    });
-
-    const travelStart = new Date("2025-05-09");
-    const today = new Date();
-    travelStart.setHours(0, 0, 0, 0);
-    today.setHours(0, 0, 0, 0);
-
-    const diffTime = travelStart - today;
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-    const ddayStr = diffDays > 0 ? `D-${diffDays}` :
-        diffDays === 0 ? "D-Day!" :
-            `D+${Math.abs(diffDays)}`;
-
-    document.getElementById("dday-taiwan").textContent = ddayStr;
-
-    document.addEventListener("DOMContentLoaded", function () {
+    function setupModalViewer() {
         const modal = document.getElementById("image-modal");
         const modalImg = document.getElementById("modal-img");
         const caption = document.getElementById("caption");
         const closeBtn = document.querySelector(".close-btn");
 
-        // 모든 슬라이더 묶음을 처리
-        document.querySelectorAll('.outer-slider-container').forEach(container => {
-            const slides = container.querySelectorAll(".image-slide");
-            const leftBtn = container.querySelector(".left-btn");
-            const rightBtn = container.querySelector(".right-btn");
-
-            let currentIndex = 0;
-
-            function showSlide(index) {
-                slides.forEach((slide, i) => {
-                    slide.classList.toggle("active", i === index);
-                });
-            }
-
-            // 이미지가 한 장 이하면 버튼 숨김
-            if (slides.length <= 1) {
-                if (leftBtn) leftBtn.style.display = "none";
-                if (rightBtn) rightBtn.style.display = "none";
-            }
-
-            // 이미지 클릭 시 모달 띄우기
-            slides.forEach(slide => {
-                slide.addEventListener("click", () => {
-                    modal.style.display = "flex";
-                    modalImg.src = slide.src;
-                    caption.innerHTML = slide.alt || "";
-                    currentIndex = parseInt(slide.getAttribute("data-index"));
-                });
+        document.querySelectorAll('.image-slide').forEach(slide => {
+            slide.addEventListener("click", () => {
+                modal.style.display = "flex";
+                modalImg.src = slide.src;
+                caption.textContent = slide.alt || "";
             });
-
-            // 좌우 버튼 클릭
-            if (slides.length > 1) {
-                leftBtn.addEventListener("click", () => {
-                    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-                    showSlide(currentIndex);
-                });
-
-                rightBtn.addEventListener("click", () => {
-                    currentIndex = (currentIndex + 1) % slides.length;
-                    showSlide(currentIndex);
-                });
-            }
-
-            showSlide(currentIndex);
         });
 
-        // 모달 닫기
         closeBtn.addEventListener("click", () => {
             modal.style.display = "none";
         });
 
-        window.addEventListener("click", (event) => {
+        window.addEventListener("click", event => {
             if (event.target === modal) {
                 modal.style.display = "none";
             }
         });
+    }
 
-        // 모달 내에서 모바일 스와이프 기능 추가
-        let startX = 0;
-        let endX = 0;
+    function setupDdayCounter() {
+        const travelStart = new Date("2025-05-09");
+        const today = new Date();
+        travelStart.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
 
-        // 터치 시작 시 x 좌표 저장
-        modalImg.addEventListener("touchstart", function (e) {
-            startX = e.touches[0].clientX;
-        });
+        const diffTime = travelStart - today;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const ddayStr = diffDays > 0 ? `D-${diffDays}` :
+            diffDays === 0 ? "D-Day!" :
+                `D+${Math.abs(diffDays)}`;
 
-        // 터치 종료 시 x 좌표 비교 후 스와이프 방향 판단
-        modalImg.addEventListener("touchend", function (e) {
-            endX = e.changedTouches[0].clientX;
-            const swipeThreshold = 50;
-
-            if (startX - endX > swipeThreshold) {
-                // 왼쪽으로 스와이프 -> 오른쪽 버튼 클릭
-                rightBtn.click();
-            } else if (endX - startX > swipeThreshold) {
-                // 오른쪽으로 스와이프 -> 왼쪽 버튼 클릭
-                leftBtn.click();
-            }
-        });
-    });
-    document.addEventListener("DOMContentLoaded", function () {
-        const slides = document.querySelectorAll('.image-slide');
-        const leftBtn = document.querySelector('.left-btn');
-        const rightBtn = document.querySelector('.right-btn');
-        const slider = document.querySelector('.image-slider');
-
-        let currentIndex = 0;
-
-        function showSlide(index) {
-            // 슬라이드를 이동시켜서 현재 인덱스에 맞는 이미지를 보여줌
-            const totalSlides = slides.length;
-            const slideWidth = slides[0].clientWidth;
-            slider.style.transform = `translateX(-${index * slideWidth}px)`;
-        }
-
-        // 좌측 버튼 클릭 시
-        leftBtn.addEventListener('click', function() {
-            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-            showSlide(currentIndex);
-        });
-
-        // 우측 버튼 클릭 시
-        rightBtn.addEventListener('click', function() {
-            currentIndex = (currentIndex + 1) % slides.length;
-            showSlide(currentIndex);
-        });
-
-        // 첫 번째 슬라이드 표시
-        showSlide(currentIndex);
-    });
-
+        document.getElementById("dday-taiwan").textContent = ddayStr;
+    }
 
 </script>
 
