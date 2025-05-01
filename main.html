@@ -1,113 +1,127 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BSH's Travel</title>
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="icon" href="./image/favicon.png" type="image/png">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>BSH's Travel</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" href="./image/favicon.png" type="image/png">
 </head>
 <body>
-  <div class="container">
+<div class="container">
     <header class="header">
-      <div class="header-content">
-        <a href="/bsh_travel/main" class="header-content button">
-          <h1>BSH's Travel</h1>
-          <img src="./image/airplane.png" alt="Logo" class="logo">
-        </a>
-      </div>
+        <div class="header-content">
+            <a href="/bsh_travel/main" class="header-content button">
+                <h1>BSH's Travel</h1>
+                <img src="./image/airplane.png" alt="Logo" class="logo">
+            </a>
+        </div>
     </header>
 
     <button class="sidebar-toggle-button" onclick="toggleSidebar()">☰</button>
 
     <div class="main-wrapper">
-      <div class="main-container">
+        <div class="main-container">
 
-         <div class="country">
-  <div class="dday-badge" id="dday-taiwan"></div> <!-- 뱃지 위치 -->
-  <a href="/bsh_travel/templates/country_taiwan" class="country-link">
-    <div class="travel-id-hover">#2</div>
-    <p class="country-time">2025-05-09 ~ 2025-05-12</p>
-    <p class="country-name">대만 여행</p>
-    <div class="country-tags">
-      <div class="tag2">#타이베이</div>
-      <div class="tag2">#지우펀</div>
-      <div class="tag2">#친구와 여행</div>
+            <div class="country">
+                <div class="dday-badge" id="dday-taiwan"></div> <!-- 뱃지 위치 -->
+                <a href="/bsh_travel/templates/country_taiwan" class="country-link">
+                    <div class="travel-id-hover">#3</div>
+                    <p class="country-time">2025-05-09 ~ 2025-05-12</p>
+                    <p class="country-name">대만 여행</p>
+                    <div class="country-tags">
+                        <div class="tag2">#타이베이</div>
+                        <div class="tag2">#지우펀</div>
+                        <div class="tag2">#친구와 여행</div>
+                    </div>
+                </a>
+            </div>
+
+
+            <div class="country">
+                <div class="dday-badge completed" id="dday-china">완료</div>
+                <a href="/bsh_travel/templates/country_china1" class="country-link">
+                    <div class="travel-id-hover">#2</div>
+                    <p class="country-time">2025-01-04 ~ 2025-01-09</p>
+                    <p class="country-name">중국 여행</p>
+                    <div class="country-tags">
+                        <div class="tag2">#베이징</div>
+                        <div class="tag2">#친구와 여행</div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="country">
+                <div class="dday-badge completed" id="dday-vietnam">완료</div>
+                <a href="/bsh_travel/templates/country_vietnam" class="country-link">
+                    <div class="travel-id-hover">#1</div>
+                    <p class="country-time">2024-12-30 ~ 2025-01-04</p>
+                    <p class="country-name">베트남 여행</p>
+                    <div class="country-tags">
+                        <div class="tag2">#하노이</div>
+                        <div class="tag2">#사파</div>
+                        <div class="tag2">#친구와 여행</div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+        <aside class="sidebar" id="sidebar">
+            <!-- 검색 폼 -->
+            <form th:action="@{/}" method="get" class="search-container">
+                <div class="tag-title2">🔍 검색하기</div>
+                <input type="text" name="keyword" placeholder="나라 또는 도시 검색하기..." />
+            </form>
+
+            <!-- 태그 목록 -->
+            <div class="tag-section">
+                <div class="tag-title"></div>
+                <div class="tags">
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                © 2025. Byeon Sung Hyun. All rights reserved.
+            </div>
+        </aside>
     </div>
-  </a>
 </div>
 
-
-		<div class="country">
-    <div class="dday-badge completed" id="dday-china">완료</div> 
-    <a href="/bsh_travel/templates/country_china1" class="country-link">
-        <div class="travel-id-hover">#1</div>
-        <p class="country-time">2025-01-04 ~ 2025-01-09</p>
-        <p class="country-name">중국 여행</p>
-        <div class="country-tags">
-            <div class="tag2">#베이징</div>
-            <div class="tag2">#친구와 여행</div>
-        </div>
-    </a>
-</div>
-	      
-      </div>
-
-      <aside class="sidebar" id="sidebar">
-        <!-- 검색 폼 -->
-        <form th:action="@{/}" method="get" class="search-container">
-          <div class="tag-title2">🔍 검색하기</div>
-          <input type="text" name="keyword" placeholder="나라 또는 도시 검색하기..." />
-        </form>
-
-        <!-- 태그 목록 -->
-        <div class="tag-section">
-          <div class="tag-title"></div>
-          <div class="tags">
-          </div>
-        </div>
-
-        <div class="sidebar-footer">
-          © 2025. Byeon Sung Hyun. All rights reserved.
-        </div>
-      </aside>
-    </div>
-  </div>
-
-  <script>
+<script>
     function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('active');
+        document.getElementById('sidebar').classList.toggle('active');
     }
 
     // 스크롤 시 맨 위로 버튼 표시
     window.onscroll = function() {
-      const btn = document.getElementById("scrollTopBtn");
-      if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 200) {
-        btn.style.display = "block";
-      } else {
-        btn.style.display = "none";
-      }
+        const btn = document.getElementById("scrollTopBtn");
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 200) {
+            btn.style.display = "block";
+        } else {
+            btn.style.display = "none";
+        }
     };
 
     function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     const travelStart = new Date("2025-05-09");
-  const today = new Date();
-  travelStart.setHours(0, 0, 0, 0);
-  today.setHours(0, 0, 0, 0);
+    const today = new Date();
+    travelStart.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
 
-  const diffTime = travelStart - today;
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const diffTime = travelStart - today;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-  const ddayStr = diffDays > 0 ? `D-${diffDays}` :
-                  diffDays === 0 ? "D-Day!" :
-                  `D+${Math.abs(diffDays)}`;
+    const ddayStr = diffDays > 0 ? `D-${diffDays}` :
+        diffDays === 0 ? "D-Day!" :
+            `D+${Math.abs(diffDays)}`;
 
-  document.getElementById("dday-taiwan").textContent = ddayStr;
-  </script>
+    document.getElementById("dday-taiwan").textContent = ddayStr;
+</script>
 
-  <button onclick="scrollToTop()" id="scrollTopBtn" title="맨 위로">맨 위로</button>
+<button onclick="scrollToTop()" id="scrollTopBtn" title="맨 위로">맨 위로</button>
 </body>
 </html>
