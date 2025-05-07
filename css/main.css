@@ -353,7 +353,7 @@ a {
   }
 }
 #scrollTopBtn {
-  display: none; /* 기본적으로 숨김 */
+  display: none;
   position: fixed;
   bottom: 60px;
   right: 40px;
@@ -365,7 +365,7 @@ a {
   color: white;
   cursor: pointer;
   padding: 12px 16px;
-  border-radius: 50%;
+  border-radius: 12px; /* 덜 동그랗게! */
   box-shadow: 0 4px 8px rgba(0,0,0,0.5);
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
