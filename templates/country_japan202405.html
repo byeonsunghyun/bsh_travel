@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>BSH's Travel</title>
+    <link rel="icon" href="../image/favicon.png" type="image/png">
+    <style>
+        .place-link.highlight {
+            border: 1.5px solid #d4af37; /* 좀 더 은은한 금색 */
+            box-shadow: 0 0 4px rgba(212, 175, 55, 0.4); /* 흐릿한 황금빛 */
+        }
+
+        .hotel-info {
+            text-align: center;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hotel-btn {
+            padding: 10px 22px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 30px;
+            text-transform: none;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            min-width: 130px;
+            text-align: center;
+            border: none;
+        }
+
+        /* 어두운 톤 버튼 */
+        .hotel-btn.dark {
+            background-color: #222;
+            color: #eee;
+            border: 1px solid #555;
+        }
+
+        .hotel-btn.dark:hover {
+            background-color: #333;
+            border-color: #777;
+            color: #fff;
+        }
+
+        /* 밝은 톤 버튼 (위치용) */
+        .hotel-btn.light {
+            background-color: #eee;
+            color: #222;
+            border: 1px solid #ccc;
+        }
+
+        .hotel-btn.light:hover {
+            background-color: #ddd;
+            color: #000;
+        }
+
+        .dday-badge {
+            background-color: #ff6b6b;
+            color: white;
+            padding: 6px 10px;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 8px;
+            z-index: 10;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+
+            display: inline-block;
+            text-align: center;
+            line-height: 19px;  /* height와 일치하도록 맞춰줌 */
+            height: 30px;
+            width: 60px;
+        }
+
+
+        .dday-badge.completed {
+            background-color: #2196F3; /* 완료된 여행 초록색 */
+        }
+
+        .dday-badge.completed span {
+            display: block;
+        }
+        .travel-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            border-bottom: 2px solid #ccc; /* 회색 경계선 추가 */
+        }
+
+        .travel-header {
+            display: block;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .travel-tags {
+            background-color: #333;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+
+        .travel-tags:hover {
+            background-color: #555;
+        }
+
+        .section {
+            margin: 10px 0;
+        }
+
+
+        .place-link {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .place-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .place-grid .place-link {
+            background-color: #2a2a2a;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .place-grid .place-link:hover {
+            background-color: #444;
+        }
+        .travel-detail h2 {
+            margin-bottom: 3px; /* h2 아래 여백 줄이기 */
+        }
+        .outer-slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .slider-container {
+            width: 80%;
+            position: relative;
+        }
+
+        .image-slider {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .image-slide {
+            display: none;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .image-slide.active {
+            display: block;
+        }
+
+        .slider-btn.outside-btn {
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            font-size: 2em;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        /* 모달 창 스타일 */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-modal img {
+            max-width: 50%;
+            max-height: 80%;
+            margin: auto;
+            display: block;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.56);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            background-color: #121212;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .header {
+            background-color: #1e1e1e;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            position: relative;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .button {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .button:hover {
+            opacity: 0.8;
+            transform: scale(1.02);
+        }
+
+        .logo {
+            width: 45px;
+            height: 45px;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .main-wrapper {
+            display: flex;
+            flex: 1;
+            border-left: 2px solid #333;
+            position: relative;
+        }
+
+        .main-container {
+            flex: 8;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .sidebar {
+            flex: 2;
+            background-color: #1e1e1e;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            align-self: flex-start;
+            box-shadow: 4px 0 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+            width: 300px;
+        }
+
+        @media (max-width: 768px) {
+            .hotel-btn {
+                padding: 8px 18px;
+                font-size: 0.8rem;
+                min-width: 100px;
+            }
+
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: 100vh;
+                width: 70%;
+                max-width: 300px;
+                z-index: 20;
+                transform: translateX(100%);
+                padding-top: 80px;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle-button {
+                display: block;
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 30;
+                color: white;
+                border: none;
+                padding: 10px 15px;
+                font-size: 1rem;
+                border-radius: 5px;
+                cursor: pointer;
+                background: none;
+            }
+
+            .header-content h1 {
+                font-size: 1.7rem;
+            }
+
+            /* 이미지 슬라이더 */
+            .outer-slider-container {
+                gap: 6px;
+            }
+
+            .slider-btn.outside-btn {
+                font-size: 1.5em;
+                padding: 6px;
+            }
+
+            .image-slide {
+                max-height: 250px;
+                position: relative; /* 부모 요소를 기준으로 절대 위치 조정 */
+            }
+
+            .image-modal img {
+                max-width: 90%;
+                max-height: 70%;
+            }
+
+            .close-btn {
+                position: absolute; /* 이미지를 기준으로 절대 위치 */
+                top: 10px;
+                right: 20px;
+                font-size: 30px;
+                z-index: 100; /* 이미지 위에 버튼을 올리기 위해 높은 z-index */
+            }
+
+            /* 여행 상세 내용 폰트 조절 */
+            .travel-detail {
+                padding: 20px;
+                gap: 15px;
+            }
+
+            .travel-detail h1 {
+                font-size: 1.5rem;
+            }
+            .travel-detail h2 {
+                font-size: 1.2rem;
+            }
+            .travel-detail h3 {
+                font-size: 1.0rem;
+            }
+            .travel-detail h4 {
+                font-size: 0.9rem;
+            }
+
+            .travel-detail p,
+            .travel-detail ul li {
+                font-size: 0.8rem;
+            }
+
+            table th, table td {
+                padding: 6px;
+                font-size: 0.8rem;
+            }
+
+            /* 맨 위로 버튼 */
+            #scrollTopButton {
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 14px;
+                font-size: 0.9rem;
+            }
+
+            .place-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* 최소 120px로 줄여서 두 개까지 가능하게 */
+            }
+
+            .place-grid .place-link {
+                font-size: 0.85rem;
+            }
+
+            p.mobile-margin-fix {
+                margin-bottom: 50px !important;
+            }
+            .dday-badge {
+                font-size: 11px;
+                padding: 4px 8px;
+                height: 26px;
+                width: 50px;
+            }
+        }
+
+
+        @media (min-width: 769px) {
+            .sidebar-toggle-button {
+                display: none;
+            }
+        }
+
+        .tag2{
+            background-color: #444;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: #ccc;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .country-tags .tag:hover {
+            background-color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .search-container {
+                border-top: 1px solid #444;
+                padding-top: 10px;
+            }
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        .search-container input::placeholder {
+            color: #bbb;
+        }
+
+        .tag-section {
+            margin-top: 10px;
+        }
+
+        .tag-title {
+            font-size: 1.0rem;
+            margin-bottom: 10px;
+        }
+
+        .tag-title2 {
+            font-size: 1.0rem;
+            margin-top : 10px;
+            margin-bottom: 10px;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag {
+            background-color: #333;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #ccc;
+            cursor: pointer;
+        }
+
+        .tag:hover {
+            background-color: #555;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            font-size: 0.75rem;
+            color: #777;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .travel-detail {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            max-width: 100%;
+            margin: 0 auto;
+            animation: fadeIn 0.6s ease;
+            line-height: 1.7;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .travel-detail h1,
+        .travel-detail h2 {
+            color: #f0f0f0;
+            margin-bottom: 15px;
+        }
+
+        .travel-detail p {
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+
+        .travel-detail img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .travel-detail ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .travel-detail ul li {
+            margin-bottom: 10px;
+            color: #ccc;
+        }
+
+        /* 버튼들을 가로로 배치하고 줄 바꿈 가능하게 설정 */
+        .scroll-buttons {
+            display: flex;
+            flex-wrap: wrap; /* 화면 크기에 따라 버튼을 다음 줄로 배치 */
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .scroll-buttons button {
+            background-color: #444;
+            color: #fff;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            white-space: nowrap; /* 텍스트가 한 줄로 유지되게 */
+        }
+
+        .scroll-buttons button:hover {
+            background-color: #777;
+        }
+
+        /* 섹션 스타일 */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .section ul {
+            padding-left: 20px;
+        }
+
+        #scrollTopButton {
+            position: fixed;
+            bottom: 60px;
+            right: 40px;
+            z-index: 1000;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: opacity 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #scrollTopButton.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #scrollTopButton:hover {
+            background-color: #777;
+        }
+        .travel-title {
+            display: flex;
+            gap: 20px; /* h1과 뱃지 사이 간격 */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header class="header">
+        <div class="header-content">
+            <a href="/bsh_travel/main" class="header-content button">
+                <h1>BSH's Travel</h1>
+                <img src="../image/airplane.png" alt="Logo" class="logo">
+            </a>
+        </div>
+    </header>
+    <button class="sidebar-toggle-button" onclick="toggleSidebar()">☰</button>
+
+    <div class="main-wrapper">
+        <div class="main-container">
+            <div class="travel-detail">
+                <div class="travel-container">
+                    <div class="travel-title">
+                        <h1 style="line-height: 1;">🍣 일본 여행</h1>
+                        <div class="dday-badge completed" id="dday-china">완료</div>
+                    </div>
+                    <div class="travel-header">
+                        <p style="font-size:0.9rem; color: #aaa;">(2024-05-10 ~ 2024-05-13)</p>
+                    </div>
+                    <div class="tags-container">
+                        <p class="travel-tags"> #시모노세키 </p>
+                        <p class="travel-tags"> #후쿠오카 </p>
+                        <p class="travel-tags"> #혼자 여행 </p>
+                    </div>
+                </div>
+                <div class="scroll-buttons">
+                    <button onclick="scrollToSection('places')">📍 방문한 주요 장소</button>
+                    <button onclick="scrollToSection('food')">🍜 음식 이야기</button>
+                    <button onclick="scrollToSection('transit')">📚 여행 수단 정리</button>
+                </div>
+
+                <div id="places" class="section">
+                    <h2>📍 방문한 주요 장소</h2>
+                    <div class="place-grid">
+                    	<a href="javascript:void(0);" class="place-link" data-id="place1">🏛️ 영국 영사관</a>
+						<a href="javascript:void(0);" class="place-link highlight" data-id="place2">🦐 가라토시장</a>
+						<a href="javascript:void(0);" class="place-link" data-id="place3">⛩️ 아카마신궁</a>
+						<a href="javascript:void(0);" class="place-link" data-id="place4">🎡 카랏토요코쵸</a>
+						<a href="javascript:void(0);" class="place-link" data-id="place5">🚉 모지코</a>
+						<a href="javascript:void(0);" class="place-link" data-id="place6">🌳 오호리 공원</a>
+						<a href="javascript:void(0);" class="place-link" data-id="place7">📚 츠타야 서점</a>
+						<a href="javascript:void(0);" class="place-link" data-id="place8">🏖️ 이토시마</a>
+                    </div>
+                    
+                    <hr id="place1" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">1. 영국 영사관</h3>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_japan05/place1-1.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_japan05/place1-2.jpg" class="image-slide active" data-index="1">
+                                        <img src="../image/image_japan05/place1-3.jpg" class="image-slide" data-index="2">
+                                        <img src="../image/image_japan05/place1-4.jpg" class="image-slide" data-index="3">
+                                        <img src="../image/image_japan05/place1-5.jpg" class="image-slide active" data-index="4">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:40px; text-align: center">
+                                <span style='color: palevioletred'>내 최애 장소</span>라 두 번째 방문했다.<br><br>
+                                가라토시장에서 먹고 싶은 초밥을 사서,<br>
+                                바닷바람 맞으며 경치를 바라보며 먹으면 기분이 정말 좋아진다.
+                            </p>
+                            <div class="hotel-card" style="text-align: center; margin-bottom: 60px;">
+                                <div class="hotel-info">
+                                    <a href="https://maps.app.goo.gl/8BmhN9Ms6xGDntsr7" class="hotel-btn dark">🗺️ 위치 보기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr id="place2" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">2. 가라토시장 ⭐</h3>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_japan05/place2-1.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_japan05/place2-2.jpg" class="image-slide active" data-index="1">
+                                        <img src="../image/image_japan05/place2-3.jpg" class="image-slide" data-index="2">
+                                        <img src="../image/image_japan05/place2-4.jpg" class="image-slide" data-index="3">
+                                        <img src="../image/image_japan05/place2-5.jpg" class="image-slide active" data-index="4">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:40px; text-align: center">
+                                <span style='color: palevioletred'>내 최애 장소</span>라 두 번째 방문했다.<br><br>
+                                가라토시장에서 먹고 싶은 초밥을 사서,<br>
+                                바닷바람 맞으며 경치를 바라보며 먹으면 기분이 정말 좋아진다.
+                            </p>
+                            <div class="hotel-card" style="text-align: center; margin-bottom: 60px;">
+                                <div class="hotel-info">
+                                    <a href="https://maps.app.goo.gl/MuubbXNm9PvpoUC19" class="hotel-btn dark">🗺️ 위치 보기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr id="place3" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">3. 아카마신궁</h3>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_japan05/place3-1.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_japan05/place3-2.jpg" class="image-slide" data-index="1">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:40px; text-align: center">
+                                안토쿠 천황을 모시는 신사.<br><br>
+                                규모가 크지 않아 가볍게 들렀다 가기 좋음.
+                            </p>
+                            <div class="hotel-card" style="text-align: center; margin-bottom: 60px;">
+                                <div class="hotel-info">
+                                    <a href="https://maps.app.goo.gl/ykMFSRsgJcjFR4BH6" class="hotel-btn dark">🗺️ 위치 보기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr id="place4" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">4. 하이! 카랏토요코쵸</h3>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_japan05/place4-1.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_japan05/place4-2.jpg" class="image-slide" data-index="1">
+                                        <img src="../image/image_japan05/place4-3.jpg" class="image-slide" data-index="2">
+                                        <img src="../image/image_japan05/place4-4.jpg" class="image-slide" data-index="3">
+                                        <img src="../image/image_japan05/place4-5.jpg" class="image-slide" data-index="4">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:40px; text-align: center">
+                                안토쿠 천황을 모시는 신사.<br><br>
+                                규모가 크지 않아 가볍게 들렀다 가기 좋음.
+                            </p>
+                            <div class="hotel-card" style="text-align: center; margin-bottom: 60px;">
+                                <div class="hotel-info">
+                                    <a href="https://maps.app.goo.gl/4TDozCVSwJGyHJJJA" class="hotel-btn dark">🗺️ 위치 보기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr id="place5" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">5. 모지코</h3>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_japan05/place5-1.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_japan05/place5-2.jpg" class="image-slide" data-index="1">
+                                        <img src="../image/image_japan05/place5-3.jpg" class="image-slide" data-index="2">
+                                        <img src="../image/image_japan05/place5-4.jpg" class="image-slide" data-index="3">
+                                        <img src="../image/image_japan05/place5-5.jpg" class="image-slide" data-index="4">
+                                        <img src="../image/image_japan05/place5-6.jpg" class="image-slide" data-index="5">
+                                        <img src="../image/image_japan05/place5-7.jpg" class="image-slide" data-index="6">
+                                        <img src="../image/image_japan05/place5-8.jpg" class="image-slide" data-index="7">
+                                        <img src="../image/image_japan05/place5-9.jpg" class="image-slide" data-index="8">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:40px; text-align: center">
+                                가라토시장 근처에서 배를 타면 모지코역 쪽으로 넘어갈 수 있다.<br>
+                                (<span style='color: palevioletred'>산큐패스 있으면 무료로 이용가능</span>)<br><br>
+                                도착하면 바로 근처에 상점들도 있어 둘러보기 좋다.<br>
+                                사람도 많지 않아 여유롭게 구경할 수 있는 분위기라 더 좋았다.
+                            </p>
+                            <div class="hotel-card" style="text-align: center; margin-bottom: 60px;">
+                                <div class="hotel-info">
+                                    <a href="https://maps.app.goo.gl/uPjz6Caics3Gf59T8" class="hotel-btn dark">🗺️ 위치 보기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr id="place6" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">6. 오호리 공원</h3>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_japan05/place6-1.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_japan05/place6-2.jpg" class="image-slide active" data-index="1">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <h4 style="text-align: center; color: grey;" >
+
+                            </h4>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:40px; text-align: center">
+                                밀양의 위양지랑 비슷한 느낌이었다.<br><br>
+                                비가 오고 날씨가 흐려서 조금 아쉬웠지만,<br>
+                                사람 없는 조용한 길에서는 일본 시골 특유의 정취를 느낄 수 있어 좋았다.
+                            </p>
+                            <div class="hotel-card" style="text-align: center;">
+                                <div class="hotel-info">
+                                    <a href="https://maps.app.goo.gl/VD14sphMbX7ySDpt7" class="hotel-btn dark">🗺️ 위치 보기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <hr id="place7" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">7. 츠타야 서점 롯폰마츠</h3>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_japan05/place7-1.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_japan05/place7-2.jpg" class="image-slide active" data-index="1">
+                                        <img src="../image/image_japan05/place7-3.jpg" class="image-slide" data-index="2">
+                                        <img src="../image/image_japan05/place7-4.jpg" class="image-slide active" data-index="3">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <h4 style="text-align: center; color: grey;" >
+
+                            </h4>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:40px; text-align: center">
+                                밀양의 위양지랑 비슷한 느낌이었다.<br><br>
+                                비가 오고 날씨가 흐려서 조금 아쉬웠지만,<br>
+                                사람 없는 조용한 길에서는 일본 시골 특유의 정취를 느낄 수 있어 좋았다.
+                            </p>
+                            <div class="hotel-card" style="text-align: center;">
+                                <div class="hotel-info">
+                                    <a href="https://maps.app.goo.gl/arCdoEYJAvvJEGZH7" class="hotel-btn dark">🗺️ 위치 보기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr id="place8" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">8. 이토시마</h3>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_japan05/place8-1.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_japan05/place8-2.jpg" class="image-slide active" data-index="1">
+                                        <img src="../image/image_japan05/place8-3.jpg" class="image-slide" data-index="2">
+                                        <img src="../image/image_japan05/place8-4.jpg" class="image-slide active" data-index="3">
+                                        <img src="../image/image_japan05/place8-5.jpg" class="image-slide" data-index="4">
+                                        <img src="../image/image_japan05/place8-6.jpg" class="image-slide active" data-index="5">
+                                        <img src="../image/image_japan05/place8-7.jpg" class="image-slide" data-index="6">
+                                        <img src="../image/image_japan05/place8-8.jpg" class="image-slide active" data-index="7">
+                                        <img src="../image/image_japan05/place8-9.jpg" class="image-slide" data-index="8">
+                                        <img src="../image/image_japan05/place8-10.jpg" class="image-slide active" data-index="9">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <h4 style="text-align: center; color: grey;" >
+
+                            </h4>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:40px; text-align: center">
+                                밀양의 위양지랑 비슷한 느낌이었다.<br><br>
+                                비가 오고 날씨가 흐려서 조금 아쉬웠지만,<br>
+                                사람 없는 조용한 길에서는 일본 시골 특유의 정취를 느낄 수 있어 좋았다.
+                            </p>
+                            <div class="hotel-card" style="text-align: center;">
+                                <div class="hotel-info">
+                                    <a href="https://maps.app.goo.gl/DV98QrSNSJGAfyKp8" class="hotel-btn dark">🗺️ 위치 보기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="border: none; border-top: 2px solid #ccc;" id="food"/>
+                <div class="section">
+                    <h2>🍖 음식 이야기</h2>
+                    <div class="place-grid">
+                        <a href="javascript:void(0);" class="place-link" data-id="food1">🏪 편의점</a>       <!-- 편의점: 점포 느낌 -->
+						<a href="javascript:void(0);" class="place-link" data-id="food2">🥘 야끼카레</a>     <!-- 야끼카레: 오븐 요리 느낌 -->
+						<a href="javascript:void(0);" class="place-link" data-id="food3">🍜 라멘</a>         <!-- 라멘: 완벽! -->
+						<a href="javascript:void(0);" class="place-link" data-id="food4">🥞 핫케이크</a>     <!-- 핫케이크: 진짜 핫케이크 이모지 -->
+						<a href="javascript:void(0);" class="place-link" data-id="food5">🍲 모츠나베</a>     <!-- 모츠나베: 전골류 이모지 -->
+                    </div><br>
+
+                    <hr id="food1" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">1. 편의점</h3>
+                            
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_japan05/food1-1.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_japan05/food1-2.jpg" class="image-slide" data-index="1">
+                                        <img src="../image/image_japan05/food1-3.jpg" class="image-slide" data-index="2">
+                                        <img src="../image/image_japan05/food1-4.jpg" class="image-slide" data-index="3">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
+                                특별한 건 없었지만, 부담 없이 먹기 좋았다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr id="food2" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">2. 伽哩本舗 本店 - 야끼카레</h3>
+                            <h4 style="text-align: center; color: grey;" >
+                                (캐널시티, 후쿠오카)
+                            </h4>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_japan05/food2-1.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_japan05/food2-2.jpg" class="image-slide active" data-index="1">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:40px; text-align: center">
+                                약간 쿰쿰한 맛이 있어서 호불호가 갈릴 듯.<br>
+                                개인적으로는 내 스타일은 아니었다.
+                            </p>
+                            <div class="hotel-card" style="text-align: center; margin-bottom: 60px;">
+                                <div class="hotel-info">
+                                    <a href="https://maps.app.goo.gl/GFyRMR8PcytQ7skZ6" class="hotel-btn dark">🗺️ 위치 보기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr id="food3" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">3. 一蘭 本社総本店 - 이치란 라멘 본점</h3>
+                            <h4 style="text-align: center; color: grey;" >
+                                (나카스카와바타, 후쿠오카)
+                            </h4>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_japan05/food3-1.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_japan05/food3-2.jpg" class="image-slide" data-index="1">
+                                        <img src="../image/image_japan05/food3-3.jpg" class="image-slide" data-index="2">
+                                        <img src="../image/image_japan05/food3-4.jpg" class="image-slide" data-index="3">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:40px; text-align: center">
+                                만족스러운 한 끼였다. 기회가 되면 한 번 더 먹고 싶다.
+                            </p>
+                            <div class="hotel-card" style="text-align: center; margin-bottom: 60px;">
+                                <div class="hotel-info">
+                                    <a href="https://maps.app.goo.gl/oqaNDZWXv4fs6oc36" class="hotel-btn dark">🗺️ 위치 보기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr id="food4" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">4. 糸島茶房 - 핫케이크</h3>
+                            <h4 style="text-align: center; color: grey;" >
+                                (후타미가우라 해변, 이토시마)
+                            </h4>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_japan05/food4-1.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_japan05/food4-2.jpg" class="image-slide active" data-index="1">
+                                        <img src="../image/image_japan05/food4-3.jpg" class="image-slide" data-index="2">
+                                        <img src="../image/image_japan05/food4-4.jpg" class="image-slide active" data-index="3">
+                                        <img src="../image/image_japan05/food4-5.jpg" class="image-slide active" data-index="4">
+                                        <img src="../image/image_japan05/food4-6.jpg" class="image-slide" data-index="5">
+                                        <img src="../image/image_japan05/food4-7.jpg" class="image-slide active" data-index="6">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:40px; text-align: center">
+                                딱 상상한 그 맛. 아이스크림 + 벌꿀 조합
+                            </p>
+                            <div class="hotel-card" style="text-align: center; margin-bottom: 60px;">
+                                <div class="hotel-info">
+                                    <a href="https://maps.app.goo.gl/LVpzakmpKwzfBt559" class="hotel-btn dark">🗺️ 위치 보기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr id="food5" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
+                    <div>
+                        <div>
+                            <h3 style="text-align: center; margin-top:60px;">5. 博多もつ鍋 朋樂 - 모츠나베</h3>
+                            <h4 style="text-align: center; color: grey;" >
+                                (하카타역, 후쿠오카)
+                            </h4>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_japan05/food5-1.jpg" class="image-slide" data-index="0">
+                                        <img src="../image/image_japan05/food5-2.jpg" class="image-slide active" data-index="1">
+                                        <img src="../image/image_japan05/food5-3.jpg" class="image-slide" data-index="2">
+                                        <img src="../image/image_japan05/food5-4.jpg" class="image-slide" data-index="3">
+                                        <img src="../image/image_japan05/food5-5.jpg" class="image-slide active" data-index="4">
+                                        <img src="../image/image_japan05/food5-6.jpg" class="image-slide" data-index="5">
+                                        <img src="../image/image_japan05/food5-7.jpg" class="image-slide active" data-index="6">
+                                        <img src="../image/image_japan05/food5-8.jpg" class="image-slide active" data-index="7">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:40px; text-align: center">
+                                어디선가 먹어본 듯한데 미묘하게 다른 맛. 꽤 만족스러웠다.
+                            </p>
+                            <div class="hotel-card" style="text-align: center; margin-bottom: 60px;">
+                                <div class="hotel-info">
+                                    <a href="https://maps.app.goo.gl/N9sX8X9C5m6WQuem6" class="hotel-btn dark">🗺️ 위치 보기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="border: none; border-top: 2px solid #ccc;" id="transit"/>
+                <div class="section">
+                    <h2>📚 여행 수단 정리</h2>
+                    <div class="place-grid">
+                        <a href="javascript:void(0);" class="place-link" data-id="airplane">✈️ 항공권</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="hotel">🛌 호텔</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="etc">📙 기타 정보</a>
+                    </div>
+                    <hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="airplane"/>
+                    <div>
+                        <h2 style="margin-top: 10px; margin-bottom: 15px;">✈️ 항공권</h2>
+
+                        <h3 style="margin-bottom: 10px; text-align: center">입국 (부산 -> 시모노세키)</h3>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>구분</th>
+                                <th>항구</th>
+                                <th>시간</th>
+                                <th>날짜</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>출발</td>
+                                <td>부산항</td>
+                                <td>21:00</td>
+                                <td>2024년 05월 10일</td>
+                            </tr>
+                            <tr>
+                                <td>도착</td>
+                                <td>시모노세키항</td>
+                                <td>08:00</td>
+                                <td>2024년 05월 11일</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <h3 style="margin-bottom: 10px; text-align: center">출국 (후쿠오카 -> 부산)
+                        </h3>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>구분</th>
+                                <th>공항</th>
+                                <th>시간</th>
+                                <th>날짜</th>
+                                <th>항공사</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>출발</td>
+                                <td>후쿠오카 공항</td>
+                                <td>08:55</td>
+                                <td rowspan="2">2024년 05월 13일</td>
+                                <td rowspan="2">제주항공 (7C1451)</td>
+                            </tr>
+                            <tr>
+                                <td>도착</td>
+                                <td>김해 국제공항</td>
+                                <td>10:00</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="hotel"/>
+                    <div>
+                        <h2 style="margin-top: 20px; margin-bottom: 30px;">🛌 호텔</h2>
+                        <div>
+                            <h3 style="text-align: center; margin-top:10px;">1. Wellcabin Tenjin</h3>
+                            <h4 style="text-align: center; color: gray;">(2024-05-11 ~ 2024-05-13, 2박)</h4>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_japan05/hotel1-1.jpg" class="image-slide active" data-index="0">
+                                        <img src="../image/image_japan05/hotel1-2.jpg" class="image-slide" data-index="1">
+                                        <img src="../image/image_japan05/hotel1-3.jpg" class="image-slide active" data-index="2">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:100px; text-align: center">
+                                깔끔했지만 방음이 안 돼서 좀 많이 시끄러웠다.<br>
+                                퀄리티에 비해 가격이 조금 비쌌지만, 비싼 시기라 어쩔 수 없었음.
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="etc"/>
+                    <div>
+                        <h2 style="margin-top: 20px; margin-bottom: 30px;">📙 기타 정보</h2>
+                        <div>
+                            <h3 style="text-align: center; margin-top:10px;">1. 산큐패스</h3>
+
+                            <div class="outer-slider-container">
+                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
+
+                                <div style="margin-top: 30px" class="slider-container">
+                                    <div class="image-slider">
+                                        <img src="../image/image_japan05/info1.jpg" class="image-slide active" data-index="0">
+                                    </div>
+                                </div>
+
+                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
+                            </div>
+                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
+                                시모노세키 - 후쿠오카 - 이토시마 - 시내버스<br>
+                                모두 이용가능
+                            </p>
+                            <div class="hotel-card" style="text-align: center;">
+                                <div class="hotel-info">
+                                    <a href="https://maps.app.goo.gl/yyw5K9eT1poDNJcL7" class="hotel-btn dark">🗺️ 위치 보기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="image-modal" class="image-modal">
+            <span class="close-btn">&times;</span>
+            <img class="modal-content" id="modal-img" alt="Expanded Image">
+            <div id="caption"></div>
+        </div>
+        <aside class="sidebar" id="sidebar">
+            <!-- 검색 폼 -->
+            <form th:action="@{/}" method="get" class="search-container">
+                <div class="tag-title2">🔍 검색하기</div>
+                <input type="text" name="keyword" placeholder="나라 또는 도시 검색하기..." />
+            </form>
+
+            <!-- 태그 목록 -->
+            <div class="tag-section">
+                <div class="tag-title"></div>
+                <div class="tags">
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                © 2025. Byeon Sung Hyun. All rights reserved.
+            </div>
+        </aside>
+    </div>
+</div>
+</div>
+
+<script>
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('active');
+    }
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('active');
+    }
+
+    // 각 섹션으로 스크롤하는 함수
+    function scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    // 각 장소 링크 클릭 시 해당 섹션으로 스크롤
+    document.querySelectorAll('.place-link').forEach(link => {
+        link.addEventListener('click', function () {
+            const id = this.getAttribute('data-id');
+            scrollToSection(id);
+        });
+    });
+
+    // 스크롤 시 버튼 보이게
+    window.addEventListener('scroll', function () {
+        const button = document.getElementById('scrollTopButton');
+        if (window.scrollY > 100) {
+            button.classList.add('show');
+        } else {
+            button.classList.remove('show');
+        }
+    });
+
+    // 스크롤 맨 위로 이동
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    const slides = document.querySelectorAll(".image-slide");
+    let currentIndex = 0;
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.toggle("active", i === index);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("image-modal");
+        const modalImg = document.getElementById("modal-img");
+        const caption = document.getElementById("caption");
+        const closeBtn = document.querySelector(".close-btn");
+
+        let currentSlides = [];
+        let currentIndex = 0;
+
+        // 슬라이드 보여주는 함수
+        function showSlide(index) {
+            if (index >= 0 && index < currentSlides.length) {
+                modalImg.src = currentSlides[index].src;
+                caption.textContent = currentSlides[index].alt || "";
+            }
+        }
+
+        // 모든 슬라이더 처리
+        document.querySelectorAll('.outer-slider-container').forEach(container => {
+            const slides = container.querySelectorAll(".image-slide");
+            const leftBtn = container.querySelector(".left-btn");
+            const rightBtn = container.querySelector(".right-btn");
+
+            // 페이지 슬라이더 좌우 버튼
+            if (slides.length > 1) {
+                let index = 0;
+                function showPageSlide(i) {
+                    slides.forEach((slide, idx) => {
+                        slide.classList.toggle("active", idx === i);
+                    });
+                }
+
+                leftBtn?.addEventListener("click", () => {
+                    index = (index - 1 + slides.length) % slides.length;
+                    showPageSlide(index);
+                });
+
+                rightBtn?.addEventListener("click", () => {
+                    index = (index + 1) % slides.length;
+                    showPageSlide(index);
+                });
+
+                showPageSlide(index);
+            } else {
+                // 슬라이드가 하나면 버튼 숨김
+                leftBtn?.style.setProperty("display", "none");
+                rightBtn?.style.setProperty("display", "none");
+
+                slides[0]?.classList.add("active");
+            }
+
+            // 이미지 클릭 시 모달 열기
+            slides.forEach((slide, idx) => {
+                slide.addEventListener("click", () => {
+                    modal.style.display = "flex";
+                    currentSlides = Array.from(slides);
+                    currentIndex = idx;
+                    showSlide(currentIndex);
+                });
+            });
+        });
+
+        // 모달 이미지 클릭 시 다음 슬라이드
+        modalImg.addEventListener("click", () => {
+            if (currentSlides.length > 0) {
+                currentIndex = (currentIndex + 1) % currentSlides.length;
+                showSlide(currentIndex);
+            }
+        });
+
+        // 모달 닫기
+        closeBtn.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+
+        window.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    });
+
+</script>
+
+
+<button id="scrollTopButton" onclick="scrollToTop()">맨 위로</button>
+</body>
+</html>
