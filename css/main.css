@@ -357,15 +357,14 @@ a {
   position: fixed;
   bottom: 60px;
   right: 40px;
-  z-index: 99;
-  font-size: 18px;
+  z-index: 1000;
   border: none;
   outline: none;
   background-color: #444;
   color: white;
   cursor: pointer;
   padding: 12px 16px;
-  border-radius: 12px; /* 덜 동그랗게! */
+  border-radius: 50px; /* 덜 동그랗게! */
   box-shadow: 0 4px 8px rgba(0,0,0,0.5);
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
