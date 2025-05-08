@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>BSH's Travel</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/main2.css">
     <link rel="icon" href="./image/favicon.png" type="image/png">
 </head>
 <body>
@@ -135,20 +135,32 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // 여행 시작일과 종료일
     const travelStart = new Date("2025-05-09");
+    const travelEnd = new Date("2025-05-12");
     const today = new Date();
+
+    // 시간은 00시로 맞춰 비교 정확도 높이기
     travelStart.setHours(0, 0, 0, 0);
+    travelEnd.setHours(0, 0, 0, 0);
     today.setHours(0, 0, 0, 0);
 
-    const diffTime = travelStart - today;
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const ddayElement = document.getElementById("dday-taiwan");
 
-    const ddayStr = diffDays > 0 ? `D-${diffDays}` :
-        diffDays === 0 ? "D-Day!" :
-            `D+${Math.abs(diffDays)}`;
+    if (today >= travelStart && today <= travelEnd) {
+        ddayElement.textContent = "여행중";
+    } else {
+        const diffTime = travelStart - today;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-    document.getElementById("dday-taiwan").textContent = ddayStr;
+        const ddayStr = diffDays > 0 ? `D-${diffDays}` :
+            diffDays === 0 ? "D-Day!" :
+                `D+${Math.abs(diffDays)}`;
+
+        ddayElement.textContent = ddayStr;
+    }
 </script>
+
 
 <button onclick="scrollToTop()" id="scrollTopBtn" title="맨 위로">맨 위로</button>
 </body>
