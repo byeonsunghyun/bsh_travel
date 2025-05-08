@@ -265,6 +265,11 @@
         }
 
         @media (max-width: 768px) {
+		.scroll-buttons button {
+			    flex: 0 0 calc(50% - 10px); /* 두 개씩 고정 크기 */
+			    max-width: calc(50% - 10px);
+			  }
+			
             .main-container {
                 grid-template-columns: 1fr;
 		padding: 20px 0; 
