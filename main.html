@@ -78,7 +78,7 @@
                     </div>
                 </a>
             </div>
-            
+
             <div class="country" data-flag="japan">
                 <div class="dday-badge completed" id="dday-japan202405">완료</div>
                 <a href="/bsh_travel/templates/country_japan202405" class="country-link">
@@ -89,6 +89,23 @@
                         <div class="tag2">#시모노세키</div>
                         <div class="tag2">#후쿠오카</div>
                         <div class="tag2">#이토시마</div>
+                        <div class="tag2">#혼자 여행</div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="country preparing" data-flag="japan">
+                <div class="dday-badge completed" id="dday-japan202405">완료</div>
+                <a href="/bsh_travel/templates/country_japan202405" class="country-link">
+                    <div class="travel-id-hover">#1</div>
+                    <p class="country-time">2023-08-13 ~ 2023-08-24</p>
+                    <p class="country-name">일본 여행 (준비 중)</p>
+                    <div class="country-tags">
+                        <div class="tag2">#오사카</div>
+                        <div class="tag2">#교토</div>
+                        <div class="tag2">#나라</div>
+                        <div class="tag2">#고베</div>
+                        <div class="tag2">#친구와 여행</div>
                         <div class="tag2">#혼자 여행</div>
                     </div>
                 </a>
@@ -159,6 +176,13 @@
 
         ddayElement.textContent = ddayStr;
     }
+
+    document.querySelectorAll('.country.preparing .country-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("준비 중입니다 🛠️️");
+        });
+    });
 </script>
 
 
