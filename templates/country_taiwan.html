@@ -623,6 +623,26 @@
             display: flex;
             gap: 20px; /* h1과 뱃지 사이 간격 */
         }
+       .mini-white-btn {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #f5f5f5;
+    padding: 4px 10px; /* 작게 줄임 */
+    font-size: 0.75rem; /* 폰트도 살짝 작게 */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px; /* 라운딩도 살짝 더 컴팩트하게 */
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    backdrop-filter: blur(4px);
+    margin-top: 4px;
+}
+
+.mini-white-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    transform: translateY(-1.5px);
+}
+     
 
     </style>
 </head>
@@ -677,17 +697,19 @@
                     <hr id="place1" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
                     <div>
                         <div>
-                            <h3 style="text-align: center; margin-top:60px;"></h3>
-
-                            <h4 style="text-align: center; color: grey;" >
-                            </h4>
-                            <p class="mobile-margin-fix" style="margin-top:20px; text-align: center">
-                                지우펀<br>
-                                스펀<br>
-                                예류<br><br>
-                                <a href="https://smartstore.naver.com/twyeyak/products/3105280165?" style="text-decoration: underline; color: skyblue;">택시 투어 정보</a><br>
-                                <a href="https://blog.naver.com/librako/223628818599" style="text-decoration: underline; color: skyblue;">대중교통 정보</a>
-                            </p>
+                            <h3 style="text-align: center; margin-top:60px;">
+                            	스펀, 지우펀 가는법 🚅
+                            </h3>
+                           <p class="mobile-margin-fix" style="margin-top:20px; text-align: center">
+							    <span style="font-weight: bold;">1. 타이베이 → 스펀<br></span>
+							    <a href="https://blog.naver.com/leehj9345/223798551691" class="mini-white-btn">가는 방법</a>
+							    <br><br>
+							    <span style="font-weight: bold;">2. 스펀 → 지우펀<br></span>
+							    <a href="https://blog.naver.com/candy150/223231706887" class="mini-white-btn">가는 방법</a>
+							    <br><br>
+							    <span style="font-weight: bold;">3. 지우펀 → 타이베이<br></span>
+							    <a href="https://blog.naver.com/librako/223628818599" class="mini-white-btn">가는 방법</a>
+							</p>
                         </div>
                     </div>
                 </div>
@@ -715,6 +737,7 @@
                                 딤섬<br>
                                 지파이<br>
                                 떡빙수<br>
+                                곱창국수<br>
                             </p>
                         </div>
                     </div>
