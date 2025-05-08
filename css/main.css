@@ -112,7 +112,7 @@ html, body {
   font-size: 13px;
   font-weight: bold;
   border-radius: 8px;
-  z-index: 10;
+  z-index: 100;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
@@ -214,6 +214,13 @@ html, body {
   /* 💡 Masonry 효과용 */
   break-inside: avoid;
   margin-bottom: 15px;
+  
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-blend-mode: overlay;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 .country:hover {
@@ -221,6 +228,22 @@ html, body {
   cursor: pointer;
   box-shadow: 0 10px 18px rgba(0, 0, 0, 0.7);
   border-color: #fff;
+}
+
+.country[data-flag="taiwan"] {
+  background-image: url('../image/country_image/taiwan.jpg');
+}
+
+.country[data-flag="japan"] {
+  background-image: url('../image/country_image/japan.png');
+}
+
+.country[data-flag="china"] {
+  background-image: url('../image/country_image/china.jpg');
+}
+
+.country[data-flag="vietnam"] {
+  background-image: url('../image/country_image/vietnam.png');
 }
 
 .country-name {
@@ -243,21 +266,31 @@ html, body {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px; /* 좁은 간격 */
   text-align: center;
 }
 
 .country-tags .tag,
 .country-tags .tag2 {
-  background-color: #444;
-  padding: 8px 12px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  color: #ccc;
+  background-color: #2c2c2c; /* 어두운 회색 배경 */
+  padding: 4px 12px;  /* 작은 여백 */
+  border-radius: 20px;  /* 부드러운 라운딩 */
+  font-size: 0.85rem;  /* 작은 폰트 크기 */
+  color: #f0f0f0;  /* 연한 회색 텍스트 */
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-  font-weight: 500;
+  transition: all 0.2s ease-in-out;  /* 빠른 애니메이션 */
+  font-weight: 500;  /* 적당히 가벼운 폰트 */
+  border: 1px solid #444;  /* 얇은 회색 테두리 */
 }
+
+.country-tags .tag:hover,
+.country-tags .tag2:hover {
+  background-color: #2196F3;  /* Hover 시 파란색 배경 */
+  color: #fff;  /* Hover 시 하얀 텍스트 */
+  transform: translateY(-2px);  /* 살짝 떠오르는 효과 */
+  border-color: #2196F3;  /* 파란색 테두리 */
+}
+
 
 @media (max-width: 768px) {
   .search-container {
