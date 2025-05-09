@@ -367,6 +367,15 @@
         </div>
 
         <aside class="sidebar" id="sidebar">
+        	<div class="login-container" style="margin-bottom:10px;">
+			    <div class="tag-title">🔒 로그인/회원가입</div>
+			    <form action="/login" method="POST" class="login-form">
+			        <input type="text" name="username" placeholder="아이디" required>
+			        <input type="password" name="password" placeholder="비밀번호" required>
+			        <button type="submit" class="login-btn">로그인</button>
+			        <button type="submit" class="signup-btn">회원가입</button>
+			    </form>
+			</div>
             <!-- 검색 폼 -->
             <form th:action="@{/}" method="get" class="search-container">
                 <div class="tag-title2">🔍 검색하기</div>
@@ -375,11 +384,14 @@
 
             <!-- 태그 목록 -->
             <div class="tag-section">
-                <div class="tag-title"></div>
-                <div class="tags">
-                </div>
+                <div class="tag-title">🏷️ 태그</div>
+                <div class="tag3">#일본</div>
+                <div class="tag3">#라멘</div>
+                <div class="tag3">#중국</div>
+                <div class="tag3">#양꼬치</div>
+                <div class="tag3">#친구와 여행</div>
+                <div class="tag3">#혼자 여행</div>
             </div>
-
             <div class="sidebar-footer">
                 © 2025. Byeon Sung Hyun. All rights reserved.
             </div>
@@ -435,6 +447,20 @@
         link.addEventListener('click', function(e) {
             e.preventDefault();
             alert("🛠️ 준비 중입니다.️");
+        });
+    });
+    
+    document.querySelectorAll('.login-container .login-btn').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("입력하신 아이디를 찾을 수 없습니다.");
+        });
+    });
+    
+    document.querySelectorAll('.login-container .signup-btn').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("관리자 승인이 필요합니다.");
         });
     });
 </script>
