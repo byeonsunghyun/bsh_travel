@@ -258,6 +258,38 @@ html, body {
     background-image: url('../image/country_image/malaysia.jpg');
 }
 
+.country[data-flag="laos"] {
+    background-image: url('../image/country_image/laos.png');
+}
+
+.country[data-flag="egypt"] {
+    background-image: url('../image/country_image/egypt.png');
+}
+
+.country[data-flag="greece"] {
+    background-image: url('../image/country_image/greece.png');
+}
+
+.country[data-flag="italy"] {
+    background-image: url('../image/country_image/italy.png');
+}
+
+.country[data-flag="germany"] {
+    background-image: url('../image/country_image/germany.png');
+}
+
+.country[data-flag="uk"] {
+    background-image: url('../image/country_image/uk.png');
+}
+
+.country[data-flag="france"] {
+    background-image: url('../image/country_image/france.png');
+}
+
+.country[data-flag="singapore"] {
+    background-image: url('../image/country_image/singapore.png');
+}
+
 .country-name {
     font-size: 1.6rem;
     font-weight: bold;
