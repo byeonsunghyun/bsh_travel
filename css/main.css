@@ -130,7 +130,7 @@ html, body {
 }
 
 .dday-badge.ing {
-    background-color: #2ecc71; /* 완료된 여행 초록색 */
+    background-color: #1e7e3e; /* 완료된 여행 초록색 */
 }
 
 .dday-badge.ing span{
