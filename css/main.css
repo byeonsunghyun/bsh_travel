@@ -129,6 +129,14 @@ html, body {
     display: block;
 }
 
+.dday-badge.ing {
+    background-color: #2ecc71; /* 완료된 여행 초록색 */
+}
+
+.dday-badge.ing span{
+    display: block;
+}
+
 
 @media (max-width: 768px) {
     .main-container {
