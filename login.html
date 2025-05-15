@@ -5,6 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>로그인</title>
 <style>
+ .starfield {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
   * {
     margin: 0;
     padding: 0;
@@ -129,6 +156,8 @@
 </style>
 </head>
 <body>
+ <div class="starfield"></div>
+ 
   <div class="login-wrapper">
   <div class="login-box">
     <div class="header">
@@ -163,6 +192,28 @@
   function showPreparingMessage(event) {
     event.preventDefault();
     alert("관리자에게 문의 바랍니다.");
+  }
+
+  const starfield = document.querySelector('.starfield');
+  const starCount = 150; // 별 개수
+
+  for(let i = 0; i < starCount; i++) {
+    const star = document.createElement('div');
+    star.classList.add('star');
+
+    // 별 크기 랜덤 (1~3px)
+    const size = Math.random() * 2 + 1;
+    star.style.width = size + 'px';
+    star.style.height = size + 'px';
+
+    // 위치 랜덤 (화면 전체)
+    star.style.top = Math.random() * 100 + 'vh';
+    star.style.left = Math.random() * 100 + 'vw';
+
+    // 애니메이션 딜레이 랜덤으로 줘서 깜빡임 분산
+    star.style.animationDelay = (Math.random() * 2) + 's';
+
+    starfield.appendChild(star);
   }
 </script>
 </body>
