@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>로그인</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+  }
+  body, html {
+    height: 100%;
+    background-color: #121212;
+    color: #fff;
+  }
+  .login-wrapper {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.7s ease forwards;
+  }
+  .login-box {
+    background-color: #333;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7);
+    width: 320px;
+    text-align: center;
+  }
+  /* 제목과 로고 가로 정렬 */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+  .header h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  }
+  .logo {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+  }
+  .login-input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    background-color: #2c2c2c;
+    border: 1px solid #444;
+    border-radius: 8px;
+    color: #eee;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  .login-input::placeholder {
+    color: #aaa;
+  }
+  .login-input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    background-color: #3a3a3a;
+  }
+  /* 버튼 색상 부드럽게 수정 */
+  .login-button {
+    width: 100%;
+    padding: 12px 0;
+    background-color: #3a7bd5;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(58, 123, 213, 0.5);
+    transition: background-color 0.3s ease, transform 0.15s ease;
+  }
+  .login-button:hover {
+    background-color: #3266b2;
+    transform: scale(1.04);
+  }
+  .login-footer {
+    margin-top: 20px;
+    font-size: 0.85rem;
+    color: #777;
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="login-wrapper">
+    <div class="login-box">
+      <div class="header">
+        <h2>BSH's Travel</h2>
+        <img src="./image/airplane.png" alt="Logo" class="logo">
+      </div>
+      <input type="text" class="login-input" placeholder="아이디" />
+      <input type="password" class="login-input" placeholder="비밀번호" />
+      <button class="login-button">로그인</button>
+      <div class="login-footer">
+        © 2025. Byeon Sung Hyun. All rights reserved.
+      </div>
+    </div>
+  </div>
+</body>
+</html>
