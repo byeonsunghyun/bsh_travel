@@ -490,8 +490,21 @@
             color: #777;
             text-align: center;
             padding-top: 20px;
-            border-top: 1px solid #333;
         }
+
+	    .login-link {
+    color: #777;           /* 연한 회색 */
+    font-size: 0.9rem;     /* 크기 살짝 키움 */
+    font-weight: 600;      /* 약간 굵게 */
+    text-decoration: none; /* 밑줄 없애기 */
+    cursor: pointer;       /* 마우스 올리면 손가락 모양 */
+}
+
+.login-link:hover {
+    color: #555;           /* 호버 시 좀 더 진하게 */
+    text-decoration: underline; /* 호버 때 밑줄 추가 */
+}
+
 
         @keyframes fadeIn {
             from {
@@ -1477,6 +1490,8 @@
             </div>
 
             <div class="sidebar-footer">
+            	<a href="/bsh_travel/login" class="login-link">로그인</a>
+            	<div style="border-top: 1px solid #333; margin-bottom:20px; margin-top:45px;"></div>
                 © 2025. Byeon Sung Hyun. All rights reserved.
             </div>
         </aside>
