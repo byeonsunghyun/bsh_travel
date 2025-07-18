@@ -1781,8 +1781,10 @@
         </div>
         <aside class="sidebar" id="sidebar">
 
-				<form th:action="@{/}" method="get" class="search-container"></form>
-
+				<form th:action="@{/}" method="get" class="search-container">
+                <div class="tag-title2">🔍 검색하기</div>
+				<input type="text" id="searchInput" name="keyword" placeholder="나라 또는 도시 검색하기..." oninput="filterCountries()" />
+            </form>
             <!-- 태그 목록 -->
             <div class="tag-section" style="margin-top:20px;">
                 <div class="tag-title">🏷️ 태그</div>
@@ -1797,6 +1799,9 @@
             	<a href="/bsh_travel/login" class="login-link">로그인</a>
             	<div style="border-top: 1px solid #333; margin-bottom:20px; margin-top:45px;"></div>
                 © 2025. Byeon Sung Hyun. All rights reserved.
+		       <a href="https://byeonsunghyun.github.io/bsh_hub/bshhub" title="사이트 방문" style="display: inline-block;">
+    <img src="../image/hub_logo.png" alt="컴퓨터 아이콘" style="width:14px; height:14px; vertical-align:middle; margin-left:2px; cursor:pointer;" />
+  </a>
             </div>
         </aside>
     </div>
