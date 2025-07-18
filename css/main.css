@@ -147,11 +147,6 @@ html, body {
     }
 }
 
-.logo {
-    width: 90px;
-    height: 60px;
-}
-
 .sidebar {
     flex: 2;
     background-color: #1e1e1e;
@@ -168,6 +163,10 @@ html, body {
 }
 
 @media (max-width: 768px) {
+	.logo {
+    width: 90px;
+    height: 60px;
+}
     .sidebar {
         position: fixed;
         top: 0;
@@ -223,6 +222,7 @@ html, body {
     flex-grow: 1;
     overflow: hidden;
     animation: fadeIn 0.7s ease;
+    
 
     /* 💡 Masonry 효과용 */
     break-inside: avoid;
@@ -310,6 +310,7 @@ html, body {
     color: #fff;
     margin-bottom: 8px;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+    
 }
 
 .country-time {
