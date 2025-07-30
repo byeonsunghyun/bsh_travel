@@ -372,6 +372,52 @@ html, body {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+.link-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2열 */
+  gap: 10px 20px; /* 행, 열 간격 */
+  margin-top: 20px;
+}
+
+.link-section .tag-title {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.link-item {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: background-color 0.3s ease;
+  justify-content: center;
+}
+
+.link-section-title {
+  grid-column: span 2;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  /* 기존 tag-title 스타일을 참고해서 추가 가능 */
+}
+
+.link-item:hover {
+  background-color: #555;
+}
+
+@media (max-width: 768px) {
+  .link-section {
+    grid-template-columns: 1fr; /* 모바일에서는 1열 */
+  }
+  .link-section-title {
+    grid-column: auto;
+  }
+}
+
 .tag-section {
     margin-top: 10px;
 }
