@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BSH's Travel</title>
+  <link rel="icon" href="./image/favicon.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/travel_map.css">
+
+</head>
+<body>
+
+  <div class="sidebar" id="sidebar">
+    <a href="/bsh_travel/main" title="메인으로 이동">
+      <img src="./image/travel_logo.png" alt="BSH Travel Logo" class="logo" />
+    </a>
+
+    <div class="country-list" id="countryList"></div>
+
+    <button id="toggleBtn" title="사이드바 닫기">🡄</button>
+
+    <div class="description" id="description"></div>
+    
+    <button id="showCountryListBtn" class="title-btn hidden">← 나라 목록 보기</button>
+  </div>
+
+  <button id="openBtn" title="사이드바 열기">☰</button>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+  const sidebar = document.getElementById("sidebar");
+  const description = document.getElementById("description");
+  const mapDiv = document.getElementById("map");
+  const toggleBtn = document.getElementById("toggleBtn");
+  const openBtn = document.getElementById("openBtn");
+  const countryListDiv = document.getElementById("countryList");
+  const showCountryListBtn = document.getElementById("showCountryListBtn");
+
+  function closeSidebar() {
+	    sidebar.classList.add("closed");
+	    mapDiv.classList.add("expanded");
+	    // 모바일이거나, 데스크톱에서 닫기 버튼 클릭 시 열기 버튼 보이기
+	    openBtn.style.display = 'block';
+	    toggleBtn.style.display = 'none';
+	}
+
+	function openSidebar() {
+	    sidebar.classList.remove("closed");
+	    mapDiv.classList.remove("expanded");
+	    // 모바일이거나, 데스크톱에서 열기 버튼 클릭 시 닫기 버튼 보이기
+	    openBtn.style.display = 'none';
+	    toggleBtn.style.display = 'block';
+	}
+
+	function handleResize() {
+	  if (window.innerWidth <= 768) { // 모바일 환경
+	    closeSidebar();
+	  } else { // 데스크톱 환경
+	    openSidebar();
+	  }
+	}
+
+	toggleBtn.addEventListener("click", closeSidebar);
+	openBtn.addEventListener("click", openSidebar);
+
+	window.addEventListener('load', handleResize);
+	window.addEventListener('resize', handleResize);
+
+  // 초기 상태 설정
+  handleResize();
+
+  const bounds = [
+    [-90, -180],
+    [90, 180]
+  ];
+
+  const map = L.map('map', {
+    maxBounds: bounds,
+    maxBoundsViscosity: 0.8,
+    minZoom: 3,
+    maxZoom: 19,
+    zoomControl: false
+  }).setView([30, 120], 2);
+
+  L.control.zoom({
+    position: 'topright'
+  }).addTo(map);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+  
+  // 마커 아이콘 정의
+  const defaultIcon = L.icon({
+    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    shadowSize: [41, 41]
+  });
+
+  const redIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    shadowSize: [41, 41]
+  });
+
+  const sightIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    shadowSize: [41, 41]
+  });
+
+  const foodIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    shadowSize: [41, 41]
+  });
+
+  const cityMarkerIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    shadowSize: [41, 41]
+  });
+
+  let currentDetailMarkers = [];
+  let selectedDetailMarker = null;
+  let selectedDetailListItem = null;
+
+  let allCityMarkers = [];
+  let selectedCityMarker = null;
+
+  // 나라/도시 데이터 구조
+ const data = [
+  {
+    name: "일본",
+    cities: [
+      {
+        name: "🍣 후쿠오카",
+        lat: 33.5904,
+        lng: 130.4017,
+        desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.",
+        sights: [
+          { name: "후쿠오카 타워", lat: 33.5936, lng: 130.3506 },
+          { name: "캐널시티 하카타", lat: 33.5898, lng: 130.4101 },
+          { name: "오호리 공원", lat: 33.5919, lng: 130.3756 }
+        ],
+        foods: [
+          { name: "돈코츠 라멘", lat: 33.5960, lng: 130.4024 },
+          { name: "모츠나베", lat: 33.5977, lng: 130.4053 },
+          { name: "명란젓", lat: 33.5904, lng: 130.4017 }
+        ]
+      },
+      {
+        name: "🍣 시모노세키",
+        lat: 33.9575,
+        lng: 130.9312,
+        desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.",
+        sights: [
+          { name: "가라토 시장", lat: 33.9575, lng: 130.9312 },
+          { name: "시모노세키 항", lat: 33.9590, lng: 130.9350 }
+        ],
+        foods: [
+          { name: "복어회", lat: 33.9570, lng: 130.9315 }
+        ]
+      },
+      {
+        name: "🍣 이토시마",
+        lat: 33.5701,
+        lng: 130.2227,
+        desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.",
+        sights: [
+          { name: "사쿠라이 후타미가우라", lat: 33.6062, lng: 130.1706 },
+          { name: "야자나무 가로수", lat: 33.6060, lng: 130.1708 }
+        ],
+        foods: [
+          { name: "굴 요리", lat: 33.5977, lng: 130.2250 }
+        ]
+      },
+      {
+        name: "🍣 도쿄",
+        lat: 35.6586,
+        lng: 139.7454,
+        desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.",
+        sights: [
+          { name: "도쿄 타워", lat: 35.6586, lng: 139.7454 },
+          { name: "아사쿠사", lat: 35.7147, lng: 139.7967 },
+          { name: "시부야 스크램블", lat: 35.6597, lng: 139.7005 }
+        ],
+        foods: [
+          { name: "스시", lat: 35.6812, lng: 139.7671 },
+          { name: "라멘", lat: 35.6983, lng: 139.7717 },
+          { name: "모찌", lat: 35.7001, lng: 139.7820 }
+        ]
+      },
+      {
+        name: "🍣 오사카",
+        lat: 34.6937,
+        lng: 135.5023,
+        desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.",
+        sights: [
+          { name: "오사카 성", lat: 34.6873, lng: 135.5255 },
+          { name: "도톤보리", lat: 34.6687, lng: 135.5005 },
+          { name: "유니버설 스튜디오 재팬", lat: 34.6654, lng: 135.4323 }
+        ],
+        foods: [
+          { name: "오코노미야키", lat: 34.6687, lng: 135.5005 },
+          { name: "타코야키", lat: 34.6682, lng: 135.5001 },
+          { name: "쿠시카츠", lat: 34.6525, lng: 135.5065 }
+        ]
+      },
+      {
+        name: "🍣 교토",
+        lat: 35.0116,
+        lng: 135.7681,
+        desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.",
+        sights: [
+          { name: "기요미즈데라", lat: 34.9949, lng: 135.7850 },
+          { name: "금각사", lat: 35.0396, lng: 135.7292 },
+          { name: "아라시야마", lat: 35.0116, lng: 135.6795 }
+        ],
+        foods: [
+          { name: "교토 야채 요리", lat: 35.0060, lng: 135.7725 },
+          { name: "두부 요리", lat: 35.0080, lng: 135.7735 },
+          { name: "말차", lat: 35.0090, lng: 135.7745 }
+        ]
+      },
+      {
+        name: "🍣 나라",
+        lat: 34.6851,
+        lng: 135.8048,
+        desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.",
+        sights: [
+          { name: "나라 공원", lat: 34.6844, lng: 135.8433 },
+          { name: "도다이지", lat: 34.6881, lng: 135.8398 }
+        ],
+        foods: [
+          { name: "나라즈케", lat: 34.6851, lng: 135.8048 },
+          { name: "카키노하즈시", lat: 34.6871, lng: 135.8058 }
+        ]
+      },
+      {
+        name: "🍣 고베",
+        lat: 34.6913,
+        lng: 135.1830,
+        desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.",
+        sights: [
+          { name: "고베 포트 타워", lat: 34.6841, lng: 135.1915 },
+          { name: "이진칸 거리", lat: 34.7001, lng: 135.1884 }
+        ],
+        foods: [
+          { name: "고베규", lat: 34.6913, lng: 135.1830 },
+          { name: "아카시야키", lat: 34.6465, lng: 135.0003 }
+        ]
+      },
+      {
+        name: "🍣 삿포로",
+        lat: 43.0618,
+        lng: 141.3545,
+        desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.",
+        sights: [
+          { name: "오도리 공원", lat: 43.0607, lng: 141.3517 },
+          { name: "삿포로 맥주 박물관", lat: 43.0766, lng: 141.3712 }
+        ],
+        foods: [
+          { name: "삿포로 라멘", lat: 43.0618, lng: 141.3545 },
+          { name: "징기스칸", lat: 43.0628, lng: 141.3555 }
+        ]
+      },
+      {
+        name: "🍣 대마도",
+        lat: 34.2045,
+        lng: 129.2785,
+        desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.",
+        sights: [
+          { name: "와타즈미 신사", lat: 34.4093, lng: 129.2891 },
+          { name: "미우다 해변", lat: 34.6366, lng: 129.4180 }
+        ],
+        foods: [
+          { name: "이시야키", lat: 34.2045, lng: 129.2785 },
+          { name: "토노이치", lat: 34.2055, lng: 129.2795 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "중국",
+    cities: [
+      {
+        name: "🐼 광저우",
+        lat: 23.1291,
+        lng: 113.2644,
+        desc: "광저우는 활기찬 도시입니다.",
+        sights: [
+          { name: "광저우 타워", lat: 23.1068, lng: 113.3217 },
+          { name: "진가사", lat: 23.1166, lng: 113.2541 },
+          { name: "샤미안", lat: 23.1091, lng: 113.2458 }
+        ],
+        foods: [
+          { name: "딤섬", lat: 23.1311, lng: 113.2655 },
+          { name: "광동식 로스트 구스", lat: 23.1288, lng: 113.2601 }
+        ]
+      },
+      {
+        name: "🐼 상하이",
+        lat: 31.2304,
+        lng: 121.4737,
+        desc: "동서양이 공존하는 상하이는 매력적인 곳입니다.",
+        sights: [
+          { name: "와이탄", lat: 31.2372, lng: 121.4870 },
+          { name: "동방명주", lat: 31.2397, lng: 121.4996 },
+          { name: "예원", lat: 31.2268, lng: 121.4939 }
+        ],
+        foods: [
+          { name: "샤오롱바오", lat: 31.2301, lng: 121.4745 },
+          { name: "홍소육", lat: 31.2295, lng: 121.4720 }
+        ]
+      },
+      {
+        name: "🐼 베이징",
+        lat: 39.9042,
+        lng: 116.4074,
+        desc: "중국의 수도, 베이징입니다.",
+        sights: [
+          { name: "자금성", lat: 39.9163, lng: 116.3972 },
+          { name: "만리장성", lat: 40.4319, lng: 116.5704 },
+          { name: "천안문 광장", lat: 39.9056, lng: 116.3913 }
+        ],
+        foods: [
+          { name: "북경오리", lat: 39.9080, lng: 116.4050 },
+          { name: "마라탕", lat: 39.9030, lng: 116.4080 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "대만",
+    cities: [
+      {
+        name: "🏮 타이베이",
+        lat: 25.0330,
+        lng: 121.5654,
+        desc: "대만의 활기찬 수도, 타이베이입니다.",
+        sights: [
+          { name: "타이베이 101", lat: 25.0339, lng: 121.5645 },
+          { name: "국립고궁박물원", lat: 25.1017, lng: 121.5484 },
+          { name: "용산사", lat: 25.0366, lng: 121.4999 }
+        ],
+        foods: [
+          { name: "우육면", lat: 25.0335, lng: 121.5659 },
+          { name: "지파이", lat: 25.0478, lng: 121.5173 }
+        ]
+      },
+      {
+        name: "🏮 지우펀",
+        lat: 25.1091,
+        lng: 121.8449,
+        desc: "센과 치히로의 행방불명 배경지로 유명한 지우펀입니다.",
+        sights: [
+          { name: "지우펀 옛거리", lat: 25.1091, lng: 121.8449 },
+          { name: "수치루", lat: 25.1105, lng: 121.8455 }
+        ],
+        foods: [
+          { name: "땅콩 아이스크림", lat: 25.1090, lng: 121.8445 },
+          { name: "오징어 구이", lat: 25.1085, lng: 121.8450 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "베트남",
+    cities: [
+      {
+        name: "🌾 다낭",
+        lat: 16.0544,
+        lng: 108.2022,
+        desc: "베트남 중부의 아름다운 해안 도시입니다.",
+        sights: [
+          { name: "바나힐", lat: 15.9926, lng: 108.0645 },
+          { name: "미케 비치", lat: 16.0689, lng: 108.2427 },
+          { name: "호이안 올드타운", lat: 15.8794, lng: 108.3283 }
+        ],
+        foods: [
+          { name: "반쎄오", lat: 16.0617, lng: 108.2255 },
+          { name: "분짜", lat: 16.0640, lng: 108.2260 }
+        ]
+      },
+      {
+        name: "🌾 하노이",
+        lat: 21.0285,
+        lng: 105.8542,
+        desc: "베트남의 수도, 하노이입니다.",
+        sights: [
+          { name: "호안끼엠 호수", lat: 21.0288, lng: 105.8522 },
+          { name: "하노이 올드 쿼터", lat: 21.0335, lng: 105.8499 }
+        ],
+        foods: [
+          { name: "쌀국수", lat: 21.0280, lng: 105.8545 },
+          { name: "반미", lat: 21.0290, lng: 105.8530 }
+        ]
+      },
+      {
+        name: "🌾 사파",
+        lat: 22.3333,
+        lng: 103.8333,
+        desc: "베트남 북부 고원의 아름다운 마을입니다.",
+        sights: [
+          { name: "판시판", lat: 22.3040, lng: 103.7850 },
+          { name: "깟깟 마을", lat: 22.3270, lng: 103.8310 }
+        ],
+        foods: [
+          { name: "연어 핫팟", lat: 22.3325, lng: 103.8330 },
+          { name: "돼지고기 꼬치", lat: 22.3335, lng: 103.8340 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "싱가포르",
+    cities: [
+      {
+        name: "🦁 싱가포르",
+        lat: 1.3521,
+        lng: 103.8198,
+        desc: "깨끗하고 현대적인 도시국가, 싱가포르입니다.",
+        sights: [
+          { name: "마리나 베이 샌즈", lat: 1.2833, lng: 103.8587 },
+          { name: "가든스 바이 더 베이", lat: 1.2816, lng: 103.8637 },
+          { name: "센토사 섬", lat: 1.2547, lng: 103.8202 }
+        ],
+        foods: [
+          { name: "칠리 크랩", lat: 1.2916, lng: 103.8568 },
+          { name: "카야 토스트", lat: 1.2858, lng: 103.8443 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "라오스",
+    cities: [
+      {
+        name: "🛕 방비엥",
+        lat: 18.9103,
+        lng: 102.4468,
+        desc: "자연이 아름다운 방비엥입니다.",
+        sights: [
+          { name: "블루라군", lat: 18.9140, lng: 102.3990 },
+          { name: "탐짱 동굴", lat: 18.9050, lng: 102.4500 }
+        ],
+        foods: [
+          { name: "바게트 샌드위치", lat: 18.9110, lng: 102.4470 },
+          { name: "라오스 바비큐", lat: 18.9100, lng: 102.4480 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "말레이시아",
+    cities: [
+      {
+        name: "🕌 쿠알라룸푸르",
+        lat: 3.1390,
+        lng: 101.6869,
+        desc: "활기찬 수도, 쿠알라룸푸르입니다.",
+        sights: [
+          { name: "페트로나스 트윈 타워", lat: 3.1578, lng: 101.7119 },
+          { name: "바투 동굴", lat: 3.2378, lng: 101.6841 }
+        ],
+        foods: [
+          { name: "나시 르막", lat: 3.1412, lng: 101.6865 },
+          { name: "사테", lat: 3.1400, lng: 101.6880 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "태국",
+    cities: [
+      {
+        name: "🐘 방콕",
+        lat: 13.7563,
+        lng: 100.5018,
+        desc: "활기찬 수도, 방콕입니다.",
+        sights: [
+          { name: "왕궁", lat: 13.7540, lng: 100.4930 },
+          { name: "왓 아룬", lat: 13.7460, lng: 100.4880 }
+        ],
+        foods: [
+          { name: "팟타이", lat: 13.7550, lng: 100.5020 },
+          { name: "망고 스티키 라이스", lat: 13.7570, lng: 100.5030 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "필리핀",
+    cities: [
+      {
+        name: "🌊 세부",
+        lat: 10.3157,
+        lng: 123.8854,
+        desc: "아름다운 해변과 다이빙 명소로 유명한 세부입니다.",
+        sights: [
+          { name: "막탄 섬", lat: 10.3000, lng: 123.9500 },
+          { name: "가와산 폭포", lat: 9.8000, lng: 123.3700 }
+        ],
+        foods: [
+          { name: "레촌", lat: 10.3160, lng: 123.8860 },
+          { name: "산미구엘", lat: 10.3150, lng: 123.8840 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "프랑스",
+    cities: [
+      {
+        name: "🗼 파리",
+        lat: 48.8566,
+        lng: 2.3522,
+        desc: "예술과 낭만의 도시, 파리입니다.",
+        sights: [
+          { name: "에펠탑", lat: 48.8584, lng: 2.2945 },
+          { name: "루브르 박물관", lat: 48.8606, lng: 2.3376 },
+          { name: "개선문", lat: 48.8738, lng: 2.2950 }
+        ],
+        foods: [
+          { name: "바게트", lat: 48.8570, lng: 2.3530 },
+          { name: "마카롱", lat: 48.8580, lng: 2.3540 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "영국",
+    cities: [
+      {
+        name: "🏰 런던",
+        lat: 51.5074,
+        lng: -0.1278,
+        desc: "역사와 현대가 어우러진 도시, 런던입니다.",
+        sights: [
+          { name: "빅벤", lat: 51.5007, lng: -0.1246 },
+          { name: "런던 타워", lat: 51.5081, lng: -0.0759 },
+          { name: "버킹엄 궁전", lat: 51.5014, lng: -0.1419 }
+        ],
+        foods: [
+          { name: "피쉬 앤 칩스", lat: 51.5070, lng: -0.1280 },
+          { name: "영국식 아침 식사", lat: 51.5080, lng: -0.1290 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "독일",
+    cities: [
+      {
+        name: "🍺 베를린",
+        lat: 52.5200,
+        lng: 13.4050,
+        desc: "독일의 수도, 베를린입니다.",
+        sights: [
+          { name: "브란덴부르크 문", lat: 52.5163, lng: 13.3777 },
+          { name: "베를린 장벽", lat: 52.5065, lng: 13.3941 }
+        ],
+        foods: [
+          { name: "커리부어스트", lat: 52.5190, lng: 13.4060 },
+          { name: "슈니첼", lat: 52.5210, lng: 13.4070 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "이탈리아",
+    cities: [
+      {
+        name: "🍕 로마",
+        lat: 41.9028,
+        lng: 12.4964,
+        desc: "고대 로마의 유적을 만날 수 있는 로마입니다.",
+        sights: [
+          { name: "콜로세움", lat: 41.8902, lng: 12.4922 },
+          { name: "포로 로마노", lat: 41.8922, lng: 12.4851 }
+        ],
+        foods: [
+          { name: "피자", lat: 41.9030, lng: 12.4970 },
+          { name: "파스타", lat: 41.9040, lng: 12.4980 }
+        ]
+      },
+      {
+        name: "🍕 피사",
+        lat: 43.7230,
+        lng: 10.3965,
+        desc: "피사의 사탑으로 유명한 도시입니다.",
+        sights: [
+          { name: "피사의 사탑", lat: 43.7232, lng: 10.3966 }
+        ],
+        foods: [
+          { name: "젤라또", lat: 43.7235, lng: 10.3960 }
+        ]
+      },
+      {
+        name: "🍕 베니스",
+        lat: 45.4408,
+        lng: 12.3155,
+        desc: "물의 도시, 베니스입니다.",
+        sights: [
+          { name: "산 마르코 광장", lat: 45.4344, lng: 12.3392 },
+          { name: "리알토 다리", lat: 45.4380, lng: 12.3359 }
+        ],
+        foods: [
+          { name: "해산물 리소토", lat: 45.4400, lng: 12.3150 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "그리스",
+    cities: [
+      {
+        name: "🏛️ 아테네",
+        lat: 37.9838,
+        lng: 23.7275,
+        desc: "서양 문명의 발상지, 아테네입니다.",
+        sights: [
+          { name: "아크로폴리스", lat: 37.9715, lng: 23.7257 },
+          { name: "파르테논 신전", lat: 37.9715, lng: 23.7236 }
+        ],
+        foods: [
+          { name: "수블라키", lat: 37.9830, lng: 23.7280 }
+        ]
+      },
+      {
+        name: "🏛️ 산토리니",
+        lat: 36.3932,
+        lng: 25.4615,
+        desc: "아름다운 풍경의 섬, 산토리니입니다.",
+        sights: [
+          { name: "이아 마을", lat: 36.4600, lng: 25.3750 },
+          { name: "피라 마을", lat: 36.4168, lng: 25.4299 }
+        ],
+        foods: [
+          { name: "문어구이", lat: 36.3930, lng: 25.4620 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "이집트",
+    cities: [
+      {
+        name: "🐫 카이로",
+        lat: 30.0444,
+        lng: 31.2357,
+        desc: "이집트의 수도, 카이로입니다.",
+        sights: [
+          { name: "기자의 피라미드", lat: 29.9792, lng: 31.1342 },
+          { name: "이집트 박물관", lat: 30.0478, lng: 31.2361 }
+        ],
+        foods: [
+          { name: "코샤리", lat: 30.0440, lng: 31.2360 }
+        ]
+      },
+      {
+        name: "🐫 룩소르",
+        lat: 25.6870,
+        lng: 32.6396,
+        desc: "고대 이집트의 유적이 많은 룩소르입니다.",
+        sights: [
+          { name: "룩소르 신전", lat: 25.6997, lng: 32.6385 },
+          { name: "카르나크 신전", lat: 25.7186, lng: 32.6575 }
+        ],
+        foods: [
+          { name: "타메이야", lat: 25.6875, lng: 32.6390 }
+        ]
+      },
+      {
+        name: "🐫 아스완",
+        lat: 24.0889,
+        lng: 32.8998,
+        desc: "나일강이 아름다운 아스완입니다.",
+        sights: [
+          { name: "아스완 하이 댐", lat: 23.9748, lng: 32.8722 },
+          { name: "미완성 오벨리스크", lat: 24.0903, lng: 32.8998 }
+        ],
+        foods: [
+          { name: "히비스커스 차", lat: 24.0890, lng: 32.9000 }
+        ]
+      }
+    ]
+  }
+];
+  
+// 모든 도시 마커를 미리 지도에 생성하는 함수
+function createAllCityMarkers() {
+    allCityMarkers.forEach(marker => map.removeLayer(marker));
+    allCityMarkers = [];
+
+    data.forEach(country => {
+      country.cities.forEach(city => {
+        const marker = L.marker([city.lat, city.lng], { icon: cityMarkerIcon }).addTo(map);
+        marker.bindPopup(city.name);
+        marker.on('click', () => {
+          showCityInfo(city);
+          map.setView([city.lat, city.lng], 10);
+        });
+        allCityMarkers.push(marker);
+      });
+    });
+}
+
+// 사이드바의 도시 목록 UI를 생성하는 함수
+function createCountryList() {
+    countryListDiv.innerHTML = "";
+    data.forEach(country => {
+        const countryBtn = document.createElement("button");
+        countryBtn.className = "country-btn title-btn";
+        countryBtn.textContent = country.name;
+        countryListDiv.appendChild(countryBtn);
+
+        const cityList = document.createElement("div");
+        cityList.className = "city-list";
+        country.cities.forEach(city => {
+            const cityBtn = document.createElement("button");
+            cityBtn.className = "city-btn";
+            cityBtn.textContent = city.name;
+            cityList.appendChild(cityBtn);
+
+            cityBtn.addEventListener("click", () => {
+                showCityInfo(city);
+                map.setView([city.lat, city.lng], 10);
+            });
+        });
+        countryListDiv.appendChild(cityList);
+
+        countryBtn.addEventListener("click", () => {
+            const isOpen = cityList.style.maxHeight !== "0px" && cityList.style.maxHeight !== "";
+            document.querySelectorAll(".city-list").forEach(cl => cl.style.maxHeight = "0");
+
+            if (!isOpen) {
+                cityList.style.maxHeight = cityList.scrollHeight + "px";
+            }
+
+            description.innerHTML = "";
+            countryListDiv.classList.remove("hidden");
+            showCountryListBtn.classList.add("hidden");
+            
+            // 도시 목록 클릭 시 상세 마커 초기화
+            currentDetailMarkers.forEach(marker => map.removeLayer(marker));
+            currentDetailMarkers = [];
+            selectedDetailMarker = null;
+            selectedDetailListItem = null;
+
+            // 기존에 선택된 도시 마커 초기화
+            if (selectedCityMarker) {
+                selectedCityMarker.setIcon(cityMarkerIcon);
+                selectedCityMarker = null;
+            }
+        });
+    });
+}
+
+// 도시 상세 정보를 표시하는 함수
+function showCityInfo(city) {
+    // 이전 상세 마커 초기화
+    currentDetailMarkers.forEach(marker => map.removeLayer(marker));
+    currentDetailMarkers = [];
+    selectedDetailMarker = null;
+    selectedDetailListItem = null;
+
+    // 도시 마커 색상 변경 로직
+    const cityMarker = allCityMarkers.find(marker => {
+        const latLng = marker.getLatLng();
+        return latLng.lat === city.lat && latLng.lng === city.lng;
+    });
+
+    if (selectedCityMarker) {
+        selectedCityMarker.setIcon(cityMarkerIcon);
+    }
+    if (cityMarker) {
+        cityMarker.setIcon(redIcon);
+        selectedCityMarker = cityMarker;
+    }
+    
+    // 상세 정보 UI 업데이트
+    description.innerHTML = "";
+    description.classList.remove("hidden");
+    countryListDiv.classList.add("hidden");
+    showCountryListBtn.classList.remove("hidden");
+
+    const cityTitle = document.createElement("h2");
+    cityTitle.textContent = city.name;
+    description.appendChild(cityTitle);
+
+    const cityDesc = document.createElement("p");
+    cityDesc.textContent = city.desc;
+    description.appendChild(cityDesc);
+
+    const sightsTitle = document.createElement("h3");
+    sightsTitle.textContent = "관광지";
+    description.appendChild(sightsTitle);
+
+    const sightsList = document.createElement("ul");
+    sightsList.id = "sights-list";
+    description.appendChild(sightsList);
+
+    city.sights.forEach(item => {
+        const listItem = document.createElement("li");
+        listItem.textContent = item.name;
+        sightsList.appendChild(listItem);
+
+        const marker = L.marker([item.lat, item.lng], { icon: sightIcon }).addTo(map);
+        marker.bindPopup(item.name);
+        marker.originalIcon = sightIcon;
+        currentDetailMarkers.push(marker);
+        
+        const onClick = () => {
+          if (selectedDetailMarker) {
+            selectedDetailMarker.setIcon(selectedDetailMarker.originalIcon);
+          }
+          if (selectedDetailListItem) {
+            selectedDetailListItem.classList.remove("active");
+          }
+          marker.setIcon(redIcon);
+          marker.openPopup();
+          listItem.classList.add("active");
+          selectedDetailMarker = marker;
+          selectedDetailListItem = listItem;
+          map.setView([item.lat, item.lng], 15);
+        };
+
+        listItem.addEventListener("click", onClick);
+        marker.on("click", onClick);
+    });
+
+    const foodsTitle = document.createElement("h3");
+    foodsTitle.textContent = "맛집";
+    description.appendChild(foodsTitle);
+
+    const foodsList = document.createElement("ul");
+    foodsList.id = "foods-list";
+    description.appendChild(foodsList);
+
+    city.foods.forEach(item => {
+        const listItem = document.createElement("li");
+        listItem.textContent = item.name;
+        foodsList.appendChild(listItem);
+
+        const marker = L.marker([item.lat, item.lng], { icon: foodIcon }).addTo(map);
+        marker.bindPopup(item.name);
+        marker.originalIcon = foodIcon;
+        currentDetailMarkers.push(marker);
+
+        const onClick = () => {
+            if (selectedDetailMarker) {
+              selectedDetailMarker.setIcon(selectedDetailMarker.originalIcon);
+            }
+            if (selectedDetailListItem) {
+              selectedDetailListItem.classList.remove("active");
+            }
+            marker.setIcon(redIcon);
+            marker.openPopup();
+            listItem.classList.add("active");
+            selectedDetailMarker = marker;
+            selectedDetailListItem = listItem;
+            map.setView([item.lat, item.lng], 15);
+        };
+        
+        listItem.addEventListener("click", onClick);
+        marker.on("click", onClick);
+    });
+}
+  
+showCountryListBtn.addEventListener("click", () => {
+  description.classList.add("hidden");
+  countryListDiv.classList.remove("hidden");
+  showCountryListBtn.classList.add("hidden");
+  
+  currentDetailMarkers.forEach(marker => map.removeLayer(marker));
+  currentDetailMarkers = [];
+  selectedDetailMarker = null;
+  selectedDetailListItem = null;
+  
+  if(selectedCityMarker) {
+    selectedCityMarker.setIcon(cityMarkerIcon);
+    selectedCityMarker = null;
+  }
+  
+  createAllCityMarkers();
+});
+
+createAllCityMarkers();
+createCountryList();
+</script>
+</body>
+</html>
