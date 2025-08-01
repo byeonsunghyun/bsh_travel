@@ -518,4 +518,8 @@ body {
         color: #eee;
         transition: color 0.2s ease;
     }
+
+    .leaflet-bottom {
+        bottom: 50px;
+    }
 }
