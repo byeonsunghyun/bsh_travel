@@ -1,961 +1,577 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>BSH's Travel</title>
-    <link rel="icon" href="../image/favicon.png" type="image/png">
-    <link rel="stylesheet" href="../css/country.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BSH's Travel</title>
+  <link rel="icon" href="../image/favicon.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="../css/travel_map.css">
 </head>
 <body>
-<div class="container">
-    <header class="header">
-        <div class="header-content">
-            <a href="/bsh_travel/main" class="header-content button">
-                <img src="../image/travel_logo.png" alt="Logo" class="logo">
-            </a>
-        </div>
-    </header>
-    <button class="sidebar-toggle-button" onclick="toggleSidebar()">☰</button>
 
-    <div class="main-wrapper">
-        <div class="main-container">
-            <div class="travel-detail">
-                <div class="travel-container">
-                    <div class="travel-title">
-                        <h1 style="line-height: 1;">🐼 중국 여행</h1>
-                        <div class="dday-badge completed" id="dday-china">완료</div>
-                    </div>
-                    <div class="travel-header">
-                        <p style="font-size:0.9rem; color: #aaa;">(2023-07-20 ~ 2023-07-27)</p>
-                    </div>
-                    <div class="tags-container">
-                        <p class="travel-tags"> #상하이 </p>
-                        <p class="travel-tags"> #혼자 여행 </p>
-                    </div>
-                </div>
-                <div class="scroll-buttons">
-                    <button onclick="scrollToSection('places')">📍 방문한 주요 장소</button>
-                    <button onclick="scrollToSection('food')">🍜 음식 이야기</button>
-                    <button onclick="scrollToSection('transit')">📚 여행 수단 정리</button>
-                </div>
-
-                <div id="places" class="section">
-                    <h2>📍 방문한 주요 장소</h2>
-                    <div class="place-grid">
-                        <a href="javascript:void(0);" class="place-link" data-id="place1">🛕 난징동루</a> <!-- 큰 사찰이나 역사적 장소라면 적절 -->
-						<a href="javascript:void(0);" class="place-link" data-id="place2">🛍️ 신천지</a> <!-- 쇼핑, 핫플레이스에 적절 -->
-						<a href="javascript:void(0);" class="place-link" data-id="place3">🏛️ 대한민국 임시정부</a> <!-- 역사적 건물, 공식 건물 느낌으로 교체 -->
-						<a href="javascript:void(0);" class="place-link" data-id="place4">🌿 티엔즈팡</a> <!-- 예술 거리/힙한 골목 감성에 적절 -->
-						<a href="javascript:void(0);" class="place-link" data-id="place5">🏯 예원</a> <!-- 중국 전통 건축이므로 🏯(일본 성)보다 🏞️/🏛️/🌸도 가능 -->
-						<a href="javascript:void(0);" class="place-link" data-id="place6">🎇 예원 야시장</a> <!-- 밤, 야시장 느낌엔 🎇 or 🏮 좋음 -->
-						<a href="javascript:void(0);" class="place-link" data-id="place7">🏯 주가각</a> <!-- 전통 느낌 그대로 유지 -->
-						<a href="javascript:void(0);" class="place-link" data-id="place8">🎪 마시청 서커스</a> <!-- 공연이므로 🎪 서커스 텐트 추천 -->
-						<a href="javascript:void(0);" class="place-link" data-id="place9">🚌 시티투어</a> <!-- 🐼 → 🚌 으로 변경 추천 (이동 수단 중심) -->
-						<a href="javascript:void(0);" class="place-link" data-id="place10">🌉 와이탄</a> <!-- 야경/강/다리 연상되므로 🌉 적절 -->
-						<a href="javascript:void(0);" class="place-link" data-id="place11">🗼 동방명주</a> <!-- 타워 느낌으로 🗼 도쿄타워 이모지 추천 -->
-                    </div>
-
-                    <hr id="place1" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                    <div>
-                        <div>
-                            <h3 style="text-align: center; margin-top:60px;">1. 南京路 - 난징동루</h3>
-
-                            <div class="outer-slider-container">
-                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                                <div style="margin-top: 30px" class="slider-container">
-                                    <div class="image-slider">
-                                        <img src="../image/image_shanghai/place1-1.jpg" class="image-slide" data-index="0">
-                                        <img src="../image/image_shanghai/place1-2.jpg" class="image-slide active" data-index="1">
-                                        <img src="../image/image_shanghai/place1-3.jpg" class="image-slide" data-index="2">
-                                        <img src="../image/image_shanghai/place1-4.jpg" class="image-slide" data-index="3">
-                                        <img src="../image/image_shanghai/place1-5.jpg" class="image-slide active" data-index="4">
-                                        <img src="../image/image_shanghai/place1-6.jpg" class="image-slide" data-index="5">
-                                    </div>
-                                </div>
-
-                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                            </div>
-                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
-                                정말 넓고 길어서 천천히 걸으면서 구경하기 좋았고,<br>
-                                밤이 되면 조명이 켜지는데 건물이 엄청 예쁘면서 분위기 있었다.<br><br>
-                                I♥SH 간판에서 인증샷을 찍고 싶었지만,<br>
-                                아쉽게도 내가 방문한 날엔 철거된 상태였다 😢<br><br>
-                                거리를 따라 쭉 걷다 보면 끝자락쯤에<br>
-                                귀여운 꼬마 열차를 탈 수 있는 곳이 나온다.<br>
-                                가격은 <span style='color: palevioletred'>10위안 정도</span>였던 걸로 기억한다.
-                            </p>
-                        </div>
-                    </div>
-
-                    <hr id="place2" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                    <div>
-                        <div>
-                            <h3 style="text-align: center; margin-top:60px;">2. 新天地 - 신천지</h3>
-
-                            <div class="outer-slider-container">
-                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                                <div style="margin-top: 30px" class="slider-container">
-                                    <div class="image-slider">
-                                        <img src="../image/image_shanghai/place2-1.jpg" class="image-slide" data-index="0">
-                                        <img src="../image/image_shanghai/place2-2.jpg" class="image-slide active" data-index="1">
-                                        <img src="../image/image_shanghai/place2-3.jpg" class="image-slide" data-index="2">
-                                        <img src="../image/image_shanghai/place2-4.jpg" class="image-slide active" data-index="3">
-                                        <img src="../image/image_shanghai/place2-5.jpg" class="image-slide" data-index="4">
-                                    </div>
-                                </div>
-
-                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                            </div>
-                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
-                                유럽의 작은 마을 느낌,<br>
-                                고풍스러운 분위기가 마음에 들었다.
-                            </p>
-                        </div>
-                    </div>
-
-                    <hr id="place3" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                    <div>
-                        <div>
-                            <h3 style="text-align: center; margin-top:60px;">3. 대한민국 임시정부</h3>
-
-                            <div class="outer-slider-container">
-                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                                <div style="margin-top: 30px" class="slider-container">
-                                    <div class="image-slider">
-                                        <img src="../image/image_shanghai/place4-1.jpg" class="image-slide" data-index="0">
-                                        <img src="../image/image_shanghai/place4-2.jpg" class="image-slide active" data-index="1">
-                                        <img src="../image/image_shanghai/place4-3.jpg" class="image-slide" data-index="2">
-                                        <img src="../image/image_shanghai/place4-4.jpg" class="image-slide active" data-index="3">
-                                    </div>
-                                </div>
-
-                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                            </div>
-                            <h4 style="text-align: center; color: grey;" >
-                                입장료 : 20RMB
-                            </h4>
-                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
-                                전시관 안에는 독립운동에 대한 역사와<br>
-                                기록들이 빼곡하게 담겨 있었다.<br><br>
-                                조용한 분위기 속에서 그 공간들을 마주하다 보니<br>
-                                마음이 뭉클해지고, 많은 생각이 스쳤다.
-                            </p>
-                        </div>
-                    </div>
-
-                    <hr id="place4" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                    <div>
-                        <div>
-                            <h3 style="text-align: center; margin-top:60px;">4. 田子坊 - 티엔즈팡</h3>
-
-                            <div class="outer-slider-container">
-                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                                <div style="margin-top: 30px" class="slider-container">
-                                    <div class="image-slider">
-                                        <img src="../image/image_shanghai/place5-1.jpg" class="image-slide" data-index="0">
-                                        <img src="../image/image_shanghai/place5-2.jpg" class="image-slide active" data-index="1">
-                                        <img src="../image/image_shanghai/place5-3.jpg" class="image-slide" data-index="2">
-                                        <img src="../image/image_shanghai/place5-4.jpg" class="image-slide active" data-index="3">
-                                    </div>
-                                </div>
-
-                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                            </div>
-                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
-                                소품 가게들이 즐비해 있어 천천히 둘러보며 구경하기 좋고,<br>
-                                기념품을 고르기에 안성맞춤인 매력적인 골목.
-                            </p>
-                        </div>
-                    </div>
-
-                    <hr id="place5" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                    <div>
-                        <div>
-                            <h3 style="text-align: center; margin-top:60px;">5. 豫园 - 예원</h3>
-
-                            <div class="outer-slider-container">
-                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                                <div style="margin-top: 30px" class="slider-container">
-                                    <div class="image-slider">
-                                        <img src="../image/image_shanghai/place6-1.jpg" class="image-slide" data-index="0">
-                                        <img src="../image/image_shanghai/place6-2.jpg" class="image-slide active" data-index="1">
-                                        <img src="../image/image_shanghai/place6-3.jpg" class="image-slide" data-index="2">
-                                        <img src="../image/image_shanghai/place6-4.jpg" class="image-slide active" data-index="3">
-                                        <img src="../image/image_shanghai/place6-5.jpg" class="image-slide" data-index="4">
-                                        <img src="../image/image_shanghai/place6-6.jpg" class="image-slide active" data-index="5">
-                                        <img src="../image/image_shanghai/place6-7.jpg" class="image-slide" data-index="6">
-                                        <img src="../image/image_shanghai/place6-8.jpg" class="image-slide active" data-index="7">
-                                        <img src="../image/image_shanghai/place6-9.jpg" class="image-slide" data-index="8">
-                                    </div>
-                                </div>
-
-                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                            </div>
-                            <h4 style="text-align: center; color: grey;" >
-                                입장료 : 40RMB
-                            </h4>
-                            <p style="margin-top:20px; margin-bottom:60px; text-align: center">
-                                400년 전 명나라 관료 반윤단이<br>
-                                아버지의 안락한 노후를 위해 20여 년에 걸쳐 만든 곳<br><br>
-                                저녁 시간대 방문하면 조명이 더해서 분위기가 훨씬 좋아지니,<br>
-                                밤에 방문하는 것을 추천한다.<br><br>
-                                정원은 입장료를 내고 들어가야 했지만,<br>
-                                비교적 평범한 편이었다.
-                            </p>
-                        </div>
-                    </div>
-
-                    <hr id="place6" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                    <div>
-                        <div>
-                            <h3 style="text-align: center; margin-top:60px;">6. 예원 야시장</h3>
-                
-                            <div class="outer-slider-container">
-                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                                <div style="margin-top: 30px" class="slider-container">
-                                    <div class="image-slider">
-                                        <img src="../image/image_shanghai/place8-1.jpg" class="image-slide" data-index="0">
-                                        <img src="../image/image_shanghai/place8-2.jpg" class="image-slide active" data-index="1">
-                                        <img src="../image/image_shanghai/place8-3.jpg" class="image-slide" data-index="2">
-                                        <img src="../image/image_shanghai/place8-4.jpg" class="image-slide active" data-index="3">
-                                        <img src="../image/image_shanghai/place8-5.jpg" class="image-slide" data-index="4">
-                                        <img src="../image/image_shanghai/place8-6.jpg" class="image-slide active" data-index="5">
-                                    </div>
-                                </div>
-
-                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                            </div>
-                            <p style="margin-top:20px; margin-bottom:60px; text-align: center">
-                          		이날 하늘이 무척 아름다워<br>
-                          		그 분위기가 오래도록 기억에 남는다.<br><br>
-                          		맛있어 보이는 음식이 정말 많았지만,<br>
-                          		배가 많이 고프지 않아 모두 맛보지 못한 것이 아쉬웠다.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <hr id="place7" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                    <div>
-                        <div>
-                            <h3 style="text-align: center; margin-top:60px;">7. 朱家角 - 주가각</h3>
-                
-                            <div class="outer-slider-container">
-                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                                <div style="margin-top: 30px" class="slider-container">
-                                    <div class="image-slider">
-                                        <img src="../image/image_shanghai/place7-1.jpg" class="image-slide" data-index="0">
-                                        <img src="../image/image_shanghai/place7-2.jpg" class="image-slide active" data-index="1">
-                                        <img src="../image/image_shanghai/place7-3.jpg" class="image-slide" data-index="2">
-                                        <img src="../image/image_shanghai/place7-4.jpg" class="image-slide active" data-index="3">
-                                        <img src="../image/image_shanghai/place7-5.jpg" class="image-slide" data-index="4">
-                                        <img src="../image/image_shanghai/place7-6.jpg" class="image-slide active" data-index="5">
-                                        <img src="../image/image_shanghai/place7-7.jpg" class="image-slide" data-index="6">
-                                        <img src="../image/image_shanghai/place7-8.jpg" class="image-slide active" data-index="7">
-                                        <img src="../image/image_shanghai/place7-9.jpg" class="image-slide" data-index="8">
-                                        <img src="../image/image_shanghai/place7-10.jpg" class="image-slide" data-index="9">
-                                        <img src="../image/image_shanghai/place7-11.jpg" class="image-slide active" data-index="10">
-                                        <img src="../image/image_shanghai/place7-12.jpg" class="image-slide" data-index="11">
-                                    </div>
-                                </div>
-
-                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                            </div>
-                            <h4 style="text-align: center; color: grey;" >
-                                입장료 : 40RMB
-                            </h4>
-                            <p style="margin-top:20px; margin-bottom:60px; text-align: center">
-                          		상하이의 베니스라고 불린다.<br><br>
-                          		시내에서 거리가 약간 있다.<br>
-                          		택시를 타면 5만원 정도 나온다는데 나는 대중교통을 이용했다.<br><br>
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <hr id="place8" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                    <div>
-                        <div>
-                            <h3 style="text-align: center; margin-top:60px;">8. 上海马戏城 - 마시청 서커스</h3>
-                
-                            <div class="outer-slider-container">
-                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                                <div style="margin-top: 30px" class="slider-container">
-                                    <div class="image-slider">
-                                        <img src="../image/image_shanghai/place9-1.jpg" class="image-slide" data-index="0">
-                                        <img src="../image/image_shanghai/place9-2.jpg" class="image-slide active" data-index="1">
-                                        <img src="../image/image_shanghai/place9-3.jpg" class="image-slide" data-index="2">
-                                    </div>
-                                </div>
-
-                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                            </div>
-                            <h4 style="text-align: center; color: grey;" >
-                                입장료 : 30,000원대
-                            </h4>
-                            <p style="margin-top:20px; margin-bottom:60px; text-align: center">
-                          		어렸을 때 아버지와 함께 중국에 왔을 때 본 서커스와 거의 흡사하여<br>
-                          		재미도 있었고 추억도 많이 생각났다.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <hr id="place9" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                    <div>
-                        <div>
-                            <h3 style="text-align: center; margin-top:60px;">9. 상하이 시티투어</h3>
-                
-                            <div class="outer-slider-container">
-                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                                <div style="margin-top: 30px" class="slider-container">
-                                    <div class="image-slider">
-                                        <img src="../image/image_shanghai/place10-1.jpg" class="image-slide" data-index="0">
-                                        <img src="../image/image_shanghai/place10-2.jpg" class="image-slide active" data-index="1">
-                                        <img src="../image/image_shanghai/place10-3.jpg" class="image-slide" data-index="2">
-                                    </div>
-                                </div>
-
-                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                            </div>
-                            <h4 style="text-align: center; color: grey;" >
-                                입장료 : 10,000원쯤?
-                            </h4>
-                            <p style="margin-top:20px; margin-bottom:60px; text-align: center">
-                          		시원한 바람을 맞으며 상하이 곳곳을 둘러볼 수 있어 정말 좋았다.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <hr id="place10" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                    <div>
-                        <div>
-                            <h3 style="text-align: center; margin-top:60px;">10. 外滩 - 와이탄</h3>
-                
-                            <div class="outer-slider-container">
-                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                                <div style="margin-top: 30px" class="slider-container">
-                                    <div class="image-slider">
-                                        <img src="../image/image_shanghai/place11-1.jpg" class="image-slide" data-index="0">
-                                        <img src="../image/image_shanghai/place11-2.jpg" class="image-slide active" data-index="1">
-                                        <img src="../image/image_shanghai/place11-3.jpg" class="image-slide" data-index="2">
-                                        <img src="../image/image_shanghai/place11-4.jpg" class="image-slide active" data-index="3">
-                                        <img src="../image/image_shanghai/place11-5.jpg" class="image-slide" data-index="4">
-                                        <img src="../image/image_shanghai/place11-6.jpg" class="image-slide active" data-index="5">
-                                        <img src="../image/image_shanghai/place11-7.jpg" class="image-slide" data-index="6">
-                                        <img src="../image/image_shanghai/place11-8.jpg" class="image-slide active" data-index="7">
-                                    </div>
-                                </div>
-
-                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                            </div>
-                            <p style="margin-top:20px; margin-bottom:60px; text-align: center">
-                          		황푸강 유람선을 이용했는데, 매표소가 여러 곳에 흩어져 있고<br>
-                          		거리가 멀어 표를 사는 데 애를 먹었다.<br>
-                          		하지만 야경이 아름다웠고 고생한 보람이 있었다.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <hr id="place10" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                    <div>
-                        <div>
-                            <h3 style="text-align: center; margin-top:60px;">11. 东方明珠 - 동방명주</h3>
-                
-                            <div class="outer-slider-container">
-                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                                <div style="margin-top: 30px" class="slider-container">
-                                    <div class="image-slider">
-                                        <img src="../image/image_shanghai/place12-1.jpg" class="image-slide" data-index="0">
-                                        <img src="../image/image_shanghai/place12-2.jpg" class="image-slide active" data-index="1">
-                                    </div>
-                                </div>
-
-                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                            </div>
-                            <h4 style="text-align: center; color: grey;" >
-                                입장료 : 30,000원대
-                            </h4>
-                            <p style="margin-top:20px; margin-bottom:20px; text-align: center">
-                          		풍경은 괜찮았지만 대기줄이 길고 사람이 많아 다소 혼잡했다.<br>
-								가격도 다소 비싸게 느껴져 전체적으로 살짝 아쉬운 곳이었다.
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-
-                <hr style="border: none; border-top: 2px solid #ccc;" id="food"/>
-                <div class="section">
-                    <h2>🍖 음식 이야기</h2>
-                    <div class="place-grid">
-                        <a href="javascript:void(0);" class="place-link" data-id="food1">🍜️ 우육면</a>
-                        <a href="javascript:void(0);" class="place-link" data-id="food2">🐟 장어덮밥</a>
-                        <a href="javascript:void(0);" class="place-link" data-id="food3">🍔 파이브가이즈</a>
-                        <a href="javascript:void(0);" class="place-link highlight" data-id="food4">🍖 동파육</a>
-                        <a href="javascript:void(0);" class="place-link" data-id="food5">🥟 딤섬</a>
-                        <a href="javascript:void(0);" class="place-link highlight" data-id="food6">🥤 밀크티</a>
-                        <a href="javascript:void(0);" class="place-link" data-id="food7">🍜️ 라멘</a>
-                    </div><br>
-
-                    <hr id="food1" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                    <div>
-                        <div>
-                            <h3 style="text-align: center; margin-top:60px;">1. 우육면</h3>
-                            <h4 style="text-align: center; color: gray;">(호텔 근처, 상하이)</h4>
-
-                            <div class="outer-slider-container">
-                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                                <div style="margin-top: 30px" class="slider-container">
-                                    <div class="image-slider">
-                                        <img src="../image/image_shanghai/food1-1.jpg" class="image-slide active" data-index="0">
-                                        <img src="../image/image_shanghai/food1-2.jpg" class="image-slide" data-index="1">
-                                        <img src="../image/image_shanghai/food1-3.jpg" class="image-slide active" data-index="2">
-                                        <img src="../image/image_shanghai/food1-4.jpg" class="image-slide active" data-index="3">
-                                    </div>
-                                </div>
-
-                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                            </div>
-                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
-                                호텔 근처의 아무 가게에 들어갔는데,<br>
-                                현지 로컬 느낌이 물씬 나고 맛은 무난했다.
-                            </p>
-                        </div>
-                        
-                        <div>
-                            <h3 style="text-align: center; margin-top:60px;">2. 우육면</h3>
-                            <h4 style="text-align: center; color: gray;">(신천지, 상하이)</h4>
-
-                            <div class="outer-slider-container">
-                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                                <div style="margin-top: 30px" class="slider-container">
-                                    <div class="image-slider">
-                                        <img src="../image/image_shanghai/food2-1.jpg" class="image-slide active" data-index="0">
-                                        <img src="../image/image_shanghai/food2-2.jpg" class="image-slide" data-index="1">
-                                        <img src="../image/image_shanghai/food2-3.jpg" class="image-slide active" data-index="2">
-                                    </div>
-                                </div>
-
-                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                            </div>
-                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
-                                쇼핑몰 안에 있는 가게를 방문했다.<br><br>
-                                우육면 치고는 비교적 비싼 편이었지만,<br>그만큼 맛이 확실히 더 좋았다.
-                            </p>
-                        </div>
-                        
-                        <div>
-                            <h3 style="text-align: center; margin-top:60px;">3. 우육면</h3>
-                            <h4 style="text-align: center; color: gray;">(호텔 근처, 상하이)</h4>
-
-                            <div class="outer-slider-container">
-                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                                <div style="margin-top: 30px" class="slider-container">
-                                    <div class="image-slider">
-                                        <img src="../image/image_shanghai/food3-1.jpg" class="image-slide active" data-index="0">
-                                        <img src="../image/image_shanghai/food3-2.jpg" class="image-slide" data-index="1">
-                                    </div>
-                                </div>
-
-                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                            </div>
-                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
-                                그냥 무난했다.
-                            </p>
-                        </div>
-                    </div>
-
-                    <hr id="food2" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                    <div>
-                        <div>
-                            <h3 style="text-align: center; margin-top:60px;">4. 食其家 - 장어덮밥</h3>
-                            <h4 style="text-align: center; color: gray;">(주가각, 상하이)</h4>
-
-                            <div class="outer-slider-container">
-                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                                <div style="margin-top: 30px" class="slider-container">
-                                    <div class="image-slider">
-                                        <img src="../image/image_shanghai/food4-1.jpg" class="image-slide active" data-index="0">
-                                        <img src="../image/image_shanghai/food4-2.jpg" class="image-slide" data-index="1">
-                                        <img src="../image/image_shanghai/food4-3.jpg" class="image-slide active" data-index="2">
-                                        <img src="../image/image_shanghai/food4-4.jpg" class="image-slide" data-index="3">
-                                    </div>
-                                </div>
-
-                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                            </div>
-                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
-                                프랜차이즈 느낌이 물씬 나는 분위기와 맛이었다.<br>
-								중국 음식에 다소 물려있던 시점이라, 잠깐 환기하기에 딱 좋았다.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <hr id="food3" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                <div>
-                    <div>
-                        <h3 style="text-align: center; margin-top:60px;">5. Five Guys</h3>
-                        <h4 style="text-align: center; color: gray;">(난징동루, 상하이)</h4>
-
-                        <div class="outer-slider-container">
-                            <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                            <div style="margin-top: 30px" class="slider-container">
-                                <div class="image-slider">
-                                    <img src="../image/image_shanghai/food5-1.jpg" class="image-slide active" data-index="0">
-                                </div>
-                            </div>
-
-                            <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                        </div>
-                        <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
-                            맛있어 보여서 들어간 가게였는데, 햄버거 가격을 보고 살짝 놀랐다.<br>
-						    알고 보니 꽤 유명한 프랜차이즈였다. 맛은 좋았지만, 가격이 부담스러웠다.
-                        </p>
-                    </div>
-                </div>
-
-                <hr id="food4" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                <div>
-                    <div>
-                        <h3 style="text-align: center; margin-top:60px;">6. 新白鹿</h3>
-                        <h4 style="text-align: center; color: gray;">(난징동루, 상하이)</h4>
-
-                        <div class="outer-slider-container">
-                            <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                            <div style="margin-top: 30px" class="slider-container">
-                                <div class="image-slider">
-                                    <img src="../image/image_shanghai/food7-1.jpg" class="image-slide active" data-index="0">
-                                    <img src="../image/image_shanghai/food7-2.jpg" class="image-slide" data-index="1">
-                                    <img src="../image/image_shanghai/food7-3.jpg" class="image-slide active" data-index="2">
-                                    <img src="../image/image_shanghai/food7-4.jpg" class="image-slide" data-index="3">
-                                </div>
-                            </div>
-
-                            <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                        </div>
-                        <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
-                            친구가 꼭 먹어보라며 추천한 음식(이름 기억 안남)이 있어서,<br>
-                            그 음식을 찾다가 들른 가게였다.<br><br>
-                            기억이 정확히 나지는 않지만,<br>
-                            맛있게 먹었던 기억은 남아 있다.
-                        </p>
-                    </div>
-                </div>
-
-                <hr id="food5" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                <div>
-                    <div>
-                        <h3 style="text-align: center; margin-top:60px;">7. 上海姥姥家常饭馆</h3>
-                        <h4 style="text-align: center; color: gray;">(난징동루, 상하이)</h4>
-
-                        <div class="outer-slider-container">
-                            <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                            <div style="margin-top: 30px" class="slider-container">
-                                <div class="image-slider">
-                                    <img src="../image/image_shanghai/food8-1.jpg" class="image-slide active" data-index="0">
-                                    <img src="../image/image_shanghai/food8-2.jpg" class="image-slide" data-index="1">
-                                    <img src="../image/image_shanghai/food8-3.jpg" class="image-slide active" data-index="2">
-                                    <img src="../image/image_shanghai/food8-4.jpg" class="image-slide" data-index="3">
-                                </div>
-                            </div>
-
-                            <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                        </div>
-                        <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
-                            중국에서 발길 닿는 대로만 가다가<br>
-                            처음으로 인터넷 서핑을 통해 찾아간 음식점이다.<br><br>
-							마파두부도 정말 맛있었지만,<br>
-							특히 동파육이 <span style='color: palevioletred'>레전드</span>다.<br><br>
-							그날 이후로 동파육 맛에 완전히 빠져버렸고,<br>
-							사람들이 많이 찾는 데는 다 이유가 있다는 걸 느꼈다.
-                        </p>
-                    </div>
-                </div>
-
-                <hr id="food6" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                <div>
-                    <div>
-                        <h3 style="text-align: center; margin-top:60px;">8. 上杨生煎</h3>
-                        <h4 style="text-align: center; color: gray;">(난징동루, 상하이)</h4>
-
-                        <div class="outer-slider-container">
-                            <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                            <div style="margin-top: 30px" class="slider-container">
-                                <div class="image-slider">
-                                    <img src="../image/image_shanghai/food9-1.jpg" class="image-slide active" data-index="0">
-                                    <img src="../image/image_shanghai/food9-2.jpg" class="image-slide" data-index="1">
-                                    <img src="../image/image_shanghai/food9-3.jpg" class="image-slide active" data-index="2">
-                                    <img src="../image/image_shanghai/food9-4.jpg" class="image-slide" data-index="3">
-                                    <img src="../image/image_shanghai/food9-5.jpg" class="image-slide active" data-index="4">
-                                    <img src="../image/image_shanghai/food9-6.jpg" class="image-slide" data-index="5">
-                                </div>
-                            </div>
-
-                            <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                        </div>
-                        <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
-                            사람이 많아 노부부와 합석해 밥을 먹었다.<br><br>
-                            국물 요리는 무난했다.<br><br>
-                            딤섬은 뜨거워서 조심해야 했고,<br>
-                            첫입 베어 물 때 육즙이 팡 터져 나왔다.<br>
-                            바삭함과 쫀득함이 공존하는 식감이 정말 맛있었다.
-                        </p>
-                    </div>
-                </div>
-
-                <hr id="food7" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                <div>
-                    <div>
-                        <h3 style="text-align: center; margin-top:60px;">9. 밀크티</h3>
-                        <h4 style="text-align: center; color: gray;">(티앤즈팡, 베이징)</h4>
-
-                        <div class="outer-slider-container">
-                            <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                            <div style="margin-top: 30px" class="slider-container">
-                                <div class="image-slider">
-                                    <img src="../image/image_shanghai/food10-1.jpg" class="image-slide active" data-index="0">
-                                    <img src="../image/image_shanghai/food10-2.jpg" class="image-slide" data-index="1">
-                                    <img src="../image/image_shanghai/food10-3.jpg" class="image-slide active" data-index="2">
-                                    <img src="../image/image_shanghai/food10-4.jpg" class="image-slide" data-index="3">
-                                </div>
-                            </div>
-
-                            <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                        </div>
-                        <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
-                            면 안에 들어 있던 새우 딤섬은 부드러워서 정말 맛있었다.<br><br>
-							밀크티는 귀여운 비주얼에 맛도 좋아서 완전 마음에 들었다.<br>
-							이때부터 진짜 밀크티에 빠지기 시작했다.
-                        </p>
-                    </div>
-                </div>
-
-                <hr id="food8" style="border: none; border-top: 1px solid #555; margin: 10px 0;" />
-                <div>
-                    <div>
-                        <h3 style="text-align: center; margin-top:60px;">10. 라멘</h3>
-                        <h4 style="text-align: center; color: gray;">(배달음식, 상하이)</h4>
-
-                        <div class="outer-slider-container">
-                            <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                            <div style="margin-top: 30px" class="slider-container">
-                                <div class="image-slider">
-                                    <img src="../image/image_shanghai/food6-1.jpg" class="image-slide active" data-index="0">
-                                    <img src="../image/image_shanghai/food6-2.jpg" class="image-slide" data-index="1">
-                                </div>
-                            </div>
-
-                            <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                        </div>
-                        <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:60px; text-align: center">
-                           중국에서 배달음식을 한 번 시켜보고 싶어서 주문했다.<br><br>
-                           토핑이 특이한게 많았지만,<br>
-                           라멘이랑은 좀 어울리지 않았다.
-                        </p>
-                    </div>
-                </div>
-
-                <hr style="border: none; border-top: 2px solid #ccc;" id="transit"/>
-                <div class="section">
-                    <h2>📚 여행 수단 정리</h2>
-                    <div class="place-grid">
-                        <a href="javascript:void(0);" class="place-link" data-id="airplane">✈️ 항공권</a>
-                        <a href="javascript:void(0);" class="place-link" data-id="hotel">🛌 호텔</a>
-                        <a href="javascript:void(0);" class="place-link" data-id="etc">📙 기타 정보</a>
-                    </div>
-                    <hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="airplane"/>
-                    <div>
-                        <h2 style="margin-top: 10px; margin-bottom: 15px;">✈️ 항공권</h2>
-
-                        <h3 style="margin-bottom: 10px; text-align: center">입국 (부산 -> 상하이)</h3>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>구분</th>
-                                <th>공항</th>
-                                <th>시간</th>
-                                <th>날짜</th>
-                                <th>항공사</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>출발</td>
-                                <td>부산국제공항 T1</td>
-                                <td>12:35</td>
-                                <td rowspan="2">2023년 7월 20일</td>
-                                <td rowspan="2">중국동방항공 (MU5044)</td>
-                            </tr>
-                            <tr>
-                                <td>도착</td>
-                                <td>푸동국제공항 T1</td>
-                                <td>13:25</td>
-                            </tr>
-                            </tbody>
-                        </table>
-
-                        <h3 style="margin-bottom: 10px; text-align: center">출국 (상하이 -> 광저우)
-                        </h3>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>구분</th>
-                                <th>공항</th>
-                                <th>시간</th>
-                                <th>날짜</th>
-                                <th>항공사</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>출발</td>
-                                <td>홍차오국제공항</td>
-                                <td>11:15</td>
-                                <td rowspan="2">2023년 7월 27일</td>
-                                <td rowspan="2">준야오항공 (HO1027)</td>
-                            </tr>
-                            <tr>
-                                <td>도착</td>
-                                <td>바이윈국제공항</td>
-                                <td>13:30</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-
-                    <hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="hotel"/>
-                    <div>
-                        <h2 style="margin-top: 20px; margin-bottom: 30px;">🛌 호텔</h2>
-                        <div>
-                            <h3 style="text-align: center; margin-top:10px;">1. 상하이 유항 호텔<br>(Shanghai Yuhang Hetel)</h3>
-                            <h4 style="text-align: center; color: gray;">(2023-07-20 ~ 2023-07-27, 7박)</h4>
-
-                            <div class="outer-slider-container">
-                                <button class="slider-btn outside-btn left-btn">&#10094;</button>
-
-                                <div style="margin-top: 30px" class="slider-container">
-                                    <div class="image-slider">
-                                        <img src="../image/image_shanghai/hotel1-1.jpg" class="image-slide active" data-index="0">
-                                        <img src="../image/image_shanghai/hotel1-2.jpg" class="image-slide" data-index="1">
-                                    </div>
-                                </div>
-
-                                <button class="slider-btn outside-btn right-btn">&#10095;</button>
-                            </div>
-                            <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:100px; text-align: center">
-                                방이 깔끔하다고는 할 수 없지만,<br>
-                                가격 대비 만족스러웠다.
-                            </p>
-                        </div>
-                    </div>
-
-                    <hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="etc"/>
-                    <div>
-                        <h2 style="margin-top: 20px; margin-bottom: 30px;">📙 기타 정보</h2>
-
-                        <h3 style="margin-bottom: 10px">1. 준비물 (2025-01-04 기준)</h3>
-                        <ul>
-                            <li>Alipay - 중국 결제어플. 현찰 쓸 일이 아예 없음. 모두 QR로 결제</li>
-                            <li>DiDi - 중국 택시어플. 택시비가 저렴해서 자주 타기 좋음</li>
-                            <li>고덕지도(高德地图) - 중국 지도어플. 다른 나라와 다르게 구글지도가 되지 않음. 중국 현지어플을 써야함.</li>
-                            <li>eSIM</li>
-                            <li>VPN - eSIM에 VPN이 포함되어 있지만, 현지 호텔 와이파이에서는 제대로 작동되지 않았음</li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <div id="image-modal" class="image-modal">
-            <span class="close-btn">&times;</span>
-            <img class="modal-content" id="modal-img" alt="Expanded Image">
-            <div id="caption"></div>
-        </div>
-        <aside class="sidebar" id="sidebar">
-
-		<div class="search-container">
-  <div class="tag-title2">🔍 검색하기</div>
-  <input type="text" id="searchInput" name="keyword" placeholder="나라 또는 도시 검색하기..." oninput="filterCountries()" />
-</div>
-           <!-- 태그 목록 -->
-            <div class="tag-section" style="margin-top:20px;">
-                <div class="tag-title">🏷️ 태그</div>
-                <div class="tag3">#일본</div>
-                <div class="tag3">#중국</div>
-                <div class="tag3">#오사카</div>
-                <div class="tag3">#친구와 여행</div>
-                <div class="tag3">#혼자 여행</div>
-            </div>
-
-		<div class="link-section">
-			  <div class="link-section-title">🧭 둘러보기</div>
-			  <a href="/bsh_travel/templates/country_map" class="link-item">👀 여행지를 한눈에</a>
-			  <a href="https://byeonsunghyun.github.io/bsh_hub/bshhub" rel="noopener" class="link-item">🌐 다른 프로젝트 보기</a>
-			</div>
-
-            <div class="sidebar-footer">
-            	<a href="/bsh_travel/login" class="login-link">로그인</a>
-            	<div style="border-top: 1px solid #333; margin-bottom:20px; margin-top:45px;"></div>
-                © 2025. Byeon Sung Hyun. All rights reserved.
-            </div>
-        </aside>
+  <div class="sidebar" id="sidebar">
+    <a href="/bsh_travel/main" title="메인으로 이동">
+      <img src="../image/travel_logo.png" alt="BSH Travel Logo" class="logo" />
+    </a>
+    <div class="country-list" id="countryList"></div>
+    <button id="toggleBtn" title="사이드바 닫기">🡄</button>
+    <div class="description" id="description"></div>
+    <button id="showCountryListBtn" class="title-btn hidden">← 나라 목록 보기</button>
+  </div>
+  <button id="openBtn" title="사이드바 열기">☰</button>
+
+  <div class="mobile-controls" id="mobileControls">
+    <div class="country-slider-container">
+      <div id="country-slider" class="country-slider"></div>
     </div>
-</div>
-</div>
+    <div id="info-panel" class="info-panel">
+      <button id="back-button" class="back-button hidden">← 뒤로가기</button>
+      <div id="content-list"></div>
+    </div>
+  </div>
+  <button id="mobileToggleBtn">☰</button>
+  <a href="/bsh_travel/main" id="mobileHomeBtn" title="메인으로 이동">🏠</a>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-    function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('active');
-    }
-    function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('active');
-    }
+    // 주요 DOM 요소
+    const sidebar = document.getElementById("sidebar");
+    const description = document.getElementById("description");
+    const mapDiv = document.getElementById("map");
+    const toggleBtn = document.getElementById("toggleBtn");
+    const openBtn = document.getElementById("openBtn");
+    const countryListDiv = document.getElementById("countryList");
+    const showCountryListBtn = document.getElementById("showCountryListBtn");
 
-    // 각 섹션으로 스크롤하는 함수
-    function scrollToSection(sectionId) {
-        const section = document.getElementById(sectionId);
-        if (section) {
-            section.scrollIntoView({ behavior: 'smooth' });
+    const mobileControls = document.getElementById("mobileControls");
+    const countrySlider = document.getElementById("country-slider");
+    const infoPanel = document.getElementById("info-panel");
+    const contentList = document.getElementById("content-list");
+    const backButton = document.getElementById("back-button");
+    const mobileToggleBtn = document.getElementById("mobileToggleBtn");
+    
+
+    let map, allCityMarkers = [], currentDetailMarkers = [], selectedCityMarker = null, selectedDetailMarker = null, selectedDetailListItem = null;
+    let currentView = 'countries'; // 'countries', 'cities', 'details'
+    let currentCountry = null;
+    let currentCity = null;
+
+    // 공통 데이터 (생략)
+    const data = [
+    	{
+            name: "일본",
+            cities: [
+                { name: "🍣 후쿠오카", lat: 33.5904, lng: 130.4017, desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.", sights: [{ name: "후쿠오카 타워", lat: 33.5936, lng: 130.3506, imageUrl: "./image/egg.jpg" }, { name: "캐널시티 하카타", lat: 33.5898, lng: 130.4101, imageUrl: "../image/airplane.png" }, { name: "오호리 공원", lat: 33.5919, lng: 130.3756, imageUrl: "./image/egg.jpg" }], foods: [{ name: "돈코츠 라멘", lat: 33.5960, lng: 130.4024, imageUrl: "./image/egg.jpg" }, { name: "모츠나베", lat: 33.5977, lng: 130.4053, imageUrl: "./image/egg.jpg" }, { name: "명란젓", lat: 33.5904, lng: 130.4017, imageUrl: "./image/egg.jpg" }] },
+                { name: "🍣 시모노세키", lat: 33.9575, lng: 130.9312, desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.", sights: [{ name: "가라토 시장", lat: 33.9575, lng: 130.9312, imageUrl: "./image/egg.jpg" }, { name: "시모노세키 항", lat: 33.9590, lng: 130.9350, imageUrl: "./image/egg.jpg" }], foods: [{ name: "복어회", lat: 33.9570, lng: 130.9315, imageUrl: "./image/egg.jpg" }] },
+                { name: "🍣 이토시마", lat: 33.5701, lng: 130.2227, desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.", sights: [{ name: "사쿠라이 후타미가우라", lat: 33.6062, lng: 130.1706, imageUrl: "./image/egg.jpg" }, { name: "야자나무 가로수", lat: 33.6060, lng: 130.1708, imageUrl: "./image/egg.jpg" }], foods: [{ name: "굴 요리", lat: 33.5977, lng: 130.2250, imageUrl: "./image/egg.jpg" }] },
+                { name: "🍣 도쿄", lat: 35.6586, lng: 139.7454, desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.", sights: [{ name: "도쿄 타워", lat: 35.6586, lng: 139.7454, imageUrl: "./image/egg.jpg" }, { name: "아사쿠사", lat: 35.7147, lng: 139.7967, imageUrl: "./image/egg.jpg" }, { name: "시부야 스크램블", lat: 35.6597, lng: 139.7005, imageUrl: "./image/egg.jpg" }], foods: [{ name: "스시", lat: 35.6812, lng: 139.7671, imageUrl: "./image/egg.jpg" }, { name: "라멘", lat: 35.6983, lng: 139.7717, imageUrl: "./image/egg.jpg" }, { name: "모찌", lat: 35.7001, lng: 139.7820, imageUrl: "./image/egg.jpg" }] },
+                { name: "🍣 오사카", lat: 34.6937, lng: 135.5023, desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.", sights: [{ name: "오사카 성", lat: 34.6873, lng: 135.5255, imageUrl: "./image/egg.jpg" }, { name: "도톤보리", lat: 34.6687, lng: 135.5005, imageUrl: "./image/egg.jpg" }, { name: "유니버설 스튜디오 재팬", lat: 34.6654, lng: 135.4323, imageUrl: "./image/egg.jpg" }], foods: [{ name: "오코노미야키", lat: 34.6687, lng: 135.5005, imageUrl: "./image/egg.jpg" }, { name: "타코야키", lat: 34.6682, lng: 135.5001, imageUrl: "./image/egg.jpg" }, { name: "쿠시카츠", lat: 34.6525, lng: 135.5065, imageUrl: "./image/egg.jpg" }] },
+                { name: "🍣 교토", lat: 35.0116, lng: 135.7681, desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.", sights: [{ name: "기요미즈데라", lat: 34.9949, lng: 135.7850, imageUrl: "./image/egg.jpg" }, { name: "금각사", lat: 35.0396, lng: 135.7292, imageUrl: "./image/egg.jpg" }, { name: "아라시야마", lat: 35.0116, lng: 135.6795, imageUrl: "./image/egg.jpg" }], foods: [{ name: "교토 야채 요리", lat: 35.0060, lng: 135.7725, imageUrl: "./image/egg.jpg" }, { name: "두부 요리", lat: 35.0080, lng: 135.7735, imageUrl: "./image/egg.jpg" }, { name: "말차", lat: 35.0090, lng: 135.7745, imageUrl: "./image/egg.jpg" }] },
+                { name: "🍣 나라", lat: 34.6851, lng: 135.8048, desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.", sights: [{ name: "나라 공원", lat: 34.6844, lng: 135.8433, imageUrl: "./image/egg.jpg" }, { name: "도다이지", lat: 34.6881, lng: 135.8398, imageUrl: "./image/egg.jpg" }], foods: [{ name: "나라즈케", lat: 34.6851, lng: 135.8048, imageUrl: "./image/egg.jpg" }, { name: "카키노하즈시", lat: 34.6871, lng: 135.8058, imageUrl: "./image/egg.jpg" }] },
+                { name: "🍣 고베", lat: 34.6913, lng: 135.1830, desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.", sights: [{ name: "고베 포트 타워", lat: 34.6841, lng: 135.1915, imageUrl: "./image/egg.jpg" }, { name: "이진칸 거리", lat: 34.7001, lng: 135.1884, imageUrl: "./image/egg.jpg" }], foods: [{ name: "고베규", lat: 34.6913, lng: 135.1830, imageUrl: "./image/egg.jpg" }, { name: "아카시야키", lat: 34.6465, lng: 135.0003, imageUrl: "./image/egg.jpg" }] },
+                { name: "🍣 삿포로", lat: 43.0618, lng: 141.3545, desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.", sights: [{ name: "오도리 공원", lat: 43.0607, lng: 141.3517, imageUrl: "./image/egg.jpg" }, { name: "삿포로 맥주 박물관", lat: 43.0766, lng: 141.3712, imageUrl: "./image/egg.jpg" }], foods: [{ name: "삿포로 라멘", lat: 43.0618, lng: 141.3545, imageUrl: "./image/egg.jpg" }, { name: "징기스칸", lat: 43.0628, lng: 141.3555, imageUrl: "./image/egg.jpg" }] },
+                { name: "🍣 대마도", lat: 34.2045, lng: 129.2785, desc: "벚꽃 시즌에 갔는데 너무 아름다웠어요.", sights: [{ name: "와타즈미 신사", lat: 34.4093, lng: 129.2891, imageUrl: "./image/egg.jpg" }, { name: "미우다 해변", lat: 34.6366, lng: 129.4180, imageUrl: "./image/egg.jpg" }], foods: [{ name: "이시야키", lat: 34.2045, lng: 129.2785, imageUrl: "./image/egg.jpg" }, { name: "토노이치", lat: 34.2055, lng: 129.2795, imageUrl: "./image/egg.jpg" }] }
+            ]
+        },
+        {
+            name: "중국",
+            cities: [
+                { name: "🐼 광저우", lat: 23.1291, lng: 113.2644, desc: "광저우는 활기찬 도시입니다.", sights: [{ name: "광저우 타워", lat: 23.1068, lng: 113.3217, imageUrl: "./image/egg.jpg" }, { name: "진가사", lat: 23.1166, lng: 113.2541, imageUrl: "./image/egg.jpg" }, { name: "샤미안", lat: 23.1091, lng: 113.2458, imageUrl: "./image/egg.jpg" }], foods: [{ name: "딤섬", lat: 23.1311, lng: 113.2655, imageUrl: "./image/egg.jpg" }, { name: "광동식 로스트 구스", lat: 23.1288, lng: 113.2601, imageUrl: "./image/egg.jpg" }] },
+                { name: "🐼 상하이", lat: 31.2304, lng: 121.4737, desc: "동서양이 공존하는 상하이는 매력적인 곳입니다.", sights: [{ name: "와이탄", lat: 31.2372, lng: 121.4870, imageUrl: "./image/egg.jpg" }, { name: "동방명주", lat: 31.2397, lng: 121.4996, imageUrl: "./image/egg.jpg" }, { name: "예원", lat: 31.2268, lng: 121.4939, imageUrl: "./image/egg.jpg" }], foods: [{ name: "샤오롱바오", lat: 31.2301, lng: 121.4745, imageUrl: "./image/egg.jpg" }, { name: "홍소육", lat: 31.2295, lng: 121.4720, imageUrl: "./image/egg.jpg" }] },
+                { name: "🐼 베이징", lat: 39.9042, lng: 116.4074, desc: "중국의 수도, 베이징입니다.", sights: [{ name: "자금성", lat: 39.9163, lng: 116.3972, imageUrl: "./image/egg.jpg" }, { name: "만리장성", lat: 40.4319, lng: 116.5704, imageUrl: "./image/egg.jpg" }, { name: "천안문 광장", lat: 39.9056, lng: 116.3913, imageUrl: "./image/egg.jpg" }], foods: [{ name: "북경오리", lat: 39.9080, lng: 116.4050, imageUrl: "./image/egg.jpg" }, { name: "마라탕", lat: 39.9030, lng: 116.4080, imageUrl: "./image/egg.jpg" }] }
+            ]
+        },
+        {
+            name: "대만",
+            cities: [
+                { name: "🏮 타이베이", lat: 25.0330, lng: 121.5654, desc: "대만의 활기찬 수도, 타이베이입니다.", sights: [{ name: "타이베이 101", lat: 25.0339, lng: 121.5645, imageUrl: "./image/egg.jpg" }, { name: "국립고궁박물원", lat: 25.1017, lng: 121.5484, imageUrl: "./image/egg.jpg" }, { name: "용산사", lat: 25.0366, lng: 121.4999, imageUrl: "./image/egg.jpg" }], foods: [{ name: "우육면", lat: 25.0335, lng: 121.5659, imageUrl: "./image/egg.jpg" }, { name: "지파이", lat: 25.0478, lng: 121.5173, imageUrl: "./image/egg.jpg" }] },
+                { name: "🏮 지우펀", lat: 25.1091, lng: 121.8449, desc: "센과 치히로의 행방불명 배경지로 유명한 지우펀입니다.", sights: [{ name: "지우펀 옛거리", lat: 25.1091, lng: 121.8449, imageUrl: "./image/egg.jpg" }, { name: "수치루", lat: 25.1105, lng: 121.8455, imageUrl: "./image/egg.jpg" }], foods: [{ name: "땅콩 아이스크림", lat: 25.1090, lng: 121.8445, imageUrl: "./image/egg.jpg" }, { name: "오징어 구이", lat: 25.1085, lng: 121.8450, imageUrl: "./image/egg.jpg" }] }
+            ]
+        },
+        {
+            name: "베트남",
+            cities: [
+                { name: "🌾 다낭", lat: 16.0544, lng: 108.2022, desc: "베트남 중부의 아름다운 해안 도시입니다.", sights: [{ name: "바나힐", lat: 15.9926, lng: 108.0645, imageUrl: "./image/egg.jpg" }, { name: "미케 비치", lat: 16.0689, lng: 108.2427, imageUrl: "./image/egg.jpg" }, { name: "호이안 올드타운", lat: 15.8794, lng: 108.3283, imageUrl: "./image/egg.jpg" }], foods: [{ name: "반쎄오", lat: 16.0617, lng: 108.2255, imageUrl: "./image/egg.jpg" }, { name: "분짜", lat: 16.0640, lng: 108.2260, imageUrl: "./image/egg.jpg" }] },
+                { name: "🌾 하노이", lat: 21.0285, lng: 105.8542, desc: "베트남의 수도, 하노이입니다.", sights: [{ name: "호안끼엠 호수", lat: 21.0288, lng: 105.8522, imageUrl: "./image/egg.jpg" }, { name: "하노이 올드 쿼터", lat: 21.0335, lng: 105.8499, imageUrl: "./image/egg.jpg" }], foods: [{ name: "쌀국수", lat: 21.0280, lng: 105.8545, imageUrl: "./image/egg.jpg" }, { name: "반미", lat: 21.0290, lng: 105.8530, imageUrl: "./image/egg.jpg" }] },
+                { name: "🌾 사파", lat: 22.3333, lng: 103.8333, desc: "베트남 북부 고원의 아름다운 마을입니다.", sights: [{ name: "판시판", lat: 22.3040, lng: 103.7850, imageUrl: "./image/egg.jpg" }, { name: "깟깟 마을", lat: 22.3270, lng: 103.8310, imageUrl: "./image/egg.jpg" }], foods: [{ name: "연어 핫팟", lat: 22.3325, lng: 103.8330, imageUrl: "./image/egg.jpg" }, { name: "돼지고기 꼬치", lat: 22.3335, lng: 103.8340, imageUrl: "./image/egg.jpg" }] }
+            ]
+        },
+        {
+            name: "싱가포르",
+            cities: [
+                { name: "🦁 싱가포르", lat: 1.3521, lng: 103.8198, desc: "깨끗하고 현대적인 도시국가, 싱가포르입니다.", sights: [{ name: "마리나 베이 샌즈", lat: 1.2833, lng: 103.8587, imageUrl: "./image/egg.jpg" }, { name: "가든스 바이 더 베이", lat: 1.2816, lng: 103.8637, imageUrl: "./image/egg.jpg" }, { name: "센토사 섬", lat: 1.2547, lng: 103.8202, imageUrl: "./image/egg.jpg" }], foods: [{ name: "칠리 크랩", lat: 1.2916, lng: 103.8568, imageUrl: "./image/egg.jpg" }, { name: "카야 토스트", lat: 1.2858, lng: 103.8443, imageUrl: "./image/egg.jpg" }] }
+            ]
+        },
+        {
+            name: "라오스",
+            cities: [
+                { name: "🛕 방비엥", lat: 18.9103, lng: 102.4468, desc: "자연이 아름다운 방비엥입니다.", sights: [{ name: "블루라군", lat: 18.9140, lng: 102.3990, imageUrl: "./image/egg.jpg" }, { name: "탐짱 동굴", lat: 18.9050, lng: 102.4500, imageUrl: "./image/egg.jpg" }], foods: [{ name: "바게트 샌드위치", lat: 18.9110, lng: 102.4470, imageUrl: "./image/egg.jpg" }, { name: "라오스 바비큐", lat: 18.9100, lng: 102.4480, imageUrl: "./image/egg.jpg" }] }
+            ]
+        },
+        {
+            name: "말레이시아",
+            cities: [
+                { name: "🕌 쿠알라룸푸르", lat: 3.1390, lng: 101.6869, desc: "활기찬 수도, 쿠알라룸푸르입니다.", sights: [{ name: "페트로나스 트윈 타워", lat: 3.1578, lng: 101.7119, imageUrl: "./image/egg.jpg" }, { name: "바투 동굴", lat: 3.2378, lng: 101.6841, imageUrl: "./image/egg.jpg" }], foods: [{ name: "나시 르막", lat: 3.1412, lng: 101.6865, imageUrl: "./image/egg.jpg" }, { name: "사테", lat: 3.1400, lng: 101.6880, imageUrl: "./image/egg.jpg" }] }
+            ]
+        },
+        {
+            name: "태국",
+            cities: [
+                { name: "🐘 방콕", lat: 13.7563, lng: 100.5018, desc: "활기찬 수도, 방콕입니다.", sights: [{ name: "왕궁", lat: 13.7540, lng: 100.4930, imageUrl: "./image/egg.jpg" }, { name: "왓 아룬", lat: 13.7460, lng: 100.4880, imageUrl: "./image/egg.jpg" }], foods: [{ name: "팟타이", lat: 13.7550, lng: 100.5020, imageUrl: "./image/egg.jpg" }, { name: "망고 스티키 라이스", lat: 13.7570, lng: 100.5030, imageUrl: "./image/egg.jpg" }] }
+            ]
+        },
+        {
+            name: "필리핀",
+            cities: [
+                { name: "🌊 세부", lat: 10.3157, lng: 123.8854, desc: "아름다운 해변과 다이빙 명소로 유명한 세부입니다.", sights: [{ name: "막탄 섬", lat: 10.3000, lng: 123.9500, imageUrl: "./image/egg.jpg" }, { name: "가와산 폭포", lat: 9.8000, lng: 123.3700, imageUrl: "./image/egg.jpg" }], foods: [{ name: "레촌", lat: 10.3160, lng: 123.8860, imageUrl: "./image/egg.jpg" }, { name: "산미구엘", lat: 10.3150, lng: 123.8840, imageUrl: "./image/egg.jpg" }] }
+            ]
+        },
+        {
+            name: "프랑스",
+            cities: [
+                { name: "🗼 파리", lat: 48.8566, lng: 2.3522, desc: "예술과 낭만의 도시, 파리입니다.", sights: [{ name: "에펠탑", lat: 48.8584, lng: 2.2945, imageUrl: "./image/egg.jpg" }, { name: "루브르 박물관", lat: 48.8606, lng: 2.3376, imageUrl: "./image/egg.jpg" }, { name: "개선문", lat: 48.8738, lng: 2.2950, imageUrl: "./image/egg.jpg" }], foods: [{ name: "바게트", lat: 48.8570, lng: 2.3530, imageUrl: "./image/egg.jpg" }, { name: "마카롱", lat: 48.8580, lng: 2.3540, imageUrl: "./image/egg.jpg" }] }
+            ]
+        },
+        {
+            name: "영국",
+            cities: [
+                { name: "🏰 런던", lat: 51.5074, lng: -0.1278, desc: "역사와 현대가 어우러진 도시, 런던입니다.", sights: [{ name: "빅벤", lat: 51.5007, lng: -0.1246, imageUrl: "./image/egg.jpg" }, { name: "런던 타워", lat: 51.5081, lng: -0.0759, imageUrl: "./image/egg.jpg" }, { name: "버킹엄 궁전", lat: 51.5014, lng: -0.1419, imageUrl: "./image/egg.jpg" }], foods: [{ name: "피쉬 앤 칩스", lat: 51.5070, lng: -0.1280, imageUrl: "./image/egg.jpg" }, { name: "영국식 아침 식사", lat: 51.5080, lng: -0.1290, imageUrl: "./image/egg.jpg" }] }
+            ]
+        },
+        {
+            name: "독일",
+            cities: [
+                { name: "🍺 베를린", lat: 52.5200, lng: 13.4050, desc: "독일의 수도, 베를린입니다.", sights: [{ name: "브란덴부르크 문", lat: 52.5163, lng: 13.3777, imageUrl: "./image/egg.jpg" }, { name: "베를린 장벽", lat: 52.5065, lng: 13.3941, imageUrl: "./image/egg.jpg" }], foods: [{ name: "커리부어스트", lat: 52.5190, lng: 13.4060, imageUrl: "./image/egg.jpg" }, { name: "슈니첼", lat: 52.5210, lng: 13.4070, imageUrl: "./image/egg.jpg" }] }
+            ]
+        },
+        {
+            name: "이탈리아",
+            cities: [
+                { name: "🍕 로마", lat: 41.9028, lng: 12.4964, desc: "고대 로마의 유적을 만날 수 있는 로마입니다.", sights: [{ name: "콜로세움", lat: 41.8902, lng: 12.4922, imageUrl: "./image/egg.jpg" }, { name: "포로 로마노", lat: 41.8922, lng: 12.4851, imageUrl: "./image/egg.jpg" }], foods: [{ name: "피자", lat: 41.9030, lng: 12.4970, imageUrl: "./image/egg.jpg" }, { name: "파스타", lat: 41.9040, lng: 12.4980, imageUrl: "./image/egg.jpg" }] },
+                { name: "🍕 피사", lat: 43.7230, lng: 10.3965, desc: "피사의 사탑으로 유명한 도시입니다.", sights: [{ name: "피사의 사탑", lat: 43.7232, lng: 10.3966, imageUrl: "./image/egg.jpg" }], foods: [{ name: "젤라또", lat: 43.7235, lng: 10.3960, imageUrl: "./image/egg.jpg" }] },
+                { name: "🍕 베니스", lat: 45.4408, lng: 12.3155, desc: "물의 도시, 베니스입니다.", sights: [{ name: "산 마르코 광장", lat: 45.4344, lng: 12.3392, imageUrl: "./image/egg.jpg" }, { name: "리알토 다리", lat: 45.4380, lng: 12.3359, imageUrl: "./image/egg.jpg" }], foods: [{ name: "해산물 리소토", lat: 45.4400, lng: 12.3150, imageUrl: "./image/egg.jpg" }] }
+            ]
+        },
+        {
+            name: "그리스",
+            cities: [
+                { name: "🏛️ 아테네", lat: 37.9838, lng: 23.7275, desc: "서양 문명의 발상지, 아테네입니다.", sights: [{ name: "아크로폴리스", lat: 37.9715, lng: 23.7257, imageUrl: "./image/egg.jpg" }, { name: "파르테논 신전", lat: 37.9715, lng: 23.7236, imageUrl: "./image/egg.jpg" }], foods: [{ name: "수블라키", lat: 37.9830, lng: 23.7280, imageUrl: "./image/egg.jpg" }] },
+                { name: "🏛️ 산토리니", lat: 36.3932, lng: 25.4615, desc: "아름다운 풍경의 섬, 산토리니입니다.", sights: [{ name: "이아 마을", lat: 36.4600, lng: 25.3750, imageUrl: "./image/egg.jpg" }, { name: "피라 마을", lat: 36.4168, lng: 25.4299, imageUrl: "./image/egg.jpg" }], foods: [{ name: "문어구이", lat: 36.3930, lng: 25.4620, imageUrl: "./image/egg.jpg" }] }
+            ]
+        },
+        {
+            name: "이집트",
+            cities: [
+                { name: "🐫 카이로", lat: 30.0444, lng: 31.2357, desc: "이집트의 수도, 카이로입니다.", sights: [{ name: "기자의 피라미드", lat: 29.9792, lng: 31.1342, imageUrl: "./image/egg.jpg" }, { name: "이집트 박물관", lat: 30.0478, lng: 31.2361, imageUrl: "./image/egg.jpg" }], foods: [{ name: "코샤리", lat: 30.0440, lng: 31.2360, imageUrl: "./image/egg.jpg" }] },
+                { name: "🐫 룩소르", lat: 25.6870, lng: 32.6396, desc: "고대 이집트의 유적이 많은 룩소르입니다.", sights: [{ name: "룩소르 신전", lat: 25.6997, lng: 32.6385, imageUrl: "./image/egg.jpg" }, { name: "카르나크 신전", lat: 25.7186, lng: 32.6575, imageUrl: "./image/egg.jpg" }], foods: [{ name: "타메이야", lat: 25.6875, lng: 32.6390, imageUrl: "./image/egg.jpg" }] },
+                { name: "🐫 아스완", lat: 24.0889, lng: 32.8998, desc: "나일강이 아름다운 아스완입니다.", sights: [{ name: "아스완 하이 댐", lat: 23.9748, lng: 32.8722, imageUrl: "./image/egg.jpg" }, { name: "미완성 오벨리스크", lat: 24.0903, lng: 32.8998, imageUrl: "./image/egg.jpg" }], foods: [{ name: "히비스커스 차", lat: 24.0890, lng: 32.9000, imageUrl: "./image/egg.jpg" }] }
+            ]
         }
-    }
+    ];
 
-    // 각 장소 링크 클릭 시 해당 섹션으로 스크롤
-    document.querySelectorAll('.place-link').forEach(link => {
-        link.addEventListener('click', function () {
-            const id = this.getAttribute('data-id');
-            scrollToSection(id);
-        });
+    // 마커 아이콘 정의 (생략)
+    const redIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34],
+        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png', shadowSize: [41, 41]
+    });
+    const sightIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34],
+        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png', shadowSize: [41, 41]
+    });
+    const foodIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
+        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34],
+        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png', shadowSize: [41, 41]
+    });
+    const cityMarkerIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34],
+        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png', shadowSize: [41, 41]
     });
 
-    // 스크롤 시 버튼 보이게
-    window.addEventListener('scroll', function () {
-        const button = document.getElementById('scrollTopButton');
-        if (window.scrollY > 100) {
-            button.classList.add('show');
-        } else {
-            button.classList.remove('show');
-        }
-    });
+    // 맵 초기화
+    function initMap() {
+    if (map) map.remove();
+    const bounds = [
+        [-90, -180],
+        [90, 180]
+    ];
+    map = L.map('map', {
+        maxBounds: bounds,
+        maxBoundsViscosity: 0.8,
+        minZoom: 3,
+        maxZoom: 19,
+        zoomControl: false // 이 부분을 추가하여 확대/축소 버튼을 제거합니다.
+    }).setView([30, 120], 2);
+    
+    // 이전에 있던 L.control.zoom() 코드는 삭제하거나 주석 처리합니다.
+    // L.control.zoom({ position: 'topright' }).addTo(map); 
 
-    // 스크롤 맨 위로 이동
-    function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+    const legend = L.control({ position: 'bottomright' });
+    legend.onAdd = function (map) {
+        const div = L.DomUtil.create('div', 'info legend');
+        div.innerHTML = `<p><b>마커 정보</b></p><p><i style="background:#337ab7;"></i> 도시</p><p><i style="background:#5cb85c;"></i> 관광지</p><p><i style="background:#f0ad4e;"></i> 맛집</p>`;
+        return div;
+    };
+    legend.addTo(map);
+}
+    
+    function resetMapAndUI() {
+        allCityMarkers.forEach(marker => map.removeLayer(marker));
+        allCityMarkers = [];
+        currentDetailMarkers.forEach(marker => map.removeLayer(marker));
+        currentDetailMarkers = [];
+        selectedCityMarker = null;
+        selectedDetailMarker = null;
+        selectedDetailListItem = null;
+        createAllCityMarkers();
     }
-    const slides = document.querySelectorAll(".image-slide");
-    let currentIndex = 0;
-
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.classList.toggle("active", i === index);
-        });
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const modal = document.getElementById("image-modal");
-        const modalImg = document.getElementById("modal-img");
-        const caption = document.getElementById("caption");
-        const closeBtn = document.querySelector(".close-btn");
-
-        let currentSlides = [];
-        let currentIndex = 0;
-
-        // 슬라이드 보여주는 함수
-        function showSlide(index) {
-            if (index >= 0 && index < currentSlides.length) {
-                modalImg.src = currentSlides[index].src;
-                caption.textContent = currentSlides[index].alt || "";
-            }
-        }
-
-        // 모든 슬라이더 처리
-        document.querySelectorAll('.outer-slider-container').forEach(container => {
-            const slides = container.querySelectorAll(".image-slide");
-            const leftBtn = container.querySelector(".left-btn");
-            const rightBtn = container.querySelector(".right-btn");
-
-            // 페이지 슬라이더 좌우 버튼
-            if (slides.length > 1) {
-                let index = 0;
-                function showPageSlide(i) {
-                    slides.forEach((slide, idx) => {
-                        slide.classList.toggle("active", idx === i);
-                    });
-                }
-
-                leftBtn?.addEventListener("click", () => {
-                    index = (index - 1 + slides.length) % slides.length;
-                    showPageSlide(index);
+    
+    function createAllCityMarkers() {
+        data.forEach(country => {
+            country.cities.forEach(city => {
+                const marker = L.marker([city.lat, city.lng], { icon: cityMarkerIcon }).addTo(map);
+                marker.bindPopup(city.name);
+                marker.on('click', () => {
+                    if (window.innerWidth <= 768) {
+                        currentCity = city;
+                        showDetails(city);
+                        mobileControls.classList.add('open');
+                    } else {
+                        showCityInfo(city);
+                    }
+                    map.setView([city.lat, city.lng], 10);
                 });
-
-                rightBtn?.addEventListener("click", () => {
-                    index = (index + 1) % slides.length;
-                    showPageSlide(index);
-                });
-
-                showPageSlide(index);
-            } else {
-                // 슬라이드가 하나면 버튼 숨김
-                leftBtn?.style.setProperty("display", "none");
-                rightBtn?.style.setProperty("display", "none");
-            }
-
-            // 이미지 클릭 시 모달 열기
-            slides.forEach((slide, idx) => {
-                slide.addEventListener("click", () => {
-                    modal.style.display = "flex";
-                    currentSlides = Array.from(slides);
-                    currentIndex = idx;
-                    showSlide(currentIndex);
-                });
+                allCityMarkers.push(marker);
             });
         });
+    }
 
-        // 모달 이미지 클릭 시 다음 슬라이드
-        modalImg.addEventListener("click", () => {
-            if (currentSlides.length > 0) {
-                currentIndex = (currentIndex + 1) % currentSlides.length;
-                showSlide(currentIndex);
-            }
+    // 데스크톱 UI 로직
+    function setupDesktopUI() {
+        mobileControls.style.display = 'none';
+        mobileToggleBtn.style.display = 'none';
+        sidebar.style.display = 'flex';
+        openSidebar();
+        createCountryList();
+        resetMapAndUI();
+    }
+    function createCountryList() {
+        countryListDiv.innerHTML = "";
+        data.forEach(country => {
+            const countryBtn = document.createElement("button");
+            countryBtn.className = "country-btn title-btn";
+            countryBtn.textContent = country.name;
+            countryListDiv.appendChild(countryBtn);
+            const cityList = document.createElement("div");
+            cityList.className = "city-list";
+            country.cities.forEach(city => {
+                const cityBtn = document.createElement("button");
+                cityBtn.className = "city-btn";
+                cityBtn.textContent = city.name;
+                cityList.appendChild(cityBtn);
+                cityBtn.addEventListener("click", () => {
+                    showCityInfo(city);
+                    
+                    // panTo 대신 flyTo를 사용하고, zoom 레벨을 10으로 지정합니다.
+                    const panOffset = [sidebar.offsetWidth / 2, 0];
+                    map.flyTo([city.lat, city.lng], 10, {
+                        padding: panOffset,
+                    });
+                });
+            });
+            countryListDiv.appendChild(cityList);
+            countryBtn.addEventListener("click", () => {
+                const isOpen = cityList.style.maxHeight !== "0px" && cityList.style.maxHeight !== "";
+                document.querySelectorAll(".city-list").forEach(cl => cl.style.maxHeight = "0");
+                if (!isOpen) { cityList.style.maxHeight = cityList.scrollHeight + "px"; }
+                description.innerHTML = "";
+                countryListDiv.classList.remove("hidden");
+                showCountryListBtn.classList.add("hidden");
+                resetMapAndUI();
+            });
         });
+    }
+    function showCityInfo(city) {
+        currentDetailMarkers.forEach(marker => map.removeLayer(marker));
+        currentDetailMarkers = [];
+        selectedDetailMarker = null;
+        selectedDetailListItem = null;
+        const cityMarker = allCityMarkers.find(marker => {
+            const latLng = marker.getLatLng();
+            return latLng.lat === city.lat && latLng.lng === city.lng;
+        });
+        if (selectedCityMarker) { selectedCityMarker.setIcon(cityMarkerIcon); }
+        if (cityMarker) {
+            cityMarker.setIcon(redIcon);
+            selectedCityMarker = cityMarker;
+        }
+        description.innerHTML = "";
+        description.classList.remove("hidden");
+        countryListDiv.classList.add("hidden");
+        showCountryListBtn.classList.remove("hidden");
+        const cityTitle = document.createElement("h2");
+        cityTitle.textContent = city.name;
+        description.appendChild(cityTitle);
+        const cityDesc = document.createElement("p");
+        cityDesc.textContent = city.desc;
+        description.appendChild(cityDesc);
+        const sightsTitle = document.createElement("h3");
+        sightsTitle.textContent = "관광지";
+        description.appendChild(sightsTitle);
+        const sightsList = document.createElement("ul");
+        sightsList.id = "sights-list";
+        description.appendChild(sightsList);
+        city.sights.forEach(item => {
+            const listItem = document.createElement("li");
+            listItem.textContent = item.name;
+            sightsList.appendChild(listItem);
+            const marker = L.marker([item.lat, item.lng], { icon: sightIcon }).addTo(map);
+            const popupContent = `<div style="text-align: center;"><h4>${item.name}</h4><img src="${item.imageUrl}" alt="${item.name}" style="width:150px; height:auto; border-radius: 5px;"></div>`;
+            marker.bindPopup(popupContent);
+            marker.originalIcon = sightIcon;
+            currentDetailMarkers.push(marker);
+            const onClick = () => {
+                if (selectedDetailMarker) { selectedDetailMarker.setIcon(selectedDetailMarker.originalIcon); }
+                if (selectedDetailListItem) { selectedDetailListItem.classList.remove("active"); }
+                marker.setIcon(redIcon);
+                marker.openPopup();
+                listItem.classList.add("active");
+                selectedDetailMarker = marker;
+                selectedDetailListItem = listItem;
+                
+                const panOffset = [sidebar.offsetWidth / 2, 0];
+                map.flyTo([item.lat, item.lng], 15, {
+                    padding: panOffset,
+                });
+            };
+            listItem.addEventListener("click", onClick);
+            marker.on("click", onClick);
+        });
+        const foodsTitle = document.createElement("h3");
+        foodsTitle.textContent = "맛집";
+        description.appendChild(foodsTitle);
+        const foodsList = document.createElement("ul");
+        foodsList.id = "foods-list";
+        description.appendChild(foodsList);
+        city.foods.forEach(item => {
+            const listItem = document.createElement("li");
+            listItem.textContent = item.name;
+            foodsList.appendChild(listItem);
+            const marker = L.marker([item.lat, item.lng], { icon: foodIcon }).addTo(map);
+            const popupContent = `<div style="text-align: center;"><h4>${item.name}</h4><img src="${item.imageUrl}" alt="${item.name}" style="width:150px; height:auto; border-radius: 5px;"></div>`;
+            marker.bindPopup(popupContent);
+            marker.originalIcon = foodIcon;
+            currentDetailMarkers.push(marker);
+            const onClick = () => {
+                if (selectedDetailMarker) { selectedDetailMarker.setIcon(selectedDetailMarker.originalIcon); }
+                if (selectedDetailListItem) { selectedDetailListItem.classList.remove("active"); }
+                marker.setIcon(redIcon);
+                marker.openPopup();
+                listItem.classList.add("active");
+                selectedDetailMarker = marker;
+                selectedDetailListItem = listItem;
+                
+                const panOffset = [sidebar.offsetWidth / 2, 0];
+                map.flyTo([item.lat, item.lng], 15, {
+                    padding: panOffset,
+                });
+            };
+            listItem.addEventListener("click", onClick);
+            marker.on("click", onClick);
+        });
+    }
 
-        // 모달 닫기
-        closeBtn.addEventListener("click", () => {
-            modal.style.display = "none";
+    // 모바일 UI 로직
+    function setupMobileUI() {
+        sidebar.style.display = 'none';
+        mobileControls.style.display = 'flex';
+        mobileControls.classList.add('closed');
+        mobileToggleBtn.style.display = 'flex';
+        createCountrySlider();
+        resetMapAndUI();
+    }
+    
+    function toggleMobileControls() {
+        const isOpen = mobileControls.classList.contains('open');
+        if (isOpen) {
+            mobileControls.classList.remove('open');
+            mobileControls.classList.add('closed');
+            mobileToggleBtn.textContent = '☰';
+        } else {
+            mobileControls.classList.remove('closed');
+            mobileControls.classList.add('open');
+            mobileToggleBtn.textContent = '✖';
+        }
+    }
+    
+    function createCountrySlider() {
+        currentView = 'countries';
+        infoPanel.style.display = 'none';
+        backButton.classList.add('hidden');
+        countrySlider.innerHTML = "";
+        countrySlider.style.display = 'flex';
+        
+        data.forEach(country => {
+            const countryBtn = document.createElement("button");
+            countryBtn.className = "country-btn";
+            countryBtn.textContent = country.name;
+            countrySlider.appendChild(countryBtn);
+            countryBtn.addEventListener('click', () => {
+                currentCountry = country;
+                showCities(country);
+            });
         });
+    }
+    function showCities(country) {
+        currentView = 'cities';
+        countrySlider.style.display = 'none';
+        infoPanel.style.display = 'block';
+        backButton.classList.remove('hidden');
+        contentList.innerHTML = `<h4 class="title">${country.name}</h4>`;
+        
+        country.cities.forEach(city => {
+            const listItem = document.createElement("li");
+            listItem.textContent = city.name;
+            contentList.appendChild(listItem);
+            listItem.addEventListener('click', () => {
+                currentCity = city;
+                showDetails(city);
+                map.setView([city.lat, city.lng], 10);
+            });
+        });
+        
+        currentDetailMarkers.forEach(marker => map.removeLayer(marker));
+        currentDetailMarkers = [];
 
-        window.addEventListener("click", (e) => {
-            if (e.target === modal) {
-                modal.style.display = "none";
-            }
+        allCityMarkers.forEach(marker => map.removeLayer(marker));
+        allCityMarkers = [];
+        country.cities.forEach(city => {
+            const marker = L.marker([city.lat, city.lng], { icon: cityMarkerIcon }).addTo(map);
+            marker.on('click', () => {
+                currentCity = city;
+                showDetails(city);
+                map.setView([city.lat, city.lng], 10);
+            });
+            allCityMarkers.push(marker);
         });
+    }
+ // `showDetails` 함수 수정
+    function showDetails(city) {
+        currentView = 'details';
+        backButton.classList.remove('hidden');
+        contentList.innerHTML = `<h4 class="title">${city.name}</h4><p>${city.desc}</p>`;
+        
+        // 모바일 UI에서는 도시 마커를 지우는 대신, 기존 마커를 재활용하여 아이콘을 변경합니다.
+        allCityMarkers.forEach(marker => map.removeLayer(marker));
+        allCityMarkers = [];
+        
+        const allItems = [...city.sights.map(item => ({ ...item, type: 'sight' })), ...city.foods.map(item => ({ ...item, type: 'food' }))];
+        
+        currentDetailMarkers.forEach(marker => map.removeLayer(marker));
+        currentDetailMarkers = [];
+        
+        // 도시 마커 아이콘 변경 로직은 제거하고, 세부 정보 마커만 표시
+        
+        allItems.forEach(item => {
+            const listItem = document.createElement("li");
+            listItem.innerHTML = `<img src="${item.imageUrl || './image/placeholder.png'}" alt="${item.name}" /><span>${item.name}</span>`;
+            contentList.appendChild(listItem);
+            
+            const icon = item.type === 'sight' ? sightIcon : foodIcon;
+            const marker = L.marker([item.lat, item.lng], { icon: icon }).addTo(map);
+
+            // 마커에 이미지와 정보를 담은 팝업을 바인딩합니다.
+            const popupContent = `
+                <div style="text-align: center;">
+                    <h4>${item.name}</h4>
+                    <img src="${item.imageUrl}" alt="${item.name}" style="width: 150px; height: auto; border-radius: 5px;">
+                </div>
+            `;
+            marker.bindPopup(popupContent);
+            
+            marker.originalIcon = icon;
+            currentDetailMarkers.push(marker);
+            
+            const onClick = () => {
+                if (selectedDetailMarker) { selectedDetailMarker.setIcon(selectedDetailMarker.originalIcon); }
+                if (selectedDetailListItem) { selectedDetailListItem.classList.remove("active"); }
+                
+                marker.setIcon(redIcon);
+                marker.openPopup();
+                listItem.classList.add("active");
+                
+                selectedDetailMarker = marker;
+                selectedDetailListItem = listItem;
+                
+                map.setView([item.lat, item.lng], 15);
+            };
+            
+            listItem.addEventListener("click", onClick);
+            marker.on("click", onClick);
+        });
+    }
+
+    // 데스크톱 사이드바 토글 함수
+    function closeSidebar() {
+	    sidebar.classList.add("closed");
+	    mapDiv.classList.add("expanded");
+	    openBtn.style.display = 'block';
+	    toggleBtn.style.display = 'none';
+	}
+	function openSidebar() {
+	    sidebar.classList.remove("closed");
+	    mapDiv.classList.remove("expanded");
+	    openBtn.style.display = 'none';
+	    toggleBtn.style.display = 'block';
+	}
+    
+    // 화면 크기 변경 감지 및 UI 초기화
+    function handleResize() {
+        if (window.innerWidth <= 768) {
+            setupMobileUI();
+        } else {
+            setupDesktopUI();
+        }
+    }
+
+    // 이벤트 리스너
+    toggleBtn.addEventListener("click", closeSidebar);
+    openBtn.addEventListener("click", openSidebar);
+    showCountryListBtn.addEventListener("click", () => {
+        description.classList.add("hidden");
+        countryListDiv.classList.remove("hidden");
+        showCountryListBtn.classList.add("hidden");
+        resetMapAndUI();
+        if (selectedCityMarker) {
+            selectedCityMarker.setIcon(cityMarkerIcon);
+            selectedCityMarker = null;
+        }
     });
+    backButton.addEventListener("click", () => {
+        if (currentView === 'cities') {
+            createCountrySlider();
+        } else if (currentView === 'details') {
+            showCities(currentCountry);
+        }
+    });
+    
+    mobileToggleBtn.addEventListener("click", toggleMobileControls);
 
+    // 초기 실행
+    initMap();
+    handleResize();
+    window.addEventListener('resize', handleResize);
 </script>
-
-
-<button id="scrollTopButton" onclick="scrollToTop()">맨 위로</button>
 </body>
 </html>
