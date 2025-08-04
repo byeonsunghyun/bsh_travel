@@ -517,6 +517,23 @@ body {
         color: #eee;
         transition: color 0.2s ease;
     }
+#content-list li.sight::before {
+        content: '\f66f'; /* Font Awesome 랜드마크 아이콘 */
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        margin-right: 8px;
+        color: #5cb85c; /* 초록색 */
+    }
+
+    /* 맛집 항목에 아이콘 추가 */
+    #content-list li.food::before {
+        content: '\f2e7'; /* Font Awesome 식기 아이콘 */
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        margin-right: 8px;
+        color: #f0ad4e; /* 주황색 */
+    }
+    
     .leaflet-bottom {
         bottom: 50px;
     }
