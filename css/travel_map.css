@@ -326,7 +326,6 @@ body {
 }
 
 /* ------------------- 모바일 전용 UI (768px 이하) ------------------- */
-/* ------------------- 모바일 전용 UI (768px 이하) ------------------- */
 @media (max-width: 768px) {
     body {
         flex-direction: column;
@@ -518,8 +517,37 @@ body {
         color: #eee;
         transition: color 0.2s ease;
     }
-
     .leaflet-bottom {
         bottom: 50px;
     }
+    .leaflet-control-container .leaflet-control-attribution {
+    position: fixed !important;
+    top: 10px !important;
+    left: 10px !important;
+    right: auto !important;
+    bottom: auto !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+    color: #fff !important;
+    padding: 5px 8px !important;
+    border-radius: 5px !important;
+    font-size: 10px !important;
+    z-index: 9999 !important;
+    display: block !important;
+  }
+
+  .leaflet-control-container .info.legend {
+    position: fixed !important;
+    top: 50px !important;
+    left: 10px !important;
+    right: auto !important;
+    bottom: auto !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+    color: #fff !important;
+    padding: 6px 8px !important;
+    border-radius: 5px !important;
+    font-size: 11px !important;
+    z-index: 9999 !important;
+  }
+  
+  
 }
