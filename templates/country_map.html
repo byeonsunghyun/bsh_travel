@@ -516,7 +516,13 @@
         allItems.forEach(item => {
             const listItem = document.createElement("li");
             listItem.innerHTML = `<img src="${item.imageUrl || './image/placeholder.png'}" alt="${item.name}" /><span>${item.name}</span>`;
-            contentList.appendChild(listItem);
+            if (item.type === 'sight') {
+                listItem.classList.add('sight');
+            } else if (item.type === 'food') {
+                listItem.classList.add('food');
+            }
+		
+		contentList.appendChild(listItem);
             
             const icon = item.type === 'sight' ? sightIcon : foodIcon;
             const marker = L.marker([item.lat, item.lng], { icon: icon }).addTo(map);
