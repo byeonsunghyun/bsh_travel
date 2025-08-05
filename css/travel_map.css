@@ -35,11 +35,9 @@ body {
 }
 
 #showCountryListBtn {
-    position: absolute;
-    bottom: 10px;
-    left: 20px;
-    right: 20px;
-    width: auto;
+    margin-top: auto;
+    
+    width: 100%;
     border-radius: 6px;
     padding: 10px 0;
     z-index: 100;
@@ -110,6 +108,7 @@ body {
     flex-direction: column;
     gap: 5px;
     align-items: center;
+    flex-grow: 1;
 }
 
 .country-btn {
@@ -172,6 +171,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-grow: 1;
 }
 
 .description h2 {
