@@ -8,6 +8,24 @@
     font-size: 14px;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
+
+.hotel-btn.dark {
+  display: inline-block;
+  background-color: #2a2a2a;    /* 기존과 어울리는 다크 그레이 */
+  color: #fff;                  /* 흰 글씨 */
+  padding: 8px 14px;
+  border-radius: 20px;          /* pill 형태로 부드럽게 */
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);  /* 약한 그림자 */
+}
+
+.hotel-btn.dark:hover {
+  background-color: #444;       /* 호버 시 더 밝은 회색 */
+}
         .dday-badge {
             background-color: #ff6b6b;
             color: white;
