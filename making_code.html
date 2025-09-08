@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>여행 및 호텔 HTML 생성기</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: #121212;
+      color: #ffffff;
+      padding: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    h1, h2, h3 {
+      text-align: center;
+      color: #3498db;
+      font-weight: 700;
+      margin-top: 40px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    h1 {
+      font-size: 3em;
+    }
+    h2 {
+      font-size: 2.5em;
+    }
+    h3 {
+      font-size: 1.8em;
+      color: #ffffff;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin: 15px 0 5px;
+      color: #bdc3c7;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #333;
+      border-radius: 8px;
+      background: #1e1e1e;
+      color: #ffffff;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    textarea {
+      height: 400px;
+      margin-top: 20px;
+      font-family: monospace;
+      resize: vertical;
+    }
+    button {
+      margin-top: 15px;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease, transform 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    button:active {
+        transform: translateY(2px);
+    }
+    button.travel-btn {
+      background: #3498db;
+      color: #fff;
+    }
+    button.travel-btn:hover {
+      background: #2980b9;
+    }
+    button.hotel-btn {
+      background: #2ecc71;
+      color: #fff;
+    }
+    button.hotel-btn:hover {
+      background: #27ae60;
+    }
+    .input-block {
+      background: #1e1e1e;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #444;
+      margin: 50px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>여행 및 호텔 HTML 생성기</h1>
+
+  <label>나라 이름 (영어):</label>
+  <input type="text" id="country" placeholder="예: japan">
+
+  <hr />
+  <h2>여행 HTML 생성기</h2>
+  <div class="input-block">
+    <h3>관광지 입력</h3>
+    <label>관광지 개수:</label>
+    <input type="number" id="placeCount" min="1" max="10" value="3">
+    <button class="travel-btn" onclick="generatePlaceInputs()">관광지 입력칸 생성</button>
+    <div id="placesForm"></div>
+  </div>
+
+  <div class="input-block">
+    <h3>음식 입력</h3>
+    <label>음식 개수:</label>
+    <input type="number" id="foodCount" min="1" max="10" value="3">
+    <button class="travel-btn" onclick="generateFoodInputs()">음식 입력칸 생성</button>
+    <div id="foodsForm"></div>
+  </div>
+
+  <button class="travel-btn" onclick="generateTravelHTML()">여행 HTML 코드 생성</button>
+
+  <hr />
+  <h2>호텔 HTML 생성기</h2>
+  <div class="input-block">
+    <h3>호텔 입력</h3>
+    <label>호텔 개수:</label>
+    <input type="number" id="hotelCount" min="1" max="10" value="2">
+    <button class="hotel-btn" onclick="generateHotelInputs()">호텔 입력칸 생성</button>
+    <div id="hotelsForm"></div>
+  </div>
+
+  <button class="hotel-btn" onclick="generateHotelHTML()">호텔 HTML 코드 생성</button>
+
+  <hr />
+  <h2>결과</h2>
+  <textarea id="output" readonly></textarea>
+  <button class="travel-btn" onclick="generateCombinedHTML()">전체 HTML 코드 생성</button>
+
+  <script>
+    // 여행 HTML 생성기 스크립트
+    function generatePlaceInputs() {
+      const count = parseInt(document.getElementById("placeCount").value, 10);
+      const container = document.getElementById("placesForm");
+      container.innerHTML = "";
+
+      for (let i = 1; i <= count; i++) {
+        const div = document.createElement("div");
+        div.className = "input-block";
+        div.innerHTML = `
+          <label>관광지 ${i} 이름:</label>
+          <input type="text" id="placeName${i}" placeholder="예: 관광지${i}">
+          <label>관광지 ${i} 사진 개수:</label>
+          <input type="number" id="placePhoto${i}" min="1" max="10" value="2">
+        `;
+        container.appendChild(div);
+      }
+    }
+
+    function generateFoodInputs() {
+      const count = parseInt(document.getElementById("foodCount").value, 10);
+      const container = document.getElementById("foodsForm");
+      container.innerHTML = "";
+
+      for (let i = 1; i <= count; i++) {
+        const div = document.createElement("div");
+        div.className = "input-block";
+        div.innerHTML = `
+          <label>음식 ${i} 이름:</label>
+          <input type="text" id="foodName${i}" placeholder="예: 음식${i}">
+          <label>음식 ${i} 사진 개수:</label>
+          <input type="number" id="foodPhoto${i}" min="1" max="10" value="2">
+        `;
+        container.appendChild(div);
+      }
+    }
+
+    // 호텔 HTML 생성기 스크립트
+    function generateHotelInputs() {
+      const count = parseInt(document.getElementById("hotelCount").value, 10);
+      const container = document.getElementById("hotelsForm");
+      container.innerHTML = "";
+
+      for (let i = 1; i <= count; i++) {
+        const div = document.createElement("div");
+        div.className = "input-block";
+        div.innerHTML = `
+          <label>호텔 ${i} 이름:</label>
+          <input type="text" id="hotelName${i}" placeholder="예: 호텔${i}">
+          <label>체크인:</label>
+          <input type="text" id="hotelCheckin${i}" placeholder="예: 2025-09-01">
+          <label>체크아웃:</label>
+          <input type="text" id="hotelCheckout${i}" placeholder="예: 2025-09-02">
+          <label>숙박일수:</label>
+          <input type="text" id="hotelNights${i}" placeholder="예: 1박">
+          <label>사진 개수:</label>
+          <input type="number" id="hotelPhoto${i}" min="1" max="10" value="2">
+        `;
+        container.appendChild(div);
+      }
+    }
+    
+    // 전체 HTML 생성 스크립트
+    let travelHTML = "";
+    let hotelHTML = "";
+
+    function generateTravelHTML() {
+      const country = document.getElementById("country").value.trim();
+      const placeCount = parseInt(document.getElementById("placeCount").value, 10);
+      const foodCount = parseInt(document.getElementById("foodCount").value, 10);
+      let html = "";
+
+      // 관광지 섹션
+      html += `<div id="places" class="section">
+  <h2>📍 방문한 주요 장소</h2>
+  <div class="place-grid">\n`;
+      for (let i = 1; i <= placeCount; i++) {
+        const name = document.getElementById("placeName"+i).value || `관광지${i}`;
+        html += `    <a href="javascript:void(0);" class="place-link" data-id="place${i}">🌍 ${name}</a>\n`;
+      }
+      html += `  </div>\n\n`;
+      for (let i = 1; i <= placeCount; i++) {
+        const name = document.getElementById("placeName"+i).value || `관광지${i}`;
+        const photoCount = parseInt(document.getElementById("placePhoto"+i).value, 10) || 1;
+        html += `  <hr id="place${i}" style="border:none;border-top:1px solid #555;margin:10px 0;" />\n`;
+        html += `  <div><div>\n    <h3 style="text-align:center;margin-top:60px;">${i}. ${name}</h3>\n\n`;
+        html += `    <div class="outer-slider-container">\n      <button class="slider-btn outside-btn left-btn">&#10094;</button>\n`;
+        html += `      <div style="margin-top:30px" class="slider-container"><div class="image-slider">\n`;
+        for (let j = 1; j <= photoCount; j++) {
+          html += `        <img src="../image/image_${country}/place${i}-${j}.jpg" class="image-slide ${j===1?'active':''}" data-index="${j-1}">\n`;
+        }
+        html += `      </div></div>\n      <button class="slider-btn outside-btn right-btn">&#10095;</button>\n    </div>\n`;
+        html += `    <p style="margin:20px 0 40px;text-align:center"></p>\n`;
+        html += `    <div class="hotel-card" style="text-align:center;margin-bottom:60px;">\n      <div class="hotel-info"><a href="(링크)" class="hotel-btn dark">🗺️ 위치 보기</a></div>\n    </div>\n`;
+        html += `  </div></div>\n\n`;
+      }
+      html += `</div>\n\n`;
+
+      // 음식 섹션
+      html += `<hr style="border:none;border-top:2px solid #ccc;" id="food" />\n<div class="section">\n  <h2>🍖 음식 이야기</h2>\n  <div class="place-grid">\n`;
+      for (let i = 1; i <= foodCount; i++) {
+        const name = document.getElementById("foodName"+i).value || `음식${i}`;
+        html += `    <a href="javascript:void(0);" class="place-link" data-id="food${i}">🍴 ${name}</a>\n`;
+      }
+      html += `  </div><br>\n\n`;
+      for (let i = 1; i <= foodCount; i++) {
+        const name = document.getElementById("foodName"+i).value || `음식${i}`;
+        const photoCount = parseInt(document.getElementById("foodPhoto"+i).value, 10) || 1;
+        html += `  <hr id="food${i}" style="border:none;border-top:1px solid #555;margin:10px 0;" />\n`;
+        html += `  <div><div>\n    <h3 style="text-align:center;margin-top:60px;">${i}. ${name}</h3>\n\n`;
+        html += `    <div class="outer-slider-container">\n      <button class="slider-btn outside-btn left-btn">&#10094;</button>\n`;
+        html += `      <div style="margin-top:30px" class="slider-container"><div class="image-slider">\n`;
+        for (let j = 1; j <= photoCount; j++) {
+          html += `        <img src="../image/image_${country}/food${i}-${j}.jpg" class="image-slide ${j===1?'active':''}" data-index="${j-1}">\n`;
+        }
+        html += `      </div></div>\n      <button class="slider-btn outside-btn right-btn">&#10095;</button>\n    </div>\n`;
+        html += `    <p style="margin:20px 0 60px;text-align:center"></p>\n`;
+        html += `    <div class="hotel-card" style="text-align:center;margin-bottom:100px;">\n      <div class="hotel-info"><a href="(링크)" class="hotel-btn dark">🗺️ 위치 보기</a></div>\n    </div>\n`;
+        html += `  </div></div>\n\n`;
+      }
+      html += `</div>\n`;
+      travelHTML = html;
+      document.getElementById("output").value = travelHTML;
+    }
+
+    function generateHotelHTML() {
+      const country = document.getElementById("country").value.trim();
+      const count = parseInt(document.getElementById("hotelCount").value, 10);
+      let html = `<hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="hotel" />\n<div>\n  <h2 style="margin-top: 20px; margin-bottom: 30px;">🛌 호텔</h2>\n`;
+
+      for (let i = 1; i <= count; i++) {
+        const name = document.getElementById("hotelName"+i).value || `호텔${i}`;
+        const checkin = document.getElementById("hotelCheckin"+i).value || `체크인${i}`;
+        const checkout = document.getElementById("hotelCheckout"+i).value || `체크아웃${i}`;
+        const nights = document.getElementById("hotelNights"+i).value || "1박";
+        const photoCount = parseInt(document.getElementById("hotelPhoto"+i).value, 10) || 1;
+
+        html += `  <div>\n    <h3 style="text-align:center; margin-top:10px;">${i}. ${name}</h3>\n`;
+        html += `    <h4 style="text-align:center; color: gray;">(${checkin} ~ ${checkout}, ${nights})</h4>\n\n`;
+        html += `    <div class="outer-slider-container">\n      <button class="slider-btn outside-btn left-btn">&#10094;</button>\n`;
+        html += `      <div style="margin-top: 30px" class="slider-container"><div class="image-slider">\n`;
+        for (let j = 1; j <= photoCount; j++) {
+          html += `        <img src="../image/image_${country}/hotel${i}-${j}.jpg" class="image-slide ${j===1?'active':''}" data-index="${j-1}">\n`;
+        }
+        html += `      </div></div>\n      <button class="slider-btn outside-btn right-btn">&#10095;</button>\n    </div>\n`;
+        html += `    <p class="mobile-margin-fix" style="margin-top:20px; margin-bottom:100px; text-align:center"></p>\n  </div>\n\n`;
+      }
+
+      html += `</div>`;
+      hotelHTML = html;
+      document.getElementById("output").value = hotelHTML;
+    }
+
+    function generateCombinedHTML() {
+      generateTravelHTML();
+      generateHotelHTML();
+      const combinedHTML = travelHTML + hotelHTML;
+      document.getElementById("output").value = combinedHTML;
+    }
+  </script>
+</body>
+</html>
