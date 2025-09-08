@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>BSH's Travel</title>
+    <link rel="icon" href="../image/favicon.png" type="image/png">
+	<link rel="stylesheet" href="../css/country.css">
+</head>
+<body>
+<div class="container">
+    <header class="header">
+        <div class="header-content">
+            <a href="/bsh_travel/main" class="header-content button">
+                <img src="../image/travel_logo.png" alt="Logo" class="logo">
+            </a>
+        </div>
+    </header>
+    <button class="sidebar-toggle-button" onclick="toggleSidebar()">☰</button>
+
+    <div class="main-wrapper">
+        <div class="main-container">
+            <div class="travel-detail">
+
+                <div class="travel-container">
+                    <div class="travel-header">
+                        <div class="travel-title">
+                            <h1 style="line-height: 1;">🍣 일본 여행</h1>
+                            <div class="dday-badge completed">완료</div>
+                        </div>
+                    </div>
+
+                    <div class="travel-header">
+                        <p style="font-size:0.9rem; color: #aaa;">(2025-09-06 ~ 2025-09-07)</p>
+                    </div>
+                    <div class="tags-container">
+                        <p class="travel-tags"> #대마도 </p>
+                        <p class="travel-tags"> #이즈하라 </p>
+                        <p class="travel-tags"> #친구와 여행 </p>
+                    </div>
+                </div>
+                <div class="scroll-buttons">
+                    <button onclick="scrollToSection('places')">📍 방문할 주요 장소</button>
+                    <button onclick="scrollToSection('food')">🍜 음식 이야기</button>
+                    <button onclick="scrollToSection('transit')">📚 여행 수단 정리</button>
+                </div>
+
+                <div id="places" class="section">
+                
+				<!-- 관광지 & 음식 섹션 -->
+
+                <hr style="border: none; border-top: 2px solid #ccc;" id="transit"/>
+                <div class="section">
+                    <h2>📚 여행 수단 정리</h2>
+                    <div class="place-grid">
+                        <a href="javascript:void(0);" class="place-link" data-id="airplane">✈️ 항공권</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="hotel">🛌 호텔</a>
+                        <a href="javascript:void(0);" class="place-link" data-id="etc">📙 기타 정보</a>
+                    </div>
+                    <hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="airplane"/>
+                    <div>
+                        <h2 style="margin-top: 10px; margin-bottom: 15px;">✈️ 항공권</h2>
+
+                        <h3 style="margin-bottom: 10px; text-align: center">입국 (출발도시 -> 도착도시)</h3>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>구분</th>
+                                <th>공항</th>
+                                <th>시간</th>
+                                <th>날짜</th>
+                                <th>항공사</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>출발</td>
+                                <td>김해 국제공항</td>
+                                <td>00:00</td>
+                                <td rowspan="2">2025년 1월 4일</td>
+                                <td rowspan="2">중국동방항공 (MU6012)</td>
+                            </tr>
+                            <tr>
+                                <td>도착</td>
+                                <td>푸동 국제공항 T1</td>
+                                <td>00:00</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <h3 style="margin-bottom: 10px; text-align: center">출국 (출발도시 -> 도착도시)
+                        </h3>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>구분</th>
+                                <th>공항</th>
+                                <th>시간</th>
+                                <th>날짜</th>
+                                <th>항공사</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>출발</td>
+                                <td>푸동 국제공항</td>
+                                <td>00:00</td>
+                                <td rowspan="2">2025년 1월 4일</td>
+                                <td rowspan="2">중국동방항공 (MU6012)</td>
+                            </tr>
+                            <tr>
+                                <td>도착</td>
+                                <td>김해 국제공항</td>
+                                <td>00:00</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+               		<!-- 호텔 섹션 -->
+
+                    <hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="etc"/>
+                    <div>
+                        <h2 style="margin-top: 20px; margin-bottom: 30px;">📙 기타 정보</h2>
+
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+         </div>
+
+        <div id="image-modal" class="image-modal">
+            <span class="close-btn">&times;</span>
+            <img class="modal-content" id="modal-img" alt="Expanded Image">
+            <div id="caption"></div>
+        </div>
+        <aside class="sidebar" id="sidebar">
+
+				<div class="search-container">
+  <div class="tag-title2">🔍 검색하기</div>
+  <input type="text" id="searchInput" name="keyword" placeholder="나라 또는 도시 검색하기..." oninput="filterCountries()" />
+</div>
+            <!-- 태그 목록 -->
+            <div class="tag-section" style="margin-top:20px;">
+                <div class="tag-title">🏷️ 태그</div>
+                <div class="tag3">#일본</div>
+                <div class="tag3">#중국</div>
+                <div class="tag3">#오사카</div>
+                <div class="tag3">#친구와 여행</div>
+                <div class="tag3">#혼자 여행</div>
+            </div>
+
+<div class="link-section">
+			  <div class="link-section-title">🧭 둘러보기</div>
+			  <a href="/bsh_travel/templates/country_map" class="link-item">👀 여행지를 한눈에</a>
+			  <a href="https://byeonsunghyun.github.io/bsh_hub/bshhub" rel="noopener" class="link-item">🌐 다른 프로젝트 보기</a>
+			</div>
+		
+            <div class="sidebar-footer">
+            	<a href="/bsh_travel/login" class="login-link">로그인</a>
+            	<div style="border-top: 1px solid #333; margin-bottom:20px; margin-top:45px;"></div>
+                © 2025. Byeon Sung Hyun. All rights reserved.
+            </div>
+        </aside>
+       
+    </div>
+</div>
+
+<script>
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('active');
+    }
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('active');
+    }
+
+    // 각 섹션으로 스크롤하는 함수
+    function scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    // 각 장소 링크 클릭 시 해당 섹션으로 스크롤
+    document.querySelectorAll('.place-link').forEach(link => {
+        link.addEventListener('click', function () {
+            const id = this.getAttribute('data-id');
+            scrollToSection(id);
+        });
+    });
+
+    // 스크롤 시 버튼 보이게
+    window.addEventListener('scroll', function () {
+        const button = document.getElementById('scrollTopButton');
+        if (window.scrollY > 100) {
+            button.classList.add('show');
+        } else {
+            button.classList.remove('show');
+        }
+    });
+
+    // 스크롤 맨 위로 이동
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    const slides = document.querySelectorAll(".image-slide");
+    let currentIndex = 0;
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.toggle("active", i === index);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("image-modal");
+        const modalImg = document.getElementById("modal-img");
+        const caption = document.getElementById("caption");
+        const closeBtn = document.querySelector(".close-btn");
+
+        let currentSlides = [];
+        let currentIndex = 0;
+
+        // 슬라이드 보여주는 함수
+        function showSlide(index) {
+            if (index >= 0 && index < currentSlides.length) {
+                modalImg.src = currentSlides[index].src;
+                caption.textContent = currentSlides[index].alt || "";
+            }
+        }
+
+        // 모든 슬라이더 처리
+        document.querySelectorAll('.outer-slider-container').forEach(container => {
+            const slides = container.querySelectorAll(".image-slide");
+            const leftBtn = container.querySelector(".left-btn");
+            const rightBtn = container.querySelector(".right-btn");
+
+            // 페이지 슬라이더 좌우 버튼
+            if (slides.length > 1) {
+                let index = 0;
+                function showPageSlide(i) {
+                    slides.forEach((slide, idx) => {
+                        slide.classList.toggle("active", idx === i);
+                    });
+                }
+
+                leftBtn?.addEventListener("click", () => {
+                    index = (index - 1 + slides.length) % slides.length;
+                    showPageSlide(index);
+                });
+
+                rightBtn?.addEventListener("click", () => {
+                    index = (index + 1) % slides.length;
+                    showPageSlide(index);
+                });
+
+                showPageSlide(index);
+            } else {
+                // 슬라이드가 하나면 버튼 숨김
+                leftBtn?.style.setProperty("display", "none");
+                rightBtn?.style.setProperty("display", "none");
+            }
+
+            // 이미지 클릭 시 모달 열기
+            slides.forEach((slide, idx) => {
+                slide.addEventListener("click", () => {
+                    modal.style.display = "flex";
+                    currentSlides = Array.from(slides);
+                    currentIndex = idx;
+                    showSlide(currentIndex);
+                });
+            });
+        });
+
+        // 모달 이미지 클릭 시 다음 슬라이드
+        modalImg.addEventListener("click", () => {
+            if (currentSlides.length > 0) {
+                currentIndex = (currentIndex + 1) % currentSlides.length;
+                showSlide(currentIndex);
+            }
+        });
+
+        // 모달 닫기
+        closeBtn.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+
+        window.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    });
+
+
+    const travelStart = new Date("2025-05-09");
+    const travelEnd = new Date("2025-05-12");
+    const today = new Date();
+
+    // 시간은 00시로 맞춰 비교 정확도 높이기
+    travelStart.setHours(0, 0, 0, 0);
+    travelEnd.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    const ddayElement = document.getElementById("dday-taiwan");
+
+    if (today >= travelStart && today <= travelEnd) {
+        ddayElement.textContent = "여행중";
+    } else {
+        const diffTime = travelStart - today;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+        const ddayStr = diffDays > 0 ? `D-${diffDays}` :
+            diffDays === 0 ? "D-Day!" :
+                `D+${Math.abs(diffDays)}`;
+
+        ddayElement.textContent = ddayStr;
+    }
+</script>
+
+
+<button id="scrollTopButton" onclick="scrollToTop()">맨 위로</button>
+</body>
+</html>
