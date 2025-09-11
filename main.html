@@ -9,6 +9,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+
+<div id="notice-popup" class="notice-popup">
+    <div class="notice-content">
+        <p>💡 정보는 개발자 기억에 기반하고 있어<br><span style='color: palevioletred'>정확하지 않을 수 있습니다.</span></p>
+        <div class="notice-actions">
+            <label>
+                <input type="checkbox" id="dont-show-today"> 오늘 하루 띄우지 않기
+            </label>
+            <button onclick="closeNotice()">확인</button>
+        </div>
+    </div>
+</div>
+	
 <div class="container">
     <header class="header">
         <div class="header-content">
@@ -480,12 +493,40 @@
         });
     }
 
+	function closeNotice() {
+        const popup = document.getElementById('notice-popup');
+        const checkbox = document.getElementById('dont-show-today');
+
+        if (checkbox.checked) {
+            // 현재 날짜를 저장하여 오늘 하루 띄우지 않기
+            const today = new Date();
+            const expiryDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+            localStorage.setItem('hideNoticeUntil', expiryDate);
+        }
+        
+        popup.style.display = 'none';
+    }
+
+    window.onload = function() {
+        const popup = document.getElementById('notice-popup');
+        const hideUntil = localStorage.getItem('hideNoticeUntil');
+        const today = new Date();
+        const todayStr = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
+        // 저장된 날짜와 오늘 날짜가 다르면 팝업 표시
+        if (hideUntil !== todayStr) {
+            popup.style.display = 'flex';
+        } else {
+            popup.style.display = 'none';
+        }
+    };
 </script>
 
 
 <button onclick="scrollToTop()" id="scrollTopBtn" title="맨 위로">맨 위로</button>
 </body>
 </html>
+
 
 
 
