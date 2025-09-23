@@ -1,4 +1,4 @@
-# BSH's Travel - 여행일기
+# BSH's Travel - 여행 일기
 
 ---
 
