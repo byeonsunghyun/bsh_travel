@@ -12,11 +12,11 @@
   <tr>
     <td align="center">
       <b>💻 화면1</b><br>
-      <img src="./image/capture.PNG" alt="화면1" width="300"/>
+      <img src="./image/capture.PNG" alt="화면1" width="250"/>
     </td>
     <td align="center">
       <b>💻 화면2</b><br>
-      <img src="./image/recording.gif" alt="화면2" width="300"/>
+      <img src="./image/recording.gif" alt="화면2" width="250"/>
     </td>
   </tr>
 </table>
