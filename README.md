@@ -1,4 +1,4 @@
-# BSH's Travel - 여행 일기
+# BSH's Travel - 여행 일기✈️
 
 ---
 
@@ -12,11 +12,11 @@
   <tr>
     <td align="center">
       <b>💻 화면1</b><br>
-      <img src="./image/capture.PNG" alt="화면1" width="200"/>
+      <img src="./image/capture.PNG" alt="화면1" width="300"/>
     </td>
     <td align="center">
       <b>💻 화면2</b><br>
-      <img src="./image/capture2.PNG" alt="화면2" width="200"/>
+      <img src="./image/recording.gif" alt="화면2" width="300"/>
     </td>
   </tr>
 </table>
