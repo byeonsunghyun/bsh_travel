@@ -11,12 +11,12 @@
 <table>
   <tr>
     <td align="center">
-      <b>💻 데스크탑 화면</b><br>
-      <img src="./image/capture.png" alt="데스크탑 화면" width="300"/>
+      <b>💻 화면1</b><br>
+      <img src="./image/capture.PNG" alt="화면1" width="300"/>
     </td>
     <td align="center">
-      <b>📱 모바일 화면</b><br>
-      <img src="./image/capture2.png" alt="모바일 화면" width="200"/>
+      <b>📱 화면2</b><br>
+      <img src="./image/capture2.PNG" alt="화면2" width="200"/>
     </td>
   </tr>
 </table>
