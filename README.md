@@ -8,6 +8,19 @@
 
 ---
 
+<table>
+  <tr>
+    <td align="center">
+      <b>💻 데스크탑 화면</b><br>
+      <img src="./image/capture.png" alt="데스크탑 화면" width="300"/>
+    </td>
+    <td align="center">
+      <b>📱 모바일 화면</b><br>
+      <img src="./image/capture2.png" alt="모바일 화면" width="200"/>
+    </td>
+  </tr>
+</table>
+
 ## 주요 기능
 
 ### 1. 여행 기록 보기
