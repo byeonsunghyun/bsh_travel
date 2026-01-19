@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>뭉치의 요리 레시피</title>
+    <link rel="icon" href="./image/logo/icon.png" type="image/png">
+    <link rel="stylesheet" th:href="@{/css/cooking_main.css}">
+</head>
+<body>
+
+<div class="wrapper">
+    <div th:replace="fragments/header :: header"></div>
+	<div th:replace="fragments/sidebar :: sidebar"></div>
+    
+	<div class="nav-wrapper">
+		<div class="nav-inner">
+	  <nav>
+	    <a th:href="@{/(category='밥/덮밥')}">
+	      <img src="image/logo/rice_logo.png">밥 / 덮밥
+	    </a>
+	    <a th:href="@{/(category='면/파스타')}">
+	      <img src="image/logo/noodle_logo.png">면 / 파스타
+	    </a>
+	    <a th:href="@{/(category='볶음/구이/절임')}">
+	      <img src="image/logo/roast_logo.png">볶음 / 구이 / 절임
+	    </a>
+	    <a th:href="@{/(category='찜/탕')}">
+	      <img src="image/logo/soup_logo.png">찜 / 탕
+	    </a>
+	    <a th:href="@{/(category='튀김')}">
+	      <img src="image/logo/fried_logo.png">튀김
+	    </a>
+	    <a th:href="@{/(category='디저트')}">
+	      <img src="image/logo/dessert_logo.png">디저트
+	    </a>
+	    <a th:href="@{/(category='기타')}">
+	      <img src="image/logo/etc_logo.png">기타
+	    </a>
+	  </nav>
+	  </div>
+	</div>
+	
+	<!-- nav 아래 정렬 영역 -->
+	<div class="sort-bar">
+	  <div class="sort-inner">
+	    <div class="sort-left"></div>
+
+	    <div class="sort-right">
+	      <button id="sortRatingBtn" class="sort-btn" data-order="desc">
+	        ⭐ 평점순
+	      </button>
+	      <button id="sortTimeBtn" class="sort-btn" data-order="desc">
+	        ⏱ 요리시간순
+	      </button>
+	    </div>
+	  </div>
+	</div>
+
+
+    <!-- 레시피 컨테이너 -->
+    <div class="container">
+        <div class="recipe-wrapper" th:each="r : ${recipes}" th:attr="data-rating=${r.rating}, data-time=${r.cookingTime}">
+            <!-- 카드 -->
+            <div class="recipe-card show">
+				<a th:href="@{/recipe/{id}(id=${r.id})}" class="image-wrap">
+				    <span class="rating">★ <span th:text="${r.rating}">4.5</span></span>
+					 
+					<img th:src="@{/uploads/images/{img}(img=${r.imagePath})}"
+					     onerror="this.onerror=null; this.src='/image/logo/ready.png';"
+					     th:alt="${r.name}">
+				</a>
+            </div>
+
+            <!-- 텍스트 -->
+            <div class="recipe-text show">
+                <a th:href="@{/recipe/{id}(id=${r.id})}" style="text-decoration: none; color: inherit;">
+                    <h3 th:text="${r.name}">레시피 이름</h3>
+                </a>
+                <p th:text="${r.summary}">레시피에 대한 간단한 설명이 들어갑니다.</p>
+                <div class="tags">
+                	<span class="tag" th:text="|⏱ ${r.cookingTime}분|">시간(컬럼)</span>
+                    <span class="tag" th:classappend="${r.taste} != null ? ' ' + ${r.taste} : ''" th:text="${r.taste}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<div th:replace="fragments/footer :: footer"></div>
+	<button id="scrollToTopBtn">↑</button>
+</div>
+
+<script src="/js/sidebar.js"></script>
+
+<script>
+	const scrollBtn = document.getElementById('scrollToTopBtn');
+			
+			window.addEventListener('scroll', () => {
+			  if (window.scrollY > 300) {
+			    scrollBtn.classList.add('show');
+			  } else {
+			    scrollBtn.classList.remove('show');
+			  }
+			});
+			
+			scrollBtn.addEventListener('click', () => {
+			  window.scrollTo({ top: 0, behavior: 'smooth' });
+			});
+			
+			const container = document.querySelector('.container');
+			  const sortRatingBtn = document.getElementById('sortRatingBtn');
+			  const sortTimeBtn = document.getElementById('sortTimeBtn');
+
+			  // 정렬 함수
+			  function sortRecipes(key, order) {
+			    const cards = Array.from(container.querySelectorAll('.recipe-wrapper'));
+
+			    cards.sort((a, b) => {
+			      const aVal = parseFloat(a.dataset[key]);
+			      const bVal = parseFloat(b.dataset[key]);
+
+			      if (order === 'desc') {
+			        return bVal - aVal;
+			      } else {
+			        return aVal - bVal;
+			      }
+			    });
+
+			    // DOM 재배치
+			    cards.forEach(card => container.appendChild(card));
+			  }
+
+			  // 평점 버튼 클릭
+			  sortRatingBtn.addEventListener('click', () => {
+			    const current = sortRatingBtn.dataset.order;
+			    const next = current === 'desc' ? 'asc' : 'desc';
+			    sortRatingBtn.dataset.order = next;
+
+			    // 버튼 표시 변경(선택사항)
+			    sortRatingBtn.textContent = next === 'desc' ? '⭐ 평점순 ↓' : '⭐ 평점순 ↑';
+
+			    sortRecipes('rating', next);
+			  });
+
+			  // 시간 버튼 클릭
+			  sortTimeBtn.addEventListener('click', () => {
+			    const current = sortTimeBtn.dataset.order;
+			    const next = current === 'desc' ? 'asc' : 'desc';
+			    sortTimeBtn.dataset.order = next;
+
+			    // 버튼 표시 변경(선택사항)
+			    sortTimeBtn.textContent = next === 'desc' ? '⏱ 요리시간순 ↓' : '⏱ 요리시간순 ↑';
+
+			    sortRecipes('time', next);
+			  });
+	</script>
+
+</body>
+</html>
