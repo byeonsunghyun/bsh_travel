@@ -1,0 +1,816 @@
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Gothic&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+:root {
+  --bg-color: #ffffff;
+  --text-color: #111111;
+  --accent-color: #e94e4e; /* 좀 더 모던한 레드 */
+  --card-bg: #fffdfd;
+  /* --shadow 제거 (사용 안함) */
+}
+
+.sort-bar {
+  background: #fffdfb;
+}
+
+/* nav와 같은 너비 박스 */
+.sort-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+
+  display: flex;
+  justify-content: flex-end;  /* 버튼 오른쪽 정렬 */
+  align-items: center;
+  height: 60px;
+}
+
+.sort-right {
+  display: flex;
+  gap: 10px;
+}
+
+.sort-btn {
+  border: 1px solid #ffd8d2;
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  color: #333;
+  transition: background 0.2s ease;
+}
+
+.sort-btn:hover {
+  background: #fff2e0;
+}
+
+
+
+.chili-icon {
+  width: 9px;
+  height: 18px;
+  margin-left: 2px;
+  vertical-align: middle; /* 텍스트랑 세로 정렬 */
+}
+
+
+.tags {
+  margin-top: 6px;
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 0.7rem;
+  background-color: #d5bfa333;  /* 따뜻한 베이지 */
+color: #a67c52;
+
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-weight: 600;
+  user-select: none;
+}
+
+.tag.매콤한 {
+  background-color: #f8d7da;
+  color: #c0392b;
+}
+
+.tag.달콤한 {
+  background-color: #fce5cd;
+  color: #e67e22;
+}
+
+.tag.짭짤한 {
+  background-color: #e2e3e5;
+  color: #2c3e50;
+}
+
+.tag.새콤한 {
+  background-color: #e0f7fa;
+  color: #00796b;
+}
+
+.tag.담백한 {
+  background-color: #f0fae4;
+  color: #66bb6a;
+}
+
+.tag.고소한 {
+  background-color: #f4e2d8;
+  color: #4e342e;
+}
+
+.tag.진한 {
+  background-color: #ede7f6;
+  color: #4527a0;
+}
+
+.tag.얼큰한 {
+  background-color: #ffe5e0;  /* 맑은 붉은 느낌의 배경 */
+  color: #d62828;             /* 불맛/얼큰한 느낌의 붉은색 */
+}
+
+
+#recent-recipes-list .recent-link:hover {
+  background-color: #ffecec; /* 아주 연한 살구빛 핑크 */
+  color: #d64545; /* 조금 차분한 진한 빨강 */
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#recent-recipes-list .recent-link:hover img {
+  filter: brightness(1);
+  transition: none;
+}
+
+.recent-recipes {
+  margin-top: 5px;
+  padding: 16px;
+}
+
+#recent-recipes-list {
+  list-style: none;
+  padding: 10px;
+  margin: 0;
+  border: 1px solid #ffd8d2;;       /* 테두리 */
+  border-radius: 8px;           /* 모서리 둥글게 */
+  background-color: #fffdfd;   /* 연한 배경색 */
+  max-height: 120px;            /* 높이 제한 (2줄 정도) */
+  overflow-y: auto;             /* 넘치면 스크롤 */
+}
+
+#recent-recipes-list li {
+  margin-bottom: 10px;
+}
+
+.recent-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+  font-size: 14px;
+}
+
+.recent-link img {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+
+.tag-title2 {
+    font-size: 1.0rem;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -250px; /* 처음 숨김 */
+  width: 250px;
+  height: 100%;
+  background-color: #fff4f2;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+  transition: right 0.3s ease;
+  z-index: 1100;
+  padding-top: 60px;
+
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.sidebar .spacer {
+  flex-grow: 1;
+}
+
+/* 사이드바 열린 상태 */
+.sidebar.open {
+  right: 0;
+}
+
+.sidebar-divider {
+  border-bottom: 1px solid #ffd8d2;  /* 연한 분홍 경계선 */
+  margin: 45px 16px 10px 16px;
+}
+
+.sidebar-login-link {
+  font-size: 0.95rem;
+  font-family: 'Gowun Dodum', 'Nanum Gothic', sans-serif;
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  margin: 0 auto 20px;
+  text-align: center;
+  display: block;
+}
+
+
+.sidebar-login-link:hover {
+  color: #b33a3a; /* 좀 더 진한 빨간색 또는 원하는 색상으로 변경 가능 */
+}
+
+/* ✅ 로그인 아래 경계선 */
+.sidebar-divider-below-login {
+  border-bottom: 1px solid #ffd8d2;
+  margin: 12px 16px 16px;
+}
+
+.sidebar-social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+/* ✅ 이미지 아이콘 스타일 */
+.sidebar-social-icons img {
+  width: 28px;
+  height: 28px;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.sidebar-social-icons img:hover {
+  opacity: 0.7;
+}
+
+
+/* 기존 요소들 정렬 그대로 유지 */
+.search-container {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 10px;
+}
+
+/* "🔍 검색하기" 제목 */
+.tag-title2 {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--accent-color);
+  font-family: 'Gowun Dodum', sans-serif;
+  margin-bottom: 4px;
+}
+
+/* 검색 input 필드 */
+.search-container input[type="text"] {
+  padding: 10px 12px;
+  border: 1px solid #ffd8d2;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: 'Nanum Gothic', sans-serif;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.search-container input[type="text"]:focus {
+  border-color: var(--accent-color);
+  background-color: #fffaf8;
+}
+
+
+.sidebar-toggle-button {
+  position: fixed;
+  top: 42px;
+  right: 35px;
+  background: none;         /* 배경 제거 */
+  border: none;             /* 테두리 제거 */
+  color: var(--accent-color);  /* 아이콘 색상 설정 */
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1200;
+  padding: 0;
+  line-height: 1;
+  box-shadow: none;    
+  transition: top 0.3s ease;     
+}
+
+.sidebar-toggle-button:hover {
+  color: #e85b50;  /* 호버 시 색상 변경 (선택사항) */
+}
+
+/* ------------------- 네비게이션 래퍼 (업데이트 버전) -------------------- */
+.nav-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  width: 100%;                   /* 화면 전체 너비 */
+  background-color: #fff4f2;      /* 전체 배경색 */
+  border-bottom: 1px solid #ffd8d2;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;               /* 너비와 동일하게 정렬 */
+}
+
+/* 내부 nav: 가로 스크롤 최적화 */
+.nav-wrapper nav {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox 스크롤 숨김 */
+  -ms-overflow-style: none;  /* IE 10+ 스크롤 숨김 */
+  white-space: nowrap; /* 줄바꿈 방지 */
+  font-weight: bold;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  position: static; 
+  box-shadow: none;
+  border-top: none;
+  border-bottom: none;
+  background-color: transparent;
+  width: 100%;
+}
+
+.nav-wrapper nav::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera 스크롤 숨김 */
+}
+
+/* 네비게이션 개별 링크 */
+.nav-wrapper nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* 이미지+텍스트 수평 중앙 정렬 */
+  text-align: center;
+  padding: 1rem 1.5rem;
+  text-decoration: none;
+  color: var(--text-color);
+  border-right: 1px solid #ffddd8;
+  flex-shrink: 0; /* 가로 스크롤 시 크기 유지 */
+  font-size: 0.9rem;
+  width: 110px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-wrapper nav a:last-child {
+  border-right: none;
+}
+
+.nav-wrapper nav a:hover {
+  background-color: rgba(233, 78, 78, 0.1);
+  color: var(--accent-color);
+}
+
+/* 좌우 스크롤 화살표 버튼 (JS로 제어 가능) 
+.nav-arrow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 36px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border: none;
+  font-size: 1.5rem;
+  z-index: 1001;
+  cursor: pointer;
+  display: none; 
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--accent-color);
+}
+
+.nav-arrow.left { left: 0; }
+.nav-arrow.right { right: 0; }*/
+
+/* 네비게이션 내부 이미지 스타일 */
+nav a img {
+  width: 40px;
+  height: 40px;
+  vertical-align: middle;
+  margin-bottom: 6px;
+}
+
+.site-footer {
+  text-align: center;
+  padding: 18px 0;
+  margin-top: auto;
+  color: #aa7770;
+  background: #fff8f6;
+  border-top: 1px solid #f2dcd7;
+}
+
+/* 기본 스타일 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: #fffdfb;
+  color: var(--text-color);
+  line-height: 1.5; /* 약간 줄임 */
+  font-family: 'Nanum Gothic', sans-serif;
+}
+
+.wrapper {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  text-align: center;
+  background: linear-gradient(to right, #ffefef, #fff5f5);
+  border-bottom: 1px solid #ffd8d2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.1rem;
+  width: fit-content;
+}
+
+.logo {
+  width: auto;
+  height: 100px;
+  object-fit: contain;
+  margin-top: 13px;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  font-family: 'Gowun Dodum', 'Nanum Gothic', sans-serif;
+  color: var(--accent-color);
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #fff4f2;
+  border-top: none;
+  border-bottom: 1px solid #ffd8d2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+  padding: 1rem 1.5rem;
+  text-decoration: none;
+  color: var(--text-color);
+  border-right: 1px solid #ffddd8;
+  flex: 1 1 auto;
+  text-align: center;
+  min-width: 100px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 0.9rem;
+}
+
+nav a:last-child {
+  border-right: none;
+}
+
+nav a:hover {
+  background-color: rgba(233, 78, 78, 0.1);
+  color: var(--accent-color);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto 2rem auto;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  flex: 1;
+}
+
+/* recipe-wrapper: 카드+텍스트 묶음 */
+.recipe-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 카드 스타일 - 그림자 제거 */
+.recipe-card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  box-shadow: none; /* 그림자 제거 */
+  will-change: opacity, transform;
+}
+
+.recipe-card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.recipe-card:hover {
+  transform: translateY(0) scale(1); /* 카드 이동, 크기변경 없음 */
+  box-shadow: none;
+}
+
+.image-wrap {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.rating {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 0.9rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: gold;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-family: 'Gowun Dodum', sans-serif;
+}
+
+.image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+/* 호버 시 이미지 내부에서만 확대 */
+.recipe-card:hover .image-wrap img {
+  transform: scale(1.05);
+}
+
+/* 텍스트 영역 - 카드 밖, 배경 없이 글자만 */
+.recipe-text {
+  margin-top: 0.5rem;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  margin-bottom:10px;
+}
+
+.recipe-text.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.recipe-text h3 {
+  font-family: 'Jalnan', sans-serif;
+  /* 기존 스타일 유지하면서 폰트만 변경 */
+  margin-bottom: 0.5rem;
+  font-size: 1.0rem;
+  color: #111111;
+  font-weight: 400;  /* 굵기 적당히 약하게 */
+  letter-spacing: 0.02em;
+}
+
+
+.recipe-text p {
+  font-size: 0.7rem;
+  color: #777777;
+  letter-spacing: 0.02em;
+}
+
+footer {
+  text-align: center;
+  padding: 24px 0;
+  background-color: #fff8f6;
+  color: #aa7770;
+  font-size: 0.9rem;
+  border-top: 1px solid #f2dcd7;
+}
+.mobile-br {
+  display: none; /* 기본은 inline(안 보임) */
+}
+
+.no-recent {
+  font-size: 0.9rem;
+  color: #999;
+  text-align: center;
+  padding: 12px 0;
+}
+
+@media (max-width: 600px) {
+	.tag {
+    font-size: 0.6rem;
+    padding: 2px 5px;
+  }
+  
+  .nav-inner {
+      padding: 0;   /* 좌우 여백 제거 */
+    }
+	
+	.mobile-br {
+    display: block; /* 모바일에서 줄바꿈 역할 */
+    content: "";
+    height: 0;
+    margin: 0;
+    padding: 0;
+  }
+	
+.container{
+		margin-top:0px;
+	}
+	
+	.sidebar-divider {
+  margin-top:40px;
+}
+	
+  .nav-wrapper {
+    margin-bottom: 1rem;
+  }
+
+  .nav-arrow {
+    display: flex;
+  }
+  
+  .title {
+    font-size: 1.6rem;
+  }
+
+  .container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  nav {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* 부드러운 터치 스크롤 */
+    justify-content: flex-start;
+  }
+
+  nav::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  nav::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color);
+    border-radius: 3px;
+  }
+
+  nav a {
+    flex: 0 0 25%; /* 4개만 보이도록 고정 */
+    max-width: 25%;
+    min-width: 25%;
+    text-align: center;
+    border-right: 1px solid #ffddd8;
+    border-bottom: none;
+    padding: 1rem 0.8rem;
+    font-size: 0.65rem !important;
+    white-space: nowrap;
+	  font-family: 'Jua', sans-serif;
+  }
+  
+
+  nav a:last-child {
+    border-right: none;
+  }
+
+  .recipe-text h3 {
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .recipe-text p {
+    font-size: 0.6rem;
+  }
+
+  footer {
+    font-size: 0.7rem;
+  }
+  
+  .rating {
+    font-size: 0.7rem;  /* 모바일에선 별 크기 작게 */
+    padding: 1px 4px;
+    top: 6px;
+    right: 6px;
+  }
+  
+  .sidebar-toggle-button {
+  top: 42px;
+  right: 32px;  
+}
+
+.search-container {
+    padding: 12px 10px;
+  }
+
+  .search-container input[type="text"] {
+    font-size: 0.85rem; /* 기본 0.95rem에서 더 작게 조절 */
+    padding: 8px 10px;
+  }
+
+  .recent-recipes {
+    padding: 12px 10px;
+  }
+
+  #recent-recipes-list {
+    max-height: 100px;
+    padding: 8px;
+  }
+
+  #recent-recipes-list li {
+    margin-bottom: 8px;
+  }
+
+  .recent-link {
+    font-size: 13px;
+    gap: 6px;
+  }
+
+  .recent-link img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .sidebar-login-link {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+  }
+
+  .sidebar-social-icons {
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+
+  .sidebar-social-icons img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+#scrollToTopBtn {
+  position: fixed;
+  bottom: 60px;
+  right: 50px;
+  z-index: 1000;
+  background-color: var(--accent-color);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+#scrollToTopBtn:hover {
+  background-color: #e85b50;
+}
+
+#scrollToTopBtn.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.logo-link {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+}
+
+nav a img {
+  width: 40px;      /* 원하는 크기로 조절 */
+  height: 40px;
+  vertical-align: middle;  /* 텍스트와 이미지 수직 맞춤 */
+  margin-bottom:6px;
+}
