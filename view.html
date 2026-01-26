@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>BSH's Travel</title>
+<link rel="icon" href="../image/favicon.png" type="image/png">
+<link rel="stylesheet" href="/css/country.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+	<div class="starfield"></div>
+	<header class="header">
+	<div class="header-content">
+		<a href="/main" class="header-content button">
+		<img src="../image/travel_logo.png" alt="Logo" class="logo">
+		</a>
+	</div>
+	</header>
+	<button class="sidebar-toggle-button" onclick="toggleSidebar()">☰</button>
+	<div class="main-wrapper">
+		<div class="main-container">
+			<div class="travel-detail">
+				<div class="travel-container">
+					<div class="travel-title">
+						<h1 style="line-height: 1;" th:text="${travel.countryName} + ' 여행'"></h1>
+						<div class="dday-badge" th:classappend="${travel.status==T(com.example.demo.entity.TravelStatus).COMPLETED} ? ' completed' : ( ${travel.status==T(com.example.demo.entity.TravelStatus).ONGOING} ? ' writing' : ' planned' )" th:text="${travel.status==T(com.example.demo.entity.TravelStatus).COMPLETED} ? '완료' : ( ${travel.status==T(com.example.demo.entity.TravelStatus).ONGOING} ? '작성중' : '예정' )">
+						</div>
+					</div>
+					<div class="travel-header">
+						<p style="font-size:0.9rem; color: #aaa;" th:text="'(' + ${travel.startDate} + ' ~ ' + ${travel.endDate} + ')'">
+						</p>
+					</div>
+					<div class="tags-container">
+						<p class="travel-tags" th:each="tag : ${travel.tags}" th:text="' #' + ${tag.tagName}">
+							 #태그
+						</p>
+					</div>
+				</div>
+				<div class="scroll-buttons">
+					<button onclick="scrollToSection('places')">📍 방문한 주요 장소</button>
+					<button onclick="scrollToSection('food')">🍜 음식 이야기</button>
+					<button onclick="scrollToSection('transit')">📚 여행 수단 정리</button>
+				</div>
+				<div id="places" class="section">
+					<h2>📍 방문한 주요 장소</h2>
+					<div class="place-grid">
+						<a th:each="place, stat : ${travelPlaces}" th:href="'#place' + ${place.id}" class="place-link" th:classappend="${place.highlight} ? ' place-link-highlight' : ''" th:text="${place.name}">
+						</a>
+					</div>
+					<div th:each="place, stat : ${travelPlaces}" class="place-block">
+						<hr th:id="'place' + ${place.id}" style="border: none; border-top: 1px solid #555; margin: 10px 0;"/>
+						<th:block th:if="${session.role=='admin'}">
+						<div class="place-actions">
+							<a href="#" class="action-btn" th:onclick="|openPopup('@{/admin/places/edit/{id}(id=${place.id})}'); return false;|">✏️</a>
+							<a th:href="@{/admin/places/delete/{id}(id=${place.id})}" class="action-btn" onclick="return confirm('정말 삭제하시겠습니까?');">
+							🗑️ </a>
+						</div>
+						</th:block>
+						<div>
+							<h3 style="text-align: center; margin-top:60px;">
+							<span th:text="${stat.index + 1 + '. ' + place.name}"></span>
+							<span th:if="${place.highlight}" class="highlight-star">★</span>
+							</h3>
+							<h4 style="text-align: center; color: grey;" th:if="${place.subtitle !=null and !#strings.isEmpty(place.subtitle)}" th:text="${place.subtitle}">
+							</h4>
+							<!-- ⭐ 예전 슬라이더 구조 복구 -->
+							<div class="outer-slider-container" th:if="${place.images !=null and !#lists.isEmpty(place.images)}">
+								<button class="slider-btn outside-btn left-btn">&#10094;</button>
+								<div style="margin-top: 30px" class="slider-container">
+									<div class="image-slider">
+										<img th:each="img : ${place.images}" th:src="@{${img.imagePath}}" class="image-slide">
+									</div>
+								</div>
+								<button class="slider-btn outside-btn right-btn">&#10095;</button>
+							</div>
+							<p class="mobile-margin-fix desc" style="margin-top:20px; margin-bottom:40px; text-align: center;" th:text="${place.description}">
+							</p>
+							<!-- 위치 버튼 -->
+							<div class="hotel-card" style="text-align: center; margin-bottom: 60px;" th:if="${place.mapLink !=null and !#strings.isEmpty(place.mapLink)}">
+								<div class="hotel-info">
+									<a th:href="${place.mapLink}" target="_blank" class="hotel-btn dark">
+									🗺️ 위치 보기 </a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr style="border: none; border-top: 2px solid #ccc;" id="food"/>
+				<div id="food" class="section">
+					<h2>🍜 음식 이야기</h2>
+					<div class="place-grid">
+						<a th:each="food, stat : ${foodPlaces}" th:href="'#food' + ${food.id}" class="place-link" th:classappend="${food.highlight} ? ' place-link-highlight' : ''" th:text="${food.name}">
+						</a>
+					</div>
+					<div th:each="food, stat : ${foodPlaces}" class="place-block">
+						<hr th:id="'food' + ${food.id}" style="border: none; border-top: 1px solid #555; margin: 10px 0;"/>
+						<th:block th:if="${session.role=='admin'}">
+						<div class="place-actions">
+							<a href="#" class="action-btn" th:onclick="|openPopup('@{/admin/places/edit/{id}(id=${food.id})}'); return false;|">✏️</a>
+							<a th:href="@{/admin/places/delete/{id}(id=${food.id})}" class="action-btn" onclick="return confirm('정말 삭제하시겠습니까?');">
+							🗑️ </a>
+						</div>
+						</th:block>
+						<div>
+							<h3 style="text-align: center; margin-top:60px;">
+							<span th:text="${stat.index + 1 + '. ' + food.name}"></span>
+							<span th:if="${food.highlight}" class="highlight-star">★</span>
+							</h3>
+							<h4 style="text-align: center; color: grey;" th:if="${food.subtitle !=null and !#strings.isEmpty(food.subtitle)}" th:text="${food.subtitle}">
+							</h4>
+							<div class="outer-slider-container" th:if="${food.images !=null and !#lists.isEmpty(food.images)}">
+								<button class="slider-btn outside-btn left-btn">&#10094;</button>
+								<div style="margin-top: 30px" class="slider-container">
+									<div class="image-slider">
+										<img th:each="img : ${food.images}" th:src="@{${img.imagePath}}" class="image-slide">
+									</div>
+								</div>
+								<button class="slider-btn outside-btn right-btn">&#10095;</button>
+							</div>
+							<p class="mobile-margin-fix desc" style="margin-top:20px; margin-bottom:40px; text-align: center;" th:text="${food.description}">
+								<div class="hotel-card" style="text-align: center; margin-bottom: 60px;" th:if="${food.mapLink !=null and !#strings.isEmpty(food.mapLink)}">
+									<div class="hotel-info">
+										<a th:href="${food.mapLink}" target="_blank" class="hotel-btn dark">
+										🗺️ 위치 보기 </a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<hr style="border: none; border-top: 2px solid #ccc;" id="transit"/>
+					<div class="section">
+						<h2>📚 여행 수단 정리</h2>
+						<div class="place-grid">
+							<a href="javascript:void(0);" class="place-link" data-id="airplane">✈️ 항공권</a>
+							<a href="javascript:void(0);" class="place-link" data-id="hotel">🛌 호텔</a>
+							<a href="javascript:void(0);" class="place-link" data-id="etc">📙 기타 정보</a>
+						</div>
+						<hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="airplane"/>
+						<div>
+							<h2 style="margin-top: 10px; margin-bottom: 15px;">✈️ 항공/배편</h2>
+							<div th:each="flight, iterStat : ${flights}" class="place-block">
+								<th:block th:if="${session.role=='admin'}">
+								<div class="place-actions hi">
+									<!-- 수정 -->
+								<a href="#" class="action-btn" th:onclick="|openPopup('@{/admin/flights/edit/{id}(id=${flight.id})}'); return false;|">✏️</a>
+									
+									<!-- 삭제 -->
+									<a th:href="@{/admin/flights/delete/{id}(id=${flight.id})}" class="action-btn" onclick="return confirm('정말 삭제하시겠습니까?');">
+									🗑️ </a>
+								</div>
+								</th:block>
+								<h3 style="margin-bottom: 10px; text-align: center" th:text="'Ticket ' + ${iterStat.index + 1}"></h3>
+								<table>
+								<thead>
+								<tr>
+									<th>
+										구분
+									</th>
+									<th th:text="${flight.transportType=='SHIP' ? '항구' : '공항'}">
+										공항/항구
+									</th>
+									<th>
+										시간
+									</th>
+									<th>
+										날짜
+									</th>
+									<th th:text="${flight.transportType=='SHIP' ? '배편' : '항공편'}">
+										항공/배편
+									</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr>
+									<td>
+										출발
+									</td>
+									<td th:text="${flight.departPlace}">
+									</td>
+									<td th:text="${flight.departTime}">
+									</td>
+									<td th:text="${#temporals.format(flight.departDate, 'yyyy년 MM월 dd일')}">
+									</td>
+									<td th:text="${flight.carrier + ' ' + flight.transportNumber}" rowspan="2">
+									</td>
+								</tr>
+								<tr>
+									<td>
+										도착
+									</td>
+									<td th:text="${flight.arrivePlace}">
+									</td>
+									<td th:text="${flight.arriveTime}">
+									</td>
+									<td th:text="${#temporals.format(flight.arriveDate, 'yyyy년 MM월 dd일')}">
+									</td>
+								</tr>
+								</tbody>
+								</table>
+								<div style="margin: 15px 0;">
+								</div>
+							</div>
+						</div>
+						<hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="hotel"/>
+						<div>
+							<h2 style="margin-top: 20px;">🛌 호텔</h2>
+							<div th:each="hotel, stat : ${hotelPlaces}" class="place-block">
+								<th:block th:if="${session.role=='admin'}">
+								<div class="place-actions hi">
+								<a href="#" class="action-btn" th:onclick="|openPopup('@{/admin/places/edit/{id}(id=${hotel.id})}'); return false;|">✏️</a>
+									<a th:href="@{/admin/places/delete/{id}(id=${hotel.id})}" class="action-btn" onclick="return confirm('정말 삭제하시겠습니까?');">
+									🗑️ </a>
+								</div>
+								</th:block>
+								<div>
+									<h3 th:style="${stat.index==0} ? 'text-align:center; margin-top:60px;' : 'text-align:center; margin-top:100px;'">
+									<span th:text="${stat.index + 1 + '. ' + hotel.name}"></span>
+									<span th:if="${hotel.highlight}" class="highlight-star">★</span>
+									</h3>
+									<h4 style="text-align: center; color: grey;" th:if="${hotel.subtitle !=null and !#strings.isEmpty(hotel.subtitle)}" th:text="${hotel.subtitle}">
+									</h4>
+									<!-- ⭐ 예전 슬라이더 구조 복구 -->
+									<div class="outer-slider-container" th:if="${hotel.images !=null and !#lists.isEmpty(hotel.images)}">
+										<button class="slider-btn outside-btn left-btn">&#10094;</button>
+										<div style="margin-top: 30px" class="slider-container">
+											<div class="image-slider">
+												<img th:each="img : ${hotel.images}" th:src="@{${img.imagePath}}" class="image-slide">
+											</div>
+										</div>
+										<button class="slider-btn outside-btn right-btn">&#10095;</button>
+									</div>
+									<p class="mobile-margin-fix desc" style="margin-top:20px; margin-bottom:40px; text-align: center;" th:text="${hotel.description}">
+										<!-- 위치 버튼 -->
+										<div class="hotel-card" style="text-align: center; margin-bottom: 60px;" th:if="${hotel.mapLink !=null and !#strings.isEmpty(hotel.mapLink)}">
+											<div class="hotel-info">
+												<a th:href="${hotel.mapLink}" target="_blank" class="hotel-btn dark">
+												🗺️ 위치 보기 </a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="etc"/>
+							<div>
+								<h2 style="margin-top: 20px;">📙 기타 정보</h2>
+								<div th:each="info, stat : ${infoPlaces}" class="place-block">
+									<th:block th:if="${session.role=='admin'}">
+									<div class="place-actions hi">
+								<a href="#" class="action-btn" th:onclick="|openPopup('@{/admin/places/edit/{id}(id=${info.id})}'); return false;|">✏️</a>
+									
+										<a th:href="@{/admin/places/delete/{id}(id=${info.id})}" class="action-btn" onclick="return confirm('정말 삭제하시겠습니까?');">
+										🗑️ </a>
+									</div>
+									</th:block>
+									<div>
+										<h3 th:style="${stat.index==0} ? 'text-align:center; margin-top:60px;' : 'text-align:center; margin-top:100px;'">
+										<span th:text="${stat.index + 1 + '. ' + info.name}"></span>
+										<span th:if="${info.highlight}" class="highlight-star">★</span>
+										</h3>
+										<h4 style="text-align: center; color: grey;" th:if="${info.subtitle !=null and !#strings.isEmpty(info.subtitle)}" th:text="${info.subtitle}">
+										</h4>
+										<!-- ⭐ 예전 슬라이더 구조 복구 -->
+										<div class="outer-slider-container" th:if="${info.images !=null and !#lists.isEmpty(info.images)}">
+											<button class="slider-btn outside-btn left-btn">&#10094;</button>
+											<div style="margin-top: 30px" class="slider-container">
+												<div class="image-slider">
+													<img th:each="img : ${info.images}" th:src="@{${img.imagePath}}" class="image-slide">
+												</div>
+											</div>
+											<button class="slider-btn outside-btn right-btn">&#10095;</button>
+										</div>
+										<p class="mobile-margin-fix desc" style="margin-top:20px; margin-bottom:40px; text-align: center;" th:text="${info.description}">
+											<!-- 위치 버튼 -->
+											<div class="hotel-card" style="text-align: center; margin-bottom: 60px;" th:if="${info.mapLink !=null and !#strings.isEmpty(info.mapLink)}">
+												<div class="hotel-info">
+													<a th:href="${info.mapLink}" target="_blank" class="hotel-btn dark">
+													🗺️ 위치 보기 </a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="image-modal" class="image-modal">
+						<span class="close-btn">&times;</span>
+						<img class="modal-content" id="modal-img" alt="Expanded Image">
+						<div id="caption">
+						</div>
+					</div>
+					
+					<aside class="sidebar" id="sidebar">
+					<div class="recommend-box">
+						<div class="tag-title2">
+							⭐ 추천할 만한 곳
+						</div>
+						<div class="rec-section">
+							<div class="rec-title">
+								📍 관광지
+							</div>
+							<ul class="rec-list">
+								<li th:each="place : ${travelPlacesHighlight}" class="place-item">
+								<a th:href="@{'#place' + ${place.id}}" class="place-link">
+								<span th:text="${place.name}"></span>
+								</a>
+								</li>
+							</ul>
+						</div>
+						<div class="rec-section">
+							<div class="rec-title">
+								🍽️ 음식
+							</div>
+							<ul class="rec-list">
+								<li th:each="food : ${foodPlacesHighlight}" class="place-item">
+								<a th:href="@{'#food' + ${food.id}}" class="place-link">
+								<span th:text="${food.name}"></span>
+								</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="link-section c2">
+						<div class="link-section-title">
+							 🧭 둘러보기
+						</div>
+						<a href="#" class="link-item">👀 여행지를 한눈에</a>
+						
+					</div>
+					<th:block th:if="${session.role=='admin'}">
+					<div class="admin-create">
+						<div class="link-section c2">
+							<div class="link-section-title create">
+								 ➕ 등록
+							</div>
+							<div class="link-section">
+							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/places/create(travelId=${travel.id}, type='TRAVEL')}'); return false;|">📍 관광지 등록</a>
+							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/places/create(travelId=${travel.id}, type='FOOD')}'); return false;|">🍜 음식 등록</a>
+							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/flights/create(travelId=${travel.id})}'); return false;|">✈️ 교통 등록</a>							
+							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/places/create(travelId=${travel.id}, type='HOTEL')}'); return false;|">🛌 호텔 등록</a>
+							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/places/create(travelId=${travel.id}, type='INFO')}'); return false;|">📙 정보 등록</a>	
+							</div>
+						</div>
+					</div>
+					</th:block>
+					<div class="sidebar-footer">
+						<th:block th:if="${session.role=='admin'}">
+						<a th:href="@{/admin}" class="login-link" style="color:red;">
+						Admin </a><br>
+						</th:block>
+						<a href="/myinfo" class="login-link" th:text="${member != null ? member.name : ''} + '님'"></a><br>
+						<a href="/logout" class="login-link">로그아웃</a>
+						<div style="border-top: 1px solid #333; margin-bottom:20px; margin-top:45px;">
+						</div>
+						<div class="footer">© 2026. Byeon Sung Hyun. All rights reserved.</div>
+					</div>
+					</aside>
+				</div>
+			</div>
+		</div>
+		<div class="admin-create admin-create-fixed">
+						<div class="link-section c2">
+							<div class="link-section-title create">
+								 ➕ 등록
+							</div>
+							<div class="link-section">
+							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/places/create(travelId=${travel.id}, type='TRAVEL')}'); return false;|">📍 관광지 등록</a>
+							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/places/create(travelId=${travel.id}, type='FOOD')}'); return false;|">🍜 음식 등록</a>
+							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/flights/create(travelId=${travel.id})}'); return false;|">✈️ 교통 등록</a>							
+							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/places/create(travelId=${travel.id}, type='HOTEL')}'); return false;|">🛌 호텔 등록</a>
+							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/places/create(travelId=${travel.id}, type='INFO')}'); return false;|">📙 정보 등록</a>
+							</div>
+						</div>
+					</div>
+		<button id="scrollTopButton" onclick="scrollToTop()">맨 위로</button>
+		</body>
+		<script src="/js/view.js"></script>
+		<script src="/js/star.js"></script>
+		<script src="/js/windows.js"></script>
+		</html>
