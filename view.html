@@ -1179,22 +1179,6 @@ a {
 						<a href="#" class="link-item">👀 여행지를 한눈에</a>
 						
 					</div>
-					<th:block th:if="${session.role=='admin'}">
-					<div class="admin-create">
-						<div class="link-section c2">
-							<div class="link-section-title create">
-								 ➕ 등록
-							</div>
-							<div class="link-section">
-							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/places/create(travelId=${travel.id}, type='TRAVEL')}'); return false;|">📍 관광지 등록</a>
-							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/places/create(travelId=${travel.id}, type='FOOD')}'); return false;|">🍜 음식 등록</a>
-							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/flights/create(travelId=${travel.id})}'); return false;|">✈️ 교통 등록</a>							
-							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/places/create(travelId=${travel.id}, type='HOTEL')}'); return false;|">🛌 호텔 등록</a>
-							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/places/create(travelId=${travel.id}, type='INFO')}'); return false;|">📙 정보 등록</a>	
-							</div>
-						</div>
-					</div>
-					</th:block>
 					<div class="sidebar-footer">
 						<th:block th:if="${session.role=='admin'}">
 						<a th:href="@{/admin}" class="login-link" style="color:red;">
@@ -1377,5 +1361,6 @@ function toggleSidebar() {
 		<script src="/js/windows.js"></script>
 
 		</html>
+
 
 
