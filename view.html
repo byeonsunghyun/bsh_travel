@@ -2,85 +2,46 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>BSH's Travel</title>
-<link rel="icon" href="../image/favicon.png" type="image/png">
-<link rel="stylesheet" href="/css/view.css">
+<link rel="stylesheet" href="css/main.css">
+<link rel="icon" href="/image/favicon.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
-	<style>
-	.admin-create-fixed {
-	display:none;
-}
-
+<style>
 .admin-create{
-	position: sticky;
+	grid-template-columns:1fr;
+		position: sticky;
 	    top: 20px;
 	    background: #1e1e1e;
 	    padding: 16px;
 	    border-radius: 12px;
 	    box-shadow: 0 8px 20px rgba(0,0,0,0.45);
 }
-.link-item {
-	display:flex;
-	align-items:center;
-	padding:6px 10px;
-	background-color:#333;
-	color:#fff;
-	border-radius:12px;
-	text-decoration:none;
-	font-size:0.85rem;
-	transition:background-color 0.3s ease;
-	justify-content:center;
+.starfield {
+	 position:fixed;
+	 top:0;
+	left:0;
+	 width:100vw;
+	 height:100vh;
+	 background:black;
+	 overflow:hidden;
+	 z-index:0;
 }
-.link-section-title {
-	grid-column:span 2;
-	margin-bottom:8px;
-	font-size:14px;
-	font-weight:600;
+.star {
+	 position:absolute;
+	 background:white;
+	 border-radius:50%;
+	 opacity:0.8;
+	 animation:twinkle 2s infinite alternate;
 }
-.link-item:hover {
-	background-color:#555;
-}
-.link-section-title.create {
-	 padding:0 0 12px 0;
-	 border-bottom:1px solid rgba(255,255,255,0.18);
-}
-.link-section.c2 {
-		grid-template-columns:1fr;
+@keyframes twinkle {
+	 0% {
+		 opacity:0.2;
 	}
-.place-block {
-	position:relative;
-}
-.place-actions {
-	position:absolute;
-	top:40px;
-	right:0px;
-	display:flex;
-	gap:8px;
-}
-.place-actions.hi {
-	top: 0;
-}
-.action-btn {
-	text-decoration:none;
-	font-size:1.1rem;
-	/* 크기 작게 */
-	padding:3px 6px;
-	/* 패딩 작게 */
-	border-radius:8px;
-	background:transparent;
-	/* 기본 배경 없음 */
-	color:#fff;
-	border:none;
-	/* 테두리 없애기 */
-	opacity:0.9;
-	transition:background 0.2s ease,transform 0.2s ease;
-}
-.action-btn:hover {
-	background:rgba(255,255,255,0.25);
-	/* hover 시 배경 */
-	transform:translateY(-1px);
+	 100% {
+		 opacity:1;
+	}
 }
 .action-link {
 	font-size:14px;
@@ -90,294 +51,67 @@
 	background-color:#444;
 	cursor:pointer;
 }
-.highlight {
-	background:rgba(255,127,80,0.15);
-	color:#ff7f50;
-	font-weight:600;
-	padding:0 4px;
-	border-radius:6px;
-}
-.color-pink {
-	color:palevioletred;
-	font-weight:600;
-}
-.color-blue {
-	color:#4fc3f7;
-	font-weight:600;
-}
-.color-yellow {
-	color:#fbc02d;
-	font-weight:700;
-}
-.desc-link {
-	color:#81d4fa;
-	text-decoration:underline;
-	font-weight:500;
-}
-.desc-link:hover {
-	color:#29b6f6;
-}
-.place-link {
-	display: block;
-}
-.recommend-box {
-	background:transparent;
-	max-height:300px;
-	overflow:auto;
-}
 .link-section.create {
 	max-height:300px;
-	overflow:auto;
+	overflow: auto;
 }
-.tag-title2 {
-	font-weight:700;
-	font-size:14px;
-	color: #fff;
-	margin:10px 0;
-}
-.rec-section {
-	margin-top:10px;
-	border-top:1px solid rgba(255,255,255,0.18);
-	/* 연한 구분선 */
-	padding-top:10px;
-}
-.rec-title {
-	font-weight:700;
-	margin-bottom:8px;
-	font-size:14px;
-	color:#fff;
-}
-.rec-list {
-	list-style:none;
-	padding:0;
-	margin: 0;
-}
-.rec-list li {
-	padding:8px 10px;
-	border-radius:10px;
-	margin-bottom:6px;
+.action-btn {
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	width:34px;
+	height:34px;
+	border-radius:50%;
 	background:transparent;
 	/* 배경 제거 */
-	color:#fff;
-	/* 글자 흰색 */
-	cursor:pointer;
-	transition:transform .15s,background .15s;
-}
-.rec-list li:hover {
-	background:rgba(255,255,255,0.10);
-	/* hover만 살짝 밝게 */
-	transform:translateY(-2px);
-}
-.tag3 {
-	display:inline-block;
-	background-color:#333;
-	/* 어두운 태그 배경 */
-	color:#fff;
-	/* 태그 글자색 */
-	padding:8px 15px;
-	margin:5px;
-	border-radius:20px;
-	font-size:14px;
-	transition:background-color 0.3s ease,transform 0.2s ease;
-}
-.highlight-star {
-	color:gold;
-	margin-left:6px;
-	font-size: 1.1em;
-}
-.hotel-btn.dark {
-	display:inline-block;
-	background-color:#2a2a2a;
-	/* 기존과 어울리는 다크 그레이 */
-	color:#fff;
-	/* 흰 글씨 */
-	padding:8px 14px;
-	border-radius:20px;
-	/* pill 형태로 부드럽게 */
-	font-size:0.9rem;
-	font-weight:500;
-	text-align:center;
+	color:#333;
 	text-decoration:none;
-	transition:background-color 0.3s ease;
-	box-shadow:0 2px 6px rgba(0,0,0,0.4);
-	/* 약한 그림자 */
+	font-size:18px;
+	box-shadow:0 2px 6px rgba(0,0,0,0.25);
+	transition:background 0.2s ease;
 }
-.hotel-btn.dark:hover {
-	background-color: #444;
-	/* 호버 시 더 밝은 회색 */
+.action-btn:hover {
+	background: rgba(255,255,255,0.95);
 }
-.dday-badge {
-	background-color:#ff6b6b;
-	color:white;
-	padding:6px 10px;
-	font-size:13px;
-	font-weight:bold;
-	border-radius:8px;
-	z-index:10;
-	box-shadow:0 2px 6px rgba(0,0,0,0.3);
-	display:inline-block;
-	text-align:center;
-	line-height:19px;
-	/* height와 일치하도록 맞춰줌 */
-	height:30px;
-	width:60px;
-}
-	.dday-badge.completed {
-		 background-color:#2196F3;
-	/* 완료된 여행 초록색 */
-}
-	.dday-badge.completed span {
-		 display:block;
-}
-	.dday-badge.planned {
-		 background-color:#ff8c42;
-	/* 완료된 여행 초록색 */
-}
-	.dday-badge.planned span {
-		 display:block;
-}
-	.dday-badge.writing {
-		 background-color:#1e7e3e;
-	/* 완료된 여행 초록색 */
-}
-	.dday-badge.writing span {
-		 display:block;
-}
-	 .travel-container {
+.travel-id-hover {
+	position:absolute;
+	top:8px;
+	left:8px;
 	display:flex;
-	flex-direction:column;
-	gap:5px;
-	border-bottom:2px solid #ccc;
-	/* 회색 경계선 추가 */
-}
-.travel-header {
-	display:block;
-	align-items:center;
-	gap:10px;
-}
-.tags-container {
-	display:flex;
-	flex-wrap:wrap;
-	gap:10px;
-	margin-bottom:5px;
-}
-.travel-tags {
-	background-color:#333;
-	padding:5px 10px;
-	border-radius:20px;
-	font-size:0.9rem;
-	color:#ccc;
-	margin-bottom:10px;
-}
-.travel-tags:hover {
-	background-color:#555;
-}
-.section {
-	margin:10px 0;
-}
-.place-link {
-	text-decoration:none;
-	font-size:14px;
+	/* 추가 */
+	gap:6px;
+	/* 버튼 사이 간격 */
+	background-color:transparent;
 	color:#fff;
+	padding:3px 8px;
+	border-radius:10px;
+	font-size:0.75rem;
+	opacity:0;
+	transition:opacity 0.3s ease;
+	z-index:2;
 }
-.place-grid {
-	display:grid;
-	grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-	gap:12px;
-}
-.place-grid .place-link {
-	background-color:#2a2a2a;
-	padding:10px;
-	border-radius:8px;
-	text-align:center;
-	color:#fff;
-	text-decoration:none;
-	transition:background-color 0.3s ease;
-}
-.place-grid .place-link:hover {
-	background-color: #444;
-}
-.place-link-highlight {
-		 border:1.5px solid #d4af37;
-	/* 좀 더 은은한 금색 */
-	box-shadow:0 0 4px rgba(212,175,55,0.4);
-	/* 흐릿한 황금빛 */
-}
-	 .travel-detail h2 {
-	margin-bottom:3px;
-	/* h2 아래 여백 줄이기 */
-}
-.outer-slider-container {
-	display:flex;
-	align-items:center;
-	justify-content:center;
-	gap:10px;
-	max-width:700px;
-	margin:0 auto;
-}
-.slider-container {
-	width:80%;
+/* country 카드에 hover하면 보이게 */
+.country {
 	position:relative;
 }
-.image-slider {
-	width:100%;
-	overflow:hidden;
+.country:hover .travel-id-hover {
+	opacity:1;
 }
-.image-slide {
-	display:none;
-	width:100%;
-	max-height:400px;
-	object-fit:cover;
+.no-results {
+	text-align:center;
+	margin:100px auto;
+	font-size:1.2rem;
+	color:#ccc;
+	max-width: 500px;
 }
-.image-slide.active {
-	display:block;
-}
-.slider-btn.outside-btn {
-	background-color:rgba(0,0,0,0.5);
-	border:none;
-	color:white;
-	font-size:2em;
-	padding:10px;
-	cursor: pointer;
-}
-/* 모달 창 스타일 */
-.image-modal {
-	display:none;
-	position:fixed;
-	z-index:1000;
-	left:0;
-	top:0;
-	width:100%;
-	height:100%;
-	background-color:rgba(0,0,0,0.8);
+.main-container.empty {
+	display:flex;
 	justify-content:center;
 	align-items:center;
-}
-.image-modal img {
-	max-width:50%;
-	max-height:80%;
-	margin:auto;
-	display:block;
-}
-.close-btn {
-	position:absolute;
-	top:20px;
-	right:35px;
-	color:#fff;
-	font-size:40px;
-	font-weight:bold;
-	cursor:pointer;
-	z-index:1001;
-}
-table {
-	width:100%;
-	margin-bottom:20px;
-	border-collapse:collapse;
-}
-th,td {
-	text-align:center;
-	padding:10px;
-	border:1px solid rgba(255,255,255,0.56);
+	flex-direction:column;
+	min-height:300px;
+	column-count:unset;
+	transform:translateY(-100px);
 }
 * {
 	margin:0;
@@ -386,9 +120,9 @@ th,td {
 }
 html,body {
 	height:100%;
-	background-color:transparent;
+	background-color:#121212;
 	color:#fff;
-	font-family:'Arial',sans-serif;
+	font-family:'Poppins',sans-serif;
 }
 .header {
 	background-color:#1e1e1e;
@@ -416,24 +150,66 @@ html,body {
 	height:80px;
 }
 .container {
-	min-height:100vh;
+	height:100vh;
 	display:flex;
 	flex-direction:column;
-	overflow-y:auto;
-	background:transparent;
-	/* ⭐ 추가 */
+	overflow-y:visible;
 }
 .main-wrapper {
 	display:flex;
 	flex:1;
-	position:relative;
-	background:transparent;
-	/* ⭐ 추가 */
+	border-left:2px solid #333;
+	position: relative;
 }
+/* 🔥 Masonry 레이아웃 적용 */
 .main-container {
 	flex:8;
 	padding:20px;
-	width: 100%;
+	column-count:2;
+	column-gap:15px;
+	border-right: 2px solid #444;
+}
+.dday-badge {
+	position:absolute;
+	top:10px;
+	right:10px;
+	background-color:#ff6b6b;
+	/* 기본 D-Day 색 */
+	color:white;
+	padding:6px 10px;
+	font-size:13px;
+	font-weight:bold;
+	border-radius:8px;
+	z-index:1;
+	box-shadow:0 2px 6px rgba(0,0,0,0.3);
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	min-width:60px;
+	/* 배지의 최소 너비 */
+	height:30px;
+	/* 배지 높이 */
+}
+.dday-badge.completed {
+	background-color:#2196F3;
+	/* 완료된 여행 초록색 */
+}
+.dday-badge.completed span {
+	display:block;
+}
+.dday-badge.planned {
+	background-color:#ff8c42;
+	/* 완료된 여행 초록색 */
+}
+.dday-badge.planned span {
+	display:block;
+}
+.dday-badge.writing {
+	background-color:#1e7e3e;
+	/* 완료된 여행 초록색 */
+}
+.dday-badge.writing span {
+	display: block;
 }
 .sidebar {
 	flex:2;
@@ -450,43 +226,86 @@ html,body {
 	align-self:flex-start;
 	box-shadow:-8px 0 12px rgba(0,0,0,0.45);
 	transition:transform 0.3s ease;
-	overflow-y:auto;
+	overflow-y: auto;
 }
-
-.starfield {
-	position:fixed;
-	top:0;
-	left:0;
-	width:100vw;
-	height:100vh;
-	background:#000;
-	z-index:-1;
-	/* ⭐ 핵심 */
-	overflow:hidden;
+/* 빈 공간을 채우는 spacer */
+.spacer {
+	flex:1;
 }
-/* 별 하나 */
-.star {
-	position:absolute;
-	background:white;
-	border-radius:50%;
-	opacity:0.8;
-	animation:twinkle 2s infinite alternate;
-}
-	.main-container,.travel-detail,.sidebar {
+.country {
+	background-color:#333;
+	padding:20px;
+	border-radius:12px;
+	box-shadow:0 6px 12px rgba(0,0,0,0.4);
+	border:2px solid #444;
+	transition:transform 0.3s ease-in-out,box-shadow 0.3s ease-in-out,border-color 0.3s ease-in-out;
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:center;
+	gap:15px;
 	position:relative;
-	z-index:2;
+	min-height:160px;
+	flex-grow:1;
+	overflow:hidden;
+	animation:fadeIn 0.7s ease;
+	/* 💡 Masonry 효과용 */
+	break-inside:avoid;
+	margin-bottom:15px;
+	position:relative;
+	background-size:cover;
+	background-position:center;
+	background-repeat:no-repeat;
+	background-blend-mode:overlay;
+	background-color:rgba(0,0,0,0.6);
 }
-.tag2 {
-	background-color:#444;
-	padding:5px 10px;
-	border-radius:15px;
-	font-size:0.85rem;
-	color:#ccc;
+.country:hover {
+	transform:translateY(-5px);
 	cursor:pointer;
-	transition:background-color 0.2s;
+	box-shadow:0 10px 18px rgba(0,0,0,0.7);
+	border-color:#fff;
 }
-.country-tags .tag:hover {
-	background-color:#666;
+.country-name {
+	font-size:1.6rem;
+	font-weight:bold;
+	text-align:center;
+	color:#fff;
+	margin-bottom:8px;
+	text-shadow:0 1px 4px rgba(0,0,0,0.6);
+}
+.country-time {
+	font-size:0.9rem;
+	text-align:center;
+	color:#e0e0e0;
+	text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
+.country-tags {
+	display:flex;
+	justify-content:center;
+	flex-wrap:wrap;
+	gap:8px;
+	/* 좁은 간격 */
+	text-align:center;
+}
+.country-tags .tag,
+.country-tags .tag2 {
+	background-color:#2c2c2c;
+	/* 어두운 회색 배경 */
+	padding:4px 12px;
+	/* 작은 여백 */
+	border-radius:20px;
+	/* 부드러운 라운딩 */
+	font-size:0.85rem;
+	/* 작은 폰트 크기 */
+	color:#f0f0f0;
+	/* 연한 회색 텍스트 */
+	cursor:pointer;
+	transition:all 0.2s ease-in-out;
+	/* 빠른 애니메이션 */
+	font-weight:500;
+	/* 적당히 가벼운 폰트 */
+	border:1px solid #444;
+	/* 얇은 회색 테두리 */
 }
 .search-container input {
 	width:100%;
@@ -497,14 +316,63 @@ html,body {
 	color:#fff;
 }
 .search-container input::placeholder {
-	color:#bbb;
+	color: #bbb;
 }
-.tag-section {
-	margin-top:10px;
+.tag3 {
+	display:inline-block;
+	background-color:#333;
+	color:#fff;
+	padding:8px 15px;
+	margin:5px;
+	border-radius:20px;
+	font-size:14px;
+	transition:background-color 0.3s ease,transform 0.2s ease;
 }
-.tag-title {
-	font-size:1.0rem;
+.tag-section .tag3:hover {
+	background-color:#555;
+	cursor: pointer;
+}
+.link-section {
+	display:grid;
+	grid-template-columns:repeat(2,1fr);
+	/* 2열 */
+	gap:10px 20px;
+	/* 행,열 간격 */
+}
+.link-section .tag-title {
+	font-size:1rem;
 	margin-bottom:10px;
+}
+.link-section-title.create {
+	 padding:0 0 12px 0;
+	 border-bottom:1px solid rgba(255,255,255,0.18)
+}
+.link-item {
+	display:flex;
+	align-items:center;
+	padding:6px 10px;
+	background-color:#333;
+	color:#fff;
+	border-radius:12px;
+	text-decoration:none;
+	font-size:0.85rem;
+	transition:background-color 0.3s ease;
+	justify-content:center;
+}
+.link-section-title {
+	grid-column:span 2;
+	margin-bottom:8px;
+	font-size:14px;
+	font-weight:600;
+	/* 기존 tag-title 스타일을 참고해서 추가 가능 */
+}
+.link-item:hover {
+	background-color:#555;
+}
+.tag-title,.tag-title2 {
+	font-size:14px;
+	font-weight:bold;
+	margin:10px 0;
 }
 .tags {
 	display:flex;
@@ -522,9 +390,16 @@ html,body {
 .tag:hover {
 	background-color:#555;
 }
-.rec-list li {
-	padding:5px 7px;
-	margin-bottom:4px;
+.sidebar .tag,.sidebar .tag2 {
+	background-color:#333;
+	padding:5px 10px;
+	border-radius:20px;
+	font-size:0.9rem;
+	color:#ccc;
+	cursor:pointer;
+}
+.sidebar .tag:hover,.sidebar .tag2:hover {
+	background-color:#555;
 }
 a {
 	text-decoration:none;
@@ -537,7 +412,7 @@ a {
 	text-align:center;
 	padding-top: 20px;
 }
- .login-link {
+.login-link {
 	color:#777;
 	/* 연한 회색 */
 	font-size:0.9rem;
@@ -548,6 +423,7 @@ a {
 	/* 밑줄 없애기 */
 	cursor:pointer;
 	/* 마우스 올리면 손가락 모양 */
+	padding-bottom:10px;
 }
 .login-link:hover {
 	color:#555;
@@ -562,157 +438,123 @@ a {
 	}
 	to {
 		opacity:1;
-		transform:translateY(0);
+		transform: translateY(0);
 	}
 }
-.travel-detail {
-	background-color:#1e1e1e;
-	padding:30px;
-	border-radius:12px;
-	box-shadow:0 4px 12px rgba(0,0,0,0.4);
-	max-width:100%;
-	margin:0 auto;
-	animation:fadeIn 0.6s ease;
-	line-height:1.7;
-	display:flex;
-	flex-direction:column;
-	gap:20px;
-}
-.travel-detail h1,.travel-detail h2 {
-	color:#f0f0f0;
-	margin-bottom:15px;
-}
-.travel-detail p {
-	margin-bottom:20px;
-	color:#ddd;
-}
-.travel-detail img {
-	width:100%;
-	max-height:400px;
-	object-fit:cover;
-	border-radius:8px;
-	margin:20px 0;
-}
-.travel-detail ul {
-	margin-bottom:20px;
-	padding-left:20px;
-}
-.travel-detail ul li {
-	margin-bottom:10px;
-	color: #ccc;
-}
-/* 버튼들을 가로로 배치하고 줄 바꿈 가능하게 설정 */
-.scroll-buttons {
-	display:flex;
-	flex-wrap:wrap;
-	/* 화면 크기에 따라 버튼을 다음 줄로 배치 */
-	gap:15px;
-	margin-bottom:30px;
-}
-.scroll-buttons button {
-	background-color:#444;
-	color:#fff;
-	padding:10px 16px;
-	border:none;
-	border-radius:5px;
-	cursor:pointer;
-	transition:background-color 0.3s ease;
-	white-space:nowrap;
-	/* 텍스트가 한 줄로 유지되게 */
-}
-.scroll-buttons button:hover {
-	background-color: #777;
-}
-/* 섹션 스타일 */
-.section {
-	margin-bottom:0px;
-}
-.section h2 {
-	color:#fff;
-	margin-bottom:15px;
-}
-.section ul {
-	padding-left:20px;
-}
-#scrollTopButton {
+#scrollTopBtn {
+	display:none;
 	position:fixed;
 	bottom:60px;
 	right:40px;
 	z-index:1000;
-	background-color:#444;
-	color:#fff;
 	border:none;
+	outline:none;
+	background-color:#444;
+	color:white;
+	cursor:pointer;
 	padding:12px 16px;
 	border-radius:50px;
-	cursor:pointer;
-	box-shadow:0 4px 8px rgba(0,0,0,0.3);
-	transition:opacity 0.3s ease;
-	opacity:0;
-	pointer-events:none;
+	/* 덜 동그랗게! */
+	box-shadow:0 4px 8px rgba(0,0,0,0.5);
+	transition:background-color 0.3s ease,transform 0.3s ease;
 }
-#scrollTopButton.show {
-	opacity:1;
-	pointer-events:auto;
+#scrollTopBtn:hover {
+	background-color:#666;
+	transform: scale(1.1);
 }
-#scrollTopButton:hover {
-	background-color:#777;
-}
-.travel-title {
-	display:flex;
-	gap: 20px;
-	/* h1과 뱃지 사이 간격 */
-}
-.link-section {
-	display:grid;
-	grid-template-columns:repeat(2,1fr);
-	gap:10px 20px;
-}
-.link-section .tag-title {
-	font-size:1rem;
-	margin-bottom:10px;
-}
-.admin-create-fixed.show {
-	opacity:1;
-	transform:translateY(0);
-	pointer-events:auto;
-}
-@keyframes twinkle {
-	 0% {
-		 opacity:0.2;
-	}
-	 100% {
-		 opacity:1;
-	}
-}
+
 @media (max-width:768px) {
-	.link-item {
-	padding:4px 7px;
-	font-size:12px;
+	.main-container {
+		column-count:1;
 	}
-	.link-section.create {
-			max-height:200px;
+	.header-content h1 {
+		font-size:1.7rem;
 	}
-	.action-link {
-		font-size:11px;
-		border-radius:8px;
-	}
-	.recommend-box {
-		max-height:300px;
-		overscroll-behavior: contain;
-	}
-		.scroll-buttons button {
-				 flex:0 0 calc(50% - 10px);
-		/* 두 개씩 고정 크기 */
-		max-width:calc(50% - 10px);
-	}
-			 .main-container {
+	.link-section {
 		grid-template-columns:1fr;
-			padding:20px 0;
+		/* 모바일에서는 1열 */
+	}
+	.link-section-title {
+		grid-column:auto;
 	}
 		.logo {
 		width:90px;
 		height:60px;
 	}
+	
+	.country {
+        padding: 16px;                 /* 여백 살짝 줄이기 */
+        border-radius: 10px;           /* 모바일에 맞게 둥글기 조정 */
+        min-height: 100px;             /* 카드 높이 살짝 축소 */
+        gap: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+        border: 1px solid #444;        /* 테두리 얇게 */
+        animation: fadeIn 0.5s ease;
+
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .country:active {
+        transform: scale(0.97);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    }
+	.country-tags .tag,
+    .country-tags .tag2 {
+        padding: 2px 7px;      /* 터치하기 좋게 */
+        font-size: 8px;     /* 가독성 ↑ */
+        border-radius: 22px;    /* 살짝 더 둥글게 */
+        margin: 1px 2px;        /* 태그 간격 확보 */
+    }
+    .country-tags{
+    	gap:2px;
+    }
+    .country-name {
+	font-size:1.05rem;
+	font-weight:bold;
+	text-align:center;
+	color:#fff;
+	margin-bottom:2px;
+	text-shadow:0 1px 4px rgba(0,0,0,0.6);
+	}
+	.country-time {
+		font-size:0.55rem;
+		text-align:center;
+		color:#e0e0e0;
+		text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+	}
+	.dday-badge {
+        top: 8px;
+        right: 8px;
+
+        padding: 3px 6px;
+        font-size: 10px;
+        border-radius: 6px;
+
+        min-width: 44px;
+        height: 20px;
+
+        box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+    }
+    .travel-id-hover{
+    	top:4px;
+    	left:4px;
+    }
+    .action-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 10px;
+
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+
+        box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+        transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .action-btn:active {
+        transform: scale(0.92);
+        background: rgba(255, 255, 255, 0.18);
+    }
+	
 	.sidebar {
 		position:fixed;
 		top:0;
@@ -749,636 +591,217 @@ a {
 		cursor:pointer;
 		color:white;
 	}
-	.header-content h1 {
-		font-size: 1.7rem;
+	.search-container {
+		border-top:1px solid #444;
+		padding: 10px 0 0 0;
 	}
-	/* 이미지 슬라이더 */
-	.outer-slider-container {
-		gap:6px;
+	
+	.tag-title2 .link-section-title 
+	.link-section-title.create{
+		font-size:10px;
 	}
-	.slider-btn.outside-btn {
-		font-size:1.5em;
-		padding:6px;
+	
+	.link-section-title.create{
+		font-size:14px;
 	}
-	.image-slide {
-		max-height:250px;
-		position:relative;
-		/* 부모 요소를 기준으로 절대 위치 조정 */
-	}
-	.image-modal img {
-		max-width:90%;
-		max-height: 70%;
-	}
-	.close-btn {
-		position:absolute;
-		/* 이미지를 기준으로 절대 위치 */
-		top:10px;
-		right:20px;
-		font-size:30px;
-		z-index:100;
-		/* 이미지 위에 버튼을 올리기 위해 높은 z-index */
-	}
-	/* 여행 상세 내용 폰트 조절 */
-	.travel-detail {
-		padding:20px;
-		gap:15px;
-	}
-	.travel-detail h1 {
-		font-size:1.5rem;
-	}
-	.travel-detail h2 {
-		font-size:1.2rem;
-	}
-	.travel-detail h3 {
-		font-size:1.0rem;
-	}
-	.travel-detail h4 {
-		font-size:0.9rem;
-	}
-	.travel-detail p,.travel-detail ul li {
-		font-size:0.8rem;
-	}
-	table th,table td {
-		padding:6px;
-		font-size: 0.8rem;
-	}
-	/* 맨 위로 버튼 */
-	#scrollTopButton {
-		bottom:20px;
-		right:20px;
-		padding:10px 14px;
-		font-size:0.9rem;
-	}
-	.place-grid {
-		grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-		/* 최소 120px로 줄여서 두 개까지 가능하게 */
-	}
-	.place-grid .place-link {
-		font-size:0.85rem;
-	}
-	.place-link{
+	
+	.action-link{
 		font-size:11px;
 	}
-	p.mobile-margin-fix {
-		margin-bottom:50px !important;
+	
+	.tag3{
+		font-size:10px;
+		padding:4px 12px;
+		margin-bottom: 0px;
 	}
-	.dday-badge {
-		font-size:11px;
-		padding:4px 8px;
-		height:26px;
-		width:50px;
+	
+	.link-section-title.create .link-section-title{
+	 padding:0 0 9px 0;
 	}
-	.link-section-title {
-		grid-column: auto;
-	}
+	
+	.link-item {
+	padding:4px 7px;
+	font-size:12px;
+}
+
 	.footer{
 		font-size: 10px;
 	}
-	.tag-title2 {
-	padding-top:10px;
+	
+	
+	
+	#searchInput{
+		height: 30px;
+		padding: 6px 10px;
+	}
 }
-}
-
 @media (min-width:769px) {
 	.sidebar-toggle-button {
-		display:none;
-	}
-	.admin-create-fixed {
-		display:block;
-		position:fixed;      /* 사이드바 안에서 고정 */
-		bottom: 0px;
-		right: 44px;            /* 원하는 위치 */
-		width:260px;
-		height:170px;
-		opacity:0;
-		z-index:999;
-		pointer-events:none;
-		transform:translateY(10px);
-		transition:opacity 0.3s ease, transform 0.3s ease;
-		margin-top: 300px;
+		display: none;
 	}
 }
-		
-	</style>
+	
+</style>
 <body>
 <div class="container">
-	<div class="starfield"></div>
 	<header class="header">
 	<div class="header-content">
 		<a href="/main" class="header-content button">
-		<img src="../image/travel_logo.png" alt="Logo" class="logo">
+		<img src="./image/travel_logo.png" alt="Logo" class="logo">
 		</a>
 	</div>
 	</header>
 	<button class="sidebar-toggle-button" onclick="toggleSidebar()">☰</button>
 	<div class="main-wrapper">
+		<div class="starfield"></div>
 		<div class="main-container">
-			<div class="travel-detail">
-				<div class="travel-container">
-					<div class="travel-title">
-						<h1 style="line-height: 1;" th:text="${travel.countryName} + ' 여행'"></h1>
-						<div class="dday-badge" th:classappend="${travel.status==T(com.example.demo.entity.TravelStatus).COMPLETED} ? ' completed' : ( ${travel.status==T(com.example.demo.entity.TravelStatus).ONGOING} ? ' writing' : ' planned' )" th:text="${travel.status==T(com.example.demo.entity.TravelStatus).COMPLETED} ? '완료' : ( ${travel.status==T(com.example.demo.entity.TravelStatus).ONGOING} ? '작성중' : '예정' )">
-						</div>
-					</div>
-					<div class="travel-header">
-						<p style="font-size:0.9rem; color: #aaa;" th:text="'(' + ${travel.startDate} + ' ~ ' + ${travel.endDate} + ')'">
-						</p>
-					</div>
-					<div class="tags-container">
-						<p class="travel-tags" th:each="tag : ${travel.tags}" th:text="' #' + ${tag.tagName}">
-							 #태그
-						</p>
+			<div class="country" th:each="travel : ${travels}" th:style="'background-image: url(/uploads/bshtravel/country_image/' + ${travel.countryName} + '.jpg);'">
+				<div class="dday-badge" th:classappend="${travel.status==T(com.example.demo.entity.TravelStatus).COMPLETED} ? ' completed' : ( ${travel.status==T(com.example.demo.entity.TravelStatus).ONGOING} ? ' writing' : ' planned' )" th:text="${travel.status==T(com.example.demo.entity.TravelStatus).COMPLETED} ? '완료' : ( ${travel.status==T(com.example.demo.entity.TravelStatus).ONGOING} ? '작성중' : '예정' )">
+				</div>
+				<!-- 메인 링크 -->
+				<a th:href="@{/bsh_travel/{id}(id=${travel.id})}" class="country-link">
+				<p class="country-time" th:text="${travel.startDate} + ' ~ ' + ${travel.endDate}">
+				</p>
+				<p class="country-name" th:text="${travel.countryName} + ' 여행'">
+				</p>
+				<div class="country-tags">
+					<div class="tag2" th:each="tag : ${travel.tags}" th:text="'#' + ${tag.tagName}">
 					</div>
 				</div>
-				<div class="scroll-buttons">
-					<button onclick="scrollToSection('places')">📍 방문한 주요 장소</button>
-					<button onclick="scrollToSection('food')">🍜 음식 이야기</button>
-					<button onclick="scrollToSection('transit')">📚 여행 수단 정리</button>
+				</a>
+				<!-- 관리자 버튼 (여기만 따로 분리) -->
+				<th:block th:if="${session.role=='admin'}">
+				<div class="travel-id-hover">
+					<button type="button"
+					        class="action-btn edit"
+					        th:onclick="|openPopup('@{/admin/travels/edit/{id}(id=${travel.id})}')|">
+						✏️
+					</button>
+					<button type="button" class="action-btn delete" th:onclick="|if(confirm('정말 삭제하시겠습니까?')) location.href='@{/admin/travels/delete/{id}(id=${travel.id})}'|">
+					🗑️ </button>
 				</div>
-				<div id="places" class="section">
-					<h2>📍 방문한 주요 장소</h2>
-					<div class="place-grid">
-						<a th:each="place, stat : ${travelPlaces}" th:href="'#place' + ${place.id}" class="place-link" th:classappend="${place.highlight} ? ' place-link-highlight' : ''" th:text="${place.name}">
-						</a>
-					</div>
-					<div th:each="place, stat : ${travelPlaces}" class="place-block">
-						<hr th:id="'place' + ${place.id}" style="border: none; border-top: 1px solid #555; margin: 10px 0;"/>
-						<th:block th:if="${session.role=='admin'}">
-						<div class="place-actions">
-							<a href="#" class="action-btn" th:onclick="|openPopup('@{/admin/places/edit/{id}(id=${place.id})}'); return false;|">✏️</a>
-							<a th:href="@{/admin/places/delete/{id}(id=${place.id})}" class="action-btn" onclick="return confirm('정말 삭제하시겠습니까?');">
-							🗑️ </a>
-						</div>
-						</th:block>
-						<div>
-							<h3 style="text-align: center; margin-top:60px;">
-							<span th:text="${stat.index + 1 + '. ' + place.name}"></span>
-							<span th:if="${place.highlight}" class="highlight-star">★</span>
-							</h3>
-							<h4 style="text-align: center; color: grey;" th:if="${place.subtitle !=null and !#strings.isEmpty(place.subtitle)}" th:text="${place.subtitle}">
-							</h4>
-							<!-- ⭐ 예전 슬라이더 구조 복구 -->
-							<div class="outer-slider-container" th:if="${place.images !=null and !#lists.isEmpty(place.images)}">
-								<button class="slider-btn outside-btn left-btn">&#10094;</button>
-								<div style="margin-top: 30px" class="slider-container">
-									<div class="image-slider">
-										<img th:each="img : ${place.images}" th:src="@{${img.imagePath}}" class="image-slide">
-									</div>
-								</div>
-								<button class="slider-btn outside-btn right-btn">&#10095;</button>
-							</div>
-							<p class="mobile-margin-fix desc" style="margin-top:20px; margin-bottom:40px; text-align: center;" th:text="${place.description}">
-							</p>
-							<!-- 위치 버튼 -->
-							<div class="hotel-card" style="text-align: center; margin-bottom: 60px;" th:if="${place.mapLink !=null and !#strings.isEmpty(place.mapLink)}">
-								<div class="hotel-info">
-									<a th:href="${place.mapLink}" target="_blank" class="hotel-btn dark">
-									🗺️ 위치 보기 </a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<hr style="border: none; border-top: 2px solid #ccc;" id="food"/>
-				<div id="food" class="section">
-					<h2>🍜 음식 이야기</h2>
-					<div class="place-grid">
-						<a th:each="food, stat : ${foodPlaces}" th:href="'#food' + ${food.id}" class="place-link" th:classappend="${food.highlight} ? ' place-link-highlight' : ''" th:text="${food.name}">
-						</a>
-					</div>
-					<div th:each="food, stat : ${foodPlaces}" class="place-block">
-						<hr th:id="'food' + ${food.id}" style="border: none; border-top: 1px solid #555; margin: 10px 0;"/>
-						<th:block th:if="${session.role=='admin'}">
-						<div class="place-actions">
-							<a href="#" class="action-btn" th:onclick="|openPopup('@{/admin/places/edit/{id}(id=${food.id})}'); return false;|">✏️</a>
-							<a th:href="@{/admin/places/delete/{id}(id=${food.id})}" class="action-btn" onclick="return confirm('정말 삭제하시겠습니까?');">
-							🗑️ </a>
-						</div>
-						</th:block>
-						<div>
-							<h3 style="text-align: center; margin-top:60px;">
-							<span th:text="${stat.index + 1 + '. ' + food.name}"></span>
-							<span th:if="${food.highlight}" class="highlight-star">★</span>
-							</h3>
-							<h4 style="text-align: center; color: grey;" th:if="${food.subtitle !=null and !#strings.isEmpty(food.subtitle)}" th:text="${food.subtitle}">
-							</h4>
-							<div class="outer-slider-container" th:if="${food.images !=null and !#lists.isEmpty(food.images)}">
-								<button class="slider-btn outside-btn left-btn">&#10094;</button>
-								<div style="margin-top: 30px" class="slider-container">
-									<div class="image-slider">
-										<img th:each="img : ${food.images}" th:src="@{${img.imagePath}}" class="image-slide">
-									</div>
-								</div>
-								<button class="slider-btn outside-btn right-btn">&#10095;</button>
-							</div>
-							<p class="mobile-margin-fix desc" style="margin-top:20px; margin-bottom:40px; text-align: center;" th:text="${food.description}">
-								<div class="hotel-card" style="text-align: center; margin-bottom: 60px;" th:if="${food.mapLink !=null and !#strings.isEmpty(food.mapLink)}">
-									<div class="hotel-info">
-										<a th:href="${food.mapLink}" target="_blank" class="hotel-btn dark">
-										🗺️ 위치 보기 </a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<hr style="border: none; border-top: 2px solid #ccc;" id="transit"/>
-					<div class="section">
-						<h2>📚 여행 수단 정리</h2>
-						<div class="place-grid">
-							<a href="javascript:void(0);" class="place-link" data-id="airplane">✈️ 항공권</a>
-							<a href="javascript:void(0);" class="place-link" data-id="hotel">🛌 호텔</a>
-							<a href="javascript:void(0);" class="place-link" data-id="etc">📙 기타 정보</a>
-						</div>
-						<hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="airplane"/>
-						<div>
-							<h2 style="margin-top: 10px; margin-bottom: 15px;">✈️ 항공/배편</h2>
-							<div th:each="flight, iterStat : ${flights}" class="place-block">
-								<th:block th:if="${session.role=='admin'}">
-								<div class="place-actions hi">
-									<!-- 수정 -->
-								<a href="#" class="action-btn" th:onclick="|openPopup('@{/admin/flights/edit/{id}(id=${flight.id})}'); return false;|">✏️</a>
-									
-									<!-- 삭제 -->
-									<a th:href="@{/admin/flights/delete/{id}(id=${flight.id})}" class="action-btn" onclick="return confirm('정말 삭제하시겠습니까?');">
-									🗑️ </a>
-								</div>
-								</th:block>
-								<h3 style="margin-bottom: 10px; text-align: center" th:text="'Ticket ' + ${iterStat.index + 1}"></h3>
-								<table>
-								<thead>
-								<tr>
-									<th>
-										구분
-									</th>
-									<th th:text="${flight.transportType=='SHIP' ? '항구' : '공항'}">
-										공항/항구
-									</th>
-									<th>
-										시간
-									</th>
-									<th>
-										날짜
-									</th>
-									<th th:text="${flight.transportType=='SHIP' ? '배편' : '항공편'}">
-										항공/배편
-									</th>
-								</tr>
-								</thead>
-								<tbody>
-								<tr>
-									<td>
-										출발
-									</td>
-									<td th:text="${flight.departPlace}">
-									</td>
-									<td th:text="${flight.departTime}">
-									</td>
-									<td th:text="${#temporals.format(flight.departDate, 'yyyy년 MM월 dd일')}">
-									</td>
-									<td th:text="${flight.carrier + ' ' + flight.transportNumber}" rowspan="2">
-									</td>
-								</tr>
-								<tr>
-									<td>
-										도착
-									</td>
-									<td th:text="${flight.arrivePlace}">
-									</td>
-									<td th:text="${flight.arriveTime}">
-									</td>
-									<td th:text="${#temporals.format(flight.arriveDate, 'yyyy년 MM월 dd일')}">
-									</td>
-								</tr>
-								</tbody>
-								</table>
-								<div style="margin: 15px 0;">
-								</div>
-							</div>
-						</div>
-						<hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="hotel"/>
-						<div>
-							<h2 style="margin-top: 20px;">🛌 호텔</h2>
-							<div th:each="hotel, stat : ${hotelPlaces}" class="place-block">
-								<th:block th:if="${session.role=='admin'}">
-								<div class="place-actions hi">
-								<a href="#" class="action-btn" th:onclick="|openPopup('@{/admin/places/edit/{id}(id=${hotel.id})}'); return false;|">✏️</a>
-									<a th:href="@{/admin/places/delete/{id}(id=${hotel.id})}" class="action-btn" onclick="return confirm('정말 삭제하시겠습니까?');">
-									🗑️ </a>
-								</div>
-								</th:block>
-								<div>
-									<h3 th:style="${stat.index==0} ? 'text-align:center; margin-top:60px;' : 'text-align:center; margin-top:100px;'">
-									<span th:text="${stat.index + 1 + '. ' + hotel.name}"></span>
-									<span th:if="${hotel.highlight}" class="highlight-star">★</span>
-									</h3>
-									<h4 style="text-align: center; color: grey;" th:if="${hotel.subtitle !=null and !#strings.isEmpty(hotel.subtitle)}" th:text="${hotel.subtitle}">
-									</h4>
-									<!-- ⭐ 예전 슬라이더 구조 복구 -->
-									<div class="outer-slider-container" th:if="${hotel.images !=null and !#lists.isEmpty(hotel.images)}">
-										<button class="slider-btn outside-btn left-btn">&#10094;</button>
-										<div style="margin-top: 30px" class="slider-container">
-											<div class="image-slider">
-												<img th:each="img : ${hotel.images}" th:src="@{${img.imagePath}}" class="image-slide">
-											</div>
-										</div>
-										<button class="slider-btn outside-btn right-btn">&#10095;</button>
-									</div>
-									<p class="mobile-margin-fix desc" style="margin-top:20px; margin-bottom:40px; text-align: center;" th:text="${hotel.description}">
-										<!-- 위치 버튼 -->
-										<div class="hotel-card" style="text-align: center; margin-bottom: 60px;" th:if="${hotel.mapLink !=null and !#strings.isEmpty(hotel.mapLink)}">
-											<div class="hotel-info">
-												<a th:href="${hotel.mapLink}" target="_blank" class="hotel-btn dark">
-												🗺️ 위치 보기 </a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<hr style="border: none; border-top: 1px solid #555; margin: 10px 0;" id="etc"/>
-							<div>
-								<h2 style="margin-top: 20px;">📙 기타 정보</h2>
-								<div th:each="info, stat : ${infoPlaces}" class="place-block">
-									<th:block th:if="${session.role=='admin'}">
-									<div class="place-actions hi">
-								<a href="#" class="action-btn" th:onclick="|openPopup('@{/admin/places/edit/{id}(id=${info.id})}'); return false;|">✏️</a>
-									
-										<a th:href="@{/admin/places/delete/{id}(id=${info.id})}" class="action-btn" onclick="return confirm('정말 삭제하시겠습니까?');">
-										🗑️ </a>
-									</div>
-									</th:block>
-									<div>
-										<h3 th:style="${stat.index==0} ? 'text-align:center; margin-top:60px;' : 'text-align:center; margin-top:100px;'">
-										<span th:text="${stat.index + 1 + '. ' + info.name}"></span>
-										<span th:if="${info.highlight}" class="highlight-star">★</span>
-										</h3>
-										<h4 style="text-align: center; color: grey;" th:if="${info.subtitle !=null and !#strings.isEmpty(info.subtitle)}" th:text="${info.subtitle}">
-										</h4>
-										<!-- ⭐ 예전 슬라이더 구조 복구 -->
-										<div class="outer-slider-container" th:if="${info.images !=null and !#lists.isEmpty(info.images)}">
-											<button class="slider-btn outside-btn left-btn">&#10094;</button>
-											<div style="margin-top: 30px" class="slider-container">
-												<div class="image-slider">
-													<img th:each="img : ${info.images}" th:src="@{${img.imagePath}}" class="image-slide">
-												</div>
-											</div>
-											<button class="slider-btn outside-btn right-btn">&#10095;</button>
-										</div>
-										<p class="mobile-margin-fix desc" style="margin-top:20px; margin-bottom:40px; text-align: center;" th:text="${info.description}">
-											<!-- 위치 버튼 -->
-											<div class="hotel-card" style="text-align: center; margin-bottom: 60px;" th:if="${info.mapLink !=null and !#strings.isEmpty(info.mapLink)}">
-												<div class="hotel-info">
-													<a th:href="${info.mapLink}" target="_blank" class="hotel-btn dark">
-													🗺️ 위치 보기 </a>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div id="image-modal" class="image-modal">
-						<span class="close-btn">&times;</span>
-						<img class="modal-content" id="modal-img" alt="Expanded Image">
-						<div id="caption">
-						</div>
-					</div>
-					
-					<aside class="sidebar" id="sidebar">
-					<div class="recommend-box">
-						<div class="tag-title2">
-							⭐ 추천할 만한 곳
-						</div>
-						<div class="rec-section">
-							<div class="rec-title">
-								📍 관광지
-							</div>
-							<ul class="rec-list">
-								<li th:each="place : ${travelPlacesHighlight}" class="place-item">
-								<a th:href="@{'#place' + ${place.id}}" class="place-link">
-								<span th:text="${place.name}"></span>
-								</a>
-								</li>
-							</ul>
-						</div>
-						<div class="rec-section">
-							<div class="rec-title">
-								🍽️ 음식
-							</div>
-							<ul class="rec-list">
-								<li th:each="food : ${foodPlacesHighlight}" class="place-item">
-								<a th:href="@{'#food' + ${food.id}}" class="place-link">
-								<span th:text="${food.name}"></span>
-								</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<div class="link-section c2">
-						<div class="link-section-title">
-							 🧭 둘러보기
-						</div>
-						<a href="#" class="link-item">👀 여행지를 한눈에</a>
-						
-					</div>
-						<div class="admin-create">
-						<div class="link-section c2">
-							<div class="link-section-title create">
-								 ➕ 등록
-							</div>
-							<div class="link-section">
-							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/places/create(travelId=${travel.id}, type='TRAVEL')}'); return false;|">📍 관광지 등록</a>
-							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/places/create(travelId=${travel.id}, type='FOOD')}'); return false;|">🍜 음식 등록</a>
-							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/flights/create(travelId=${travel.id})}'); return false;|">✈️ 교통 등록</a>							
-							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/places/create(travelId=${travel.id}, type='HOTEL')}'); return false;|">🛌 호텔 등록</a>
-							<a class="action-link" href="#" th:onclick="|openPopup('@{/admin/places/create(travelId=${travel.id}, type='INFO')}'); return false;|">📙 정보 등록</a>	
-							</div>
-						</div>
-					</div>
-					<div class="sidebar-footer">
-						<th:block th:if="${session.role=='admin'}">
-						<a th:href="@{/admin}" class="login-link" style="color:red;">
-						Admin </a><br>
-						</th:block>
-						<a href="/myinfo" class="login-link" th:text="${member != null ? member.name : ''} + '님'"></a><br>
-						<a href="/logout" class="login-link">로그아웃</a>
-						<div style="border-top: 1px solid #333; margin-bottom:20px; margin-top:45px;">
-						</div>
-						<div class="footer">© 2026. Byeon Sung Hyun. All rights reserved.</div>
-					</div>
-					</aside>
-				</div>
+				</th:block>
 			</div>
 		</div>
-		<button id="scrollTopButton" onclick="scrollToTop()">맨 위로</button>
-		</body>
-		<script>
-			function toggleAdminCreate() {
-	const box = document.getElementById('adminCreateBox');
-	box.classList.toggle('collapsed');
+		
+		<aside class="sidebar" id="sidebar">
+    <!-- 검색 폼 -->
+    <div class="search-container">
+        <div class="tag-title2">🔍 검색하기</div>
+        <input type="text" id="searchInput" name="keyword" placeholder="나라 또는 도시 검색하기..." oninput="filterCountries()"/>
+    </div>
+
+    <!-- 태그 목록 -->
+    <div class="tag-section">
+        <div class="tag-title2">🏷️ 태그</div>
+        <span th:each="tag : ${randomTags}" class="tag3" th:text="'#' + ${tag}" th:data-tag="${tag}" onclick="searchByTagFromElement(this)">
+        </span>
+    </div>
+
+    <!-- 아래 고정 영역 -->
+    <div class="link-section">
+        <div class="link-section-title">🧭 둘러보기</div>
+        <a href="#" class="link-item">👀 여행지를 한눈에</a>
+    </div>
+
+    <th:block th:if="${session.role=='admin'}">
+    <div class="admin-create">
+        <div class="link-section create">
+            <div class="link-section-title create">➕ 등록</div>
+			<a href="#" class="action-link"
+			   onclick="openPopup('/admin/travels/create'); return false;">
+				✈️ 여행 등록
+			</a>
+        </div>
+    </div>
+    </th:block>
+    
+    <div class="spacer"></div>
+
+    <div class="sidebar-footer">
+        <th:block th:if="${session.role=='admin'}">
+        <a th:href="@{/admin}" class="login-link" style="color:red;">Admin </a><br>
+        </th:block>
+        <a th:href="@{/myinfo}" class="login-link" th:text="${member != null ? member.name : ''} + '님'"></a><br>
+        <a href="/logout" class="login-link">로그아웃</a>
+        <div style="border-top: 1px solid #333; margin-bottom:20px; margin-top:45px;"></div>
+        <div class="footer">© 2026. Byeon Sung Hyun. All rights reserved.</div>
+    </div>
+</aside>
+
+	</div>
+</div>
+<button onclick="scrollToTop()" id="scrollTopBtn" title="맨 위로">맨 위로</button>
+</body>
+<scrip>
+	window.openPopup = function(url, name = 'popup') {
+    // 📱 모바일이면 그냥 이동
+    if (window.innerWidth <= 770) {
+        location.href = url;
+        return;
+    }
+
+    // 💻 PC면 팝업
+    const width = 1000;
+    const height = 700;
+
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+
+    window.open(
+        url,
+        name,
+        `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
+    );
+}
+function searchByTagFromElement(el) {
+    const tag = el.dataset.tag;     // 🔥 data-tag 값 읽기
+    const input = document.getElementById('searchInput');
+
+    input.value = tag;
+    filterCountries();              // 기존 검색 로직 재사용
 }
 
-function toggleSidebar() {
+    function toggleSidebar() {
         document.getElementById('sidebar').classList.toggle('active');
     }
-    /*function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('active');
-    }*/
-    // 각 섹션으로 스크롤하는 함수
-    function scrollToSection(sectionId) {
-        const section = document.getElementById(sectionId);
-        if (section) {
-            section.scrollIntoView({ behavior: 'smooth' });
-        }
-    }
-	document.querySelectorAll('.place-link').forEach(link => {
-	    link.addEventListener('click', function (e) {
-	        e.preventDefault(); // 🔥 기본 앵커 점프 막기
-	        const targetId = this.getAttribute('href').substring(1);
-	        const target = document.getElementById(targetId);
-	        if (target) {
-	            target.scrollIntoView({
-	                behavior: 'smooth',
-	                block: 'start'
-	            });
-	        }
-	    });
-	});
-    // 스크롤 시 버튼 보이게
-    window.addEventListener('scroll', function () {
-        const button = document.getElementById('scrollTopButton');
-        if (window.scrollY > 100) {
-            button.classList.add('show');
-        } else {
-            button.classList.remove('show');
-        }
-    });
-	window.addEventListener('scroll', () => {
-		const adminCreate = document.querySelector('.admin-create-fixed');
-		if (!adminCreate) return;
 
-		if (window.scrollY > 700) {
-			adminCreate.classList.add('show');
-		} else {
-			adminCreate.classList.remove('show');
-		}
-	});
-    // 스크롤 맨 위로 이동
+    // 스크롤 시 맨 위로 버튼 표시
+    window.onscroll = function() {
+        const btn = document.getElementById("scrollTopBtn");
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 200) {
+            btn.style.display = "block";
+        } else {
+            btn.style.display = "none";
+        }
+    };
+
     function scrollToTop() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    const slides = document.querySelectorAll(".image-slide");
-    let currentIndex = 0;
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.classList.toggle("active", i === index);
+    
+    function showPreparingMessage(event) {
+        event.preventDefault(); // 링크 이동 막기
+        alert("🛠️ 준비 중입니다."); // 준비중 메시지 표시
+        // 추가로 준비중 메시지를 화면에 표시하려면 HTML 요소 추가하거나 모달 사용 가능
+      }
+    
+    function filterCountries() {
+        const input = document.getElementById('searchInput').value.toLowerCase(); // 검색어 입력
+        const countryCards = document.querySelectorAll('.country'); // 모든 여행 카드 찾기
+
+        countryCards.forEach(card => {
+            const name = card.querySelector('.country-name')?.textContent.toLowerCase() || '';
+            const tags = Array.from(card.querySelectorAll('.tag2')).map(tag => tag.textContent.toLowerCase()).join(' ');
+
+            // 검색어가 나라 이름 또는 태그 안에 포함되면 보이게, 아니면 숨김
+            if (name.includes(input) || tags.includes(input)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
         });
     }
-    document.addEventListener("DOMContentLoaded", function () {
-        const modal = document.getElementById("image-modal");
-        const modalImg = document.getElementById("modal-img");
-        const caption = document.getElementById("caption");
-        const closeBtn = document.querySelector(".close-btn");
-        let currentSlides = [];
-        let currentIndex = 0;
-        // 슬라이드 보여주는 함수
-        function showSlide(index) {
-            if (index >= 0 && index < currentSlides.length) {
-                modalImg.src = currentSlides[index].src;
-                caption.textContent = currentSlides[index].alt || "";
-            }
-        }
-        // 모든 슬라이더 처리
-        document.querySelectorAll('.outer-slider-container').forEach(container => {
-            const slides = container.querySelectorAll(".image-slide");
-            const leftBtn = container.querySelector(".left-btn");
-            const rightBtn = container.querySelector(".right-btn");
-            // 페이지 슬라이더 좌우 버튼
-            if (slides.length > 1) {
-                let index = 0;
-                function showPageSlide(i) {
-                    slides.forEach((slide, idx) => {
-                        slide.classList.toggle("active", idx === i);
-                    });
-                }
-                leftBtn?.addEventListener("click", () => {
-                    index = (index - 1 + slides.length) % slides.length;
-                    showPageSlide(index);
-                });
-                rightBtn?.addEventListener("click", () => {
-                    index = (index + 1) % slides.length;
-                    showPageSlide(index);
-                });
-                showPageSlide(index);
-            } else {
-                // 슬라이드가 하나면 버튼 숨김
-                leftBtn?.style.setProperty("display", "none");
-                rightBtn?.style.setProperty("display", "none");
-                slides[0]?.classList.add("active");
-            }
-            // 이미지 클릭 시 모달 열기
-            slides.forEach((slide, idx) => {
-                slide.addEventListener("click", () => {
-                    modal.style.display = "flex";
-                    currentSlides = Array.from(slides);
-                    currentIndex = idx;
-                    showSlide(currentIndex);
-                });
-            });
-        });
-        // 모달 이미지 클릭 시 다음 슬라이드
-        modalImg.addEventListener("click", () => {
-            if (currentSlides.length > 0) {
-                currentIndex = (currentIndex + 1) % currentSlides.length;
-                showSlide(currentIndex);
-            }
-        });
-        // 모달 닫기
-        closeBtn.addEventListener("click", () => {
-            modal.style.display = "none";
-        });
-        window.addEventListener("click", (e) => {
-            if (e.target === modal) {
-                modal.style.display = "none";
-            }
-        });
-    });
-    document.querySelectorAll('.desc').forEach(el => {
-    	  let raw = el.textContent;
-
-    	  let html = raw
-    	  	
-    	    // 줄바꿈
-    	    .replace(/\r?\n/g, '<br>')
-    	    
-    	    .replace(
-  /\[b\](.*?)\[\/b\]/g,
-  '<strong>$1</strong>'
-)
-
-
-    	    // 🔗 링크 [link:url]text[/link]
-    	    .replace(
-    	      /\[link:(https?:\/\/[^\]]+)\](.*?)\[\/link\]/g,
-    	      '<a href="$1" target="_blank" class="desc-link">$2</a>'
-    	    )
-
-    	    // 🌸 컬러 [color:xxx]text[/color]
-    	    .replace(
-    	      /\[color:(.*?)\](.*?)\[\/color\]/g,
-    	      '<span style="color:$1">$2</span>'
-    	    );
-
-    	  el.innerHTML = html;
-    	});
-
-		</script>
-		<script src="/js/star.js"></script>
-		<script src="/js/windows.js"></script>
-
-		</html>
-
-
-
-
-
+</script>
+<script src="/js/star.js"></script>
+</html>
